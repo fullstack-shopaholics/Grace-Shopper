@@ -10,7 +10,7 @@ const REMOVE_USER = 'REMOVE_USER'
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
+const defaultUser = {userType: 'guest'}
 
 /**
  * ACTION CREATORS
@@ -80,4 +80,10 @@ export default function(state = defaultUser, action) {
     default:
       return state
   }
+}
+
+//SELECTOR
+export const makeDisplayName = (firstName, email) => {
+  if (firstName === '' || !firstName) return email
+  else return firstName
 }
