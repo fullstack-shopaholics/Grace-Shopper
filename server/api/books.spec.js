@@ -10,7 +10,7 @@ beforeEach(() => {
   return db.sync({force: true})
 })
 
-describe.only('Book routes', () => {
+describe('Book routes', () => {
   beforeEach(() => {
     return db.sync({force: true})
   })
