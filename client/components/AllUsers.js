@@ -6,6 +6,7 @@ class AllUsers extends React.Component {
   componentDidMount() {
     this.props.fetchAllUsers()
   }
+
   render() {
     return (
       <div>
@@ -17,7 +18,7 @@ class AllUsers extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  users: state.allusers
+  users: state.allUsers
 })
 
 const mapDispatchToProps = dispatch => ({
