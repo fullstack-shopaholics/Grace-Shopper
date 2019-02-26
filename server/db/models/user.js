@@ -5,17 +5,11 @@ const db = require('../db')
 const User = db.define('user', {
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    allowNull: false
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    allowNull: false
   },
   email: {
     type: Sequelize.STRING,
@@ -42,7 +36,8 @@ const User = db.define('user', {
     type: Sequelize.STRING
   },
   userType: {
-    type: Sequelize.ENUM('admin', 'user', 'guest')
+    type: Sequelize.ENUM('admin', 'user', 'guest'),
+    defaultValue: 'user'
   }
 })
 
