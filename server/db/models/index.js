@@ -12,8 +12,8 @@ const Category = require('./category')
 Book.belongsTo(Author)
 Author.hasMany(Book)
 
-Book.belongsToMany(Category)
-Category.belongsToMany(Book)
+Book.belongsToMany(Category, {through: 'book_category'})
+Category.belongsToMany(Book, {through: 'book_category'})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
