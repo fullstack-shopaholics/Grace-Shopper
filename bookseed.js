@@ -51,7 +51,7 @@ const seed = async () => {
       createdCats
     ])
 
-    const madeStuff = await Promise.all([
+    await Promise.all([
       savedBooks[0].setAuthor(savedAuthors[0]),
       savedBooks[1].setAuthor(savedAuthors[0]),
       savedBooks[2].setAuthor(savedAuthors[1]),
@@ -61,7 +61,6 @@ const seed = async () => {
       savedBooks[1].addCategory(savedCats[1]),
       savedBooks[2].addCategory(savedCats[1])
     ])
-    return madeStuff
   } catch (err) {
     console.log(err)
   }
