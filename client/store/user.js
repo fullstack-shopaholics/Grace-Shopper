@@ -10,7 +10,7 @@ const REMOVE_USER = 'REMOVE_USER'
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
+const defaultUser = {userType: 'guest'}
 
 /**
  * ACTION CREATORS
@@ -30,10 +30,22 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
+export const auth = (
+  email,
+  password,
+  firstName,
+  lastName,
+  method
+) => async dispatch => {
   let res
   try {
-    res = await axios.post(`/auth/${method}`, {email, password})
+    res = await axios.post(`/auth/${method}`, {
+      email,
+      password,
+      firstName,
+      lastName,
+      userType: 'user'
+    })
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }
@@ -68,4 +80,10 @@ export default function(state = defaultUser, action) {
     default:
       return state
   }
+}
+
+//SELECTOR
+export const makeDisplayName = (firstName, email) => {
+  if (firstName === '' || !firstName) return email
+  else return firstName
 }
