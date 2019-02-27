@@ -1,6 +1,8 @@
 import {Form, Button} from 'react-bootstrap'
 import React from 'react'
 
+const categoryNames = ['Sci-Fi', 'Horror', 'Romance']
+
 export const ComponentName = props => {
   const {
     title,
@@ -32,6 +34,7 @@ export const ComponentName = props => {
           value={author}
           placeholder="Author"
           required
+          onChange={props.handleChange}
         />
       </Form.Group>
       <Form.Group controlId="bookFormDesc">
@@ -42,6 +45,7 @@ export const ComponentName = props => {
           value={description}
           placeholder="Description"
           required
+          onChange={props.handleChange}
         />
       </Form.Group>
       <Form.Group controlId="bookFormPrice">
@@ -54,6 +58,7 @@ export const ComponentName = props => {
           value={price}
           placeholder="Price"
           required
+          onChange={props.handleChange}
         />
       </Form.Group>
       <Form.Group controlId="bookFormInv">
@@ -66,6 +71,7 @@ export const ComponentName = props => {
           value={inventoryQuantity}
           placeholder="Inventory Quantity"
           required
+          onChange={props.handleChange}
         />
       </Form.Group>
       <Form.Group controlId="bookFormPhotoUrl">
@@ -75,13 +81,26 @@ export const ComponentName = props => {
           type="url"
           value={photoUrl}
           placeholder="Photo URL"
+          onChange={props.handleChange}
         />
       </Form.Group>
-      <Form.Group controlId="bookFormCategories">
+      <Form.Group>
         <Form.Label>Genres</Form.Label>
-        <Form.Check />
+        {categoryNames.map(catName => {
+          return (
+            <Form.Check
+              custom
+              type="checkbox"
+              label={catName}
+              name={catName}
+              key={catName}
+              id={catName}
+              onChange={props.handleCheckboxChange}
+            />
+          )
+        })}
       </Form.Group>
-      <Button />
+      <Button type="submit">Submit</Button>
     </Form>
   )
 }

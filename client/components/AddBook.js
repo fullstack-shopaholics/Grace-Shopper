@@ -21,9 +21,21 @@ export class AddBook extends Component {
     this.setState({[event.target.name]: event.target.value})
   }
 
+  handleCheckboxChange = event => {
+    const checked = event.target.checked
+    let categories = this.state.categories.slice()
+    if (checked) {
+      categories = [...categories, event.target.name]
+    } else {
+      categories = categories.filter(category => category !== event.target.name)
+    }
+    this.setState({categories})
+  }
+
   handleSubmit = event => {
     event.preventDefault()
     this.props.postBook(this.state)
+    this.props.history.push('/books')
   }
 
   render() {
@@ -31,6 +43,7 @@ export class AddBook extends Component {
       <BookForm
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
+        handleCheckboxChange={this.handleCheckboxChange}
         book={this.state}
       />
     )

@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {CardDeck, Card} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
 const AllBooks = props => {
   const {books} = props
@@ -23,13 +24,15 @@ const AllBooks = props => {
           })
         )}
       </CardDeck>
+      {props.isAdmin && <Link to="/books/add">Add Book</Link>}
     </div>
   )
 }
 
 const mapState = state => {
   return {
-    books: state.books
+    books: state.books,
+    isAdmin: state.user.isAdmin
   }
 }
 
