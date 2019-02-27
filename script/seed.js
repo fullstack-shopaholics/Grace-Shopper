@@ -22,7 +22,14 @@ const book3 = {
   inventoryQuantity: 1
 }
 
-const books = [book1, book2, book3]
+const book4 = {
+  title: 'Filter probz',
+  description: 'Filtering is not fun.',
+  price: 2.99,
+  inventoryQuantity: 3
+}
+
+const books = [book1, book2, book3, book4]
 
 //Dummy Authors
 const author1 = {name: 'Cody'}
@@ -79,7 +86,8 @@ async function seed() {
     savedBooks[0].addCategory(savedCats[0]),
     savedBooks[0].addCategory(savedCats[1]),
     savedBooks[1].addCategory(savedCats[1]),
-    savedBooks[2].addCategory(savedCats[1])
+    savedBooks[2].addCategory(savedCats[1]),
+    savedBooks[3].addCategory(savedCats[2])
   ])
 
   console.log(`seeded ${users.length} users`)

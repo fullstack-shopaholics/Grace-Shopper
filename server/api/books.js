@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const {Book, Author, Category} = require('../db/models')
 const adminOnly = require('./isAdmin')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 module.exports = router
 
@@ -110,11 +112,40 @@ router.put('/:id', adminOnly, async (req, res, next) => {
   }
 })
 
+
+router.put('/filter', async (req, res, next) => {
+  try {
+    const {filters} = req.body
+    const books = await Book.findAll({
+      include: [
+        {
+          model: Category,
+          where: {name: {[Op.or]: filters}}
+        }
+      ]
+    })
+
+    res.json(books)
+
+  } catch (err) {
+    next(err)
+  }
+})
+
+
 router.delete('/:id', adminOnly, async (req, res, next) => {
   try {
     const {id} = req.params
     await Book.destroy({where: {id}})
     res.status(204).end()
+  } catch (err) {
+    next(err)
+  }
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id)
+    res.json(book)
   } catch (err) {
     next(err)
   }
