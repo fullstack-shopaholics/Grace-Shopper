@@ -109,3 +109,13 @@ router.put('/:id', adminOnly, async (req, res, next) => {
     next(err)
   }
 })
+
+router.delete('/:id', adminOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    await Book.destroy({where: {id}})
+    res.status(204).end()
+  } catch (err) {
+    next(err)
+  }
+})
