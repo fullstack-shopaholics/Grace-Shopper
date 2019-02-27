@@ -53,7 +53,7 @@ class AllBooks extends React.Component {
                     <Card.Img variant="top" src={book.photoUrl} />
                     <Card.Title>{book.title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
-                      {book.price}
+                      ${book.price}
                     </Card.Subtitle>
                   </Card>
                 </Link>
