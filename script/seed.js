@@ -1,7 +1,42 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Book, Author, Category} = require('../server/db/models')
+
+const book1 = {
+  title: 'Issa Book',
+  description: 'READ MORE BOOKS, IDIOT.',
+  price: 1.99,
+  inventoryQuantity: 5
+}
+const book2 = {
+  title: 'BOOKSTUFF',
+  description: 'Heres some stuff in a book.',
+  price: 2.99,
+  inventoryQuantity: 10
+}
+const book3 = {
+  title: 'Cody The Pug: The True Story',
+  description: 'This is a book written by Cody the Pug.',
+  price: 5.99,
+  inventoryQuantity: 1
+}
+
+const books = [book1, book2, book3]
+
+//Dummy Authors
+const author1 = {name: 'Cody'}
+const author2 = {name: 'Fullstack'}
+const author3 = {name: 'Unproductive Author'}
+
+const authors = [author1, author2, author3]
+
+//Categories
+const cat1 = {name: 'Horror'}
+const cat2 = {name: 'Sci-Fi'}
+const cat3 = {name: 'Romance'}
+
+const categories = [cat1, cat2, cat3]
 
 async function seed() {
   await db.sync({force: true})
@@ -17,6 +52,27 @@ async function seed() {
       userType: 'admin',
       password: '123'
     })
+  ])
+
+  const createdBooks = Book.bulkCreate(books, {returning: true})
+  const createdAuthors = Author.bulkCreate(authors, {returning: true})
+  const createdCats = Category.bulkCreate(categories, {returning: true})
+
+  const [savedBooks, savedAuthors, savedCats] = await Promise.all([
+    createdBooks,
+    createdAuthors,
+    createdCats
+  ])
+
+  await Promise.all([
+    savedBooks[0].setAuthor(savedAuthors[0]),
+    savedBooks[1].setAuthor(savedAuthors[0]),
+    savedBooks[2].setAuthor(savedAuthors[1]),
+
+    savedBooks[0].addCategory(savedCats[0]),
+    savedBooks[0].addCategory(savedCats[1]),
+    savedBooks[1].addCategory(savedCats[1]),
+    savedBooks[2].addCategory(savedCats[1])
   ])
 
   console.log(`seeded ${users.length} users`)
