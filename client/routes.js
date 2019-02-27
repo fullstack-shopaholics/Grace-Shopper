@@ -32,13 +32,13 @@ class Routes extends Component {
         <Route exact path="/books" component={AllBooks} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        {isAdmin && <Route path="/users" component={AllUsers} />}
+        {isAdmin && <Route exact path="/books/add" component={AddBook} />}
         <Route path="/books/:id" component={SingleBook} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
-            {isAdmin && <Route path="/users" component={AllUsers} />}
-            {isAdmin && <Route path="/books/add" component={AddBook} />}
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
