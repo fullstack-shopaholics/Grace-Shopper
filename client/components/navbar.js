@@ -18,7 +18,11 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
           <Nav.Link href="#" onClick={handleClick}>
             Logout
           </Nav.Link>
-          {isAdmin && <Link to="/users">Users</Link>}
+          {isAdmin && (
+            <Nav.Link as={Link} to="/users">
+              Users
+            </Nav.Link>
+          )}
         </Nav>
       ) : (
         <Nav>
@@ -47,7 +51,7 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
-    isAdmin: state.user.userType === 'admin'
+    isAdmin: state.user.isAdmin
   }
 }
 
