@@ -141,6 +141,7 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
   } catch (err) {
     next(err)
   }
+})
 
 router.get('/:id', async (req, res, next) => {
   try {
