@@ -3,31 +3,42 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import {Navbar, Nav, NavItem} from 'react-bootstrap'
 
-const Navbar = ({handleClick, isLoggedIn, isAdmin}) => (
-  <div>
-    <h1>The Book Stack</h1>
-    <nav>
+const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
+  <Navbar bg="primary" variant="dark">
+    <Navbar.Brand>The Book Stack</Navbar.Brand>
+    <Nav className="mr-auto">
       {isLoggedIn ? (
-        <div>
+        <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
+          <Nav.Link as={Link} to="/home">
+            Home
+          </Nav.Link>
+          <Nav.Link href="#" onClick={handleClick}>
             Logout
-          </a>
+          </Nav.Link>
           {isAdmin && <Link to="/users">Users</Link>}
-        </div>
+        </Nav>
       ) : (
-        <div>
+        <Nav>
           {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/books">Books</Link>
-        </div>
+
+          <Nav.Link as={Link} to="/login">
+            Login
+          </Nav.Link>
+
+          <Nav.Link as={Link} to="/signup">
+            Sign Up
+          </Nav.Link>
+          <Nav.Link as={Link} to="/books">
+            Books
+          </Nav.Link>
+        </Nav>
       )}
-    </nav>
+    </Nav>
     <hr />
-  </div>
+  </Navbar>
 )
 
 /**
@@ -48,12 +59,12 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(StyledNavbar)
 
 /**
  * PROP TYPES
  */
-Navbar.propTypes = {
+StyledNavbar.propTypes = {
   handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired
 }

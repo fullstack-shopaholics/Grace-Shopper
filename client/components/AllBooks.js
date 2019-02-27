@@ -1,23 +1,28 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {CardDeck, Card} from 'react-bootstrap'
 
 const AllBooks = props => {
   const {books} = props
   return (
     <div>
-      <ul>
+      <CardDeck>
         {books === undefined || books.length === 0 ? (
           <li>No Books!</li>
         ) : (
           books.map(book => {
             return (
-              <li key={book.id}>
-                Title: {book.title} Price: {book.price}
-              </li>
+              <Card key={book.id} style={{width: '250px'}}>
+                <Card.Img variant="top" src={book.photoUrl} />
+                <Card.Title>{book.title}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  {book.price}
+                </Card.Subtitle>
+              </Card>
             )
           })
         )}
-      </ul>
+      </CardDeck>
     </div>
   )
 }

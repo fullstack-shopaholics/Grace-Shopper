@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import {Form, Button} from 'react-bootstrap'
 
 /**
  * COMPONENT
@@ -11,38 +12,46 @@ const AuthForm = props => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      <Form onSubmit={handleSubmit} name={name}>
         {name === 'signup' && (
-          <div>
-            <div>
-              <label htmlFor="firstName">
-                <small>First Name</small>
-              </label>
-              <input name="firstName" type="text" />
-            </div>
-            <label htmlFor="lastName">
-              <small>Last Name</small>
-            </label>
-            <input name="lastName" type="text" />
-          </div>
+          <Form.Row>
+            <Form.Group>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                name="firstName"
+                type="text"
+                placeholder="First Name"
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                name="lastName"
+                type="text"
+                placeholder="Last Name"
+              />
+            </Form.Group>
+          </Form.Row>
         )}
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
+        <Form.Row>
+          <Form.Group>
+            <Form.Label>Email</Form.Label>
+            <Form.Control name="email" type="text" placeholder="Email" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Group>
+        </Form.Row>
+        <Button variant="primary" type="submit">
+          {displayName}
+        </Button>
         {error && error.response && <div> {error.response.data} </div>}
-      </form>
+      </Form>
       <a href="/auth/google">{displayName} with Google</a>
     </div>
   )
