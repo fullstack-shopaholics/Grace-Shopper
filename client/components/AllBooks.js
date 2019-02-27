@@ -69,7 +69,7 @@ class AllBooks extends React.Component {
 const mapState = state => {
   return {
     books: state.books,
-    isAdmin: state.user.isAdmin
+    isAdmin: state.user.isAdmin,
     filterBooks: state.filterCategories.filteredBooks,
     filters: state.filterCategories.categories
   }
