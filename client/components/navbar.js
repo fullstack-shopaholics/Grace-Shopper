@@ -18,7 +18,11 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
           <Nav.Link href="#" onClick={handleClick}>
             Logout
           </Nav.Link>
-          {isAdmin && <Link to="/users">Users</Link>}
+          {isAdmin && (
+            <Nav.Link as={Link} to="/users">
+              Users
+            </Nav.Link>
+          )}
         </Nav>
       ) : (
         <Nav>

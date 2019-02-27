@@ -2,11 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {CardDeck, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+import Filters from './Filters'
 
 const AllBooks = props => {
   const {books} = props
   return (
     <div>
+      <Filters />
       <CardDeck>
         {books === undefined || books.length === 0 ? (
           <li>No Books!</li>
