@@ -14,7 +14,6 @@ Author.hasMany(Book)
 Book.belongsToMany(Category, {through: 'book_category'})
 Category.belongsToMany(Book, {through: 'book_category'})
 
-
 module.exports = {
   User,
   Address,
