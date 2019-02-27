@@ -61,7 +61,7 @@ class AllBooks extends React.Component {
             })
           )}
         </CardDeck>
-      {props.isAdmin && <Link to="/books/add">Add Book</Link>}
+        {this.props.isAdmin && <Link to="/books/add">Add Book</Link>}
       </div>
     )
   }

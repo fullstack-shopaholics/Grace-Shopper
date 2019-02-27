@@ -52,11 +52,29 @@ router.post('/', adminOnly, async (req, res, next) => {
       photoUrl
     })
     await newBook.setAuthor(authorInstance)
-    await newBook.addCategories(bookCategories)
+    await newBook.setCategories(bookCategories)
     newBook = await Book.findById(newBook.id, {
       include: [{model: Author}, {model: Category}]
     })
     res.json(newBook)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/filter', async (req, res, next) => {
+  try {
+    const {filters} = req.body
+    const books = await Book.findAll({
+      include: [
+        {
+          model: Category,
+          where: {name: {[Op.or]: filters}}
+        }
+      ]
+    })
+
+    res.json(books)
   } catch (err) {
     next(err)
   }
@@ -111,27 +129,6 @@ router.put('/:id', adminOnly, async (req, res, next) => {
     next(err)
   }
 })
-
-
-router.put('/filter', async (req, res, next) => {
-  try {
-    const {filters} = req.body
-    const books = await Book.findAll({
-      include: [
-        {
-          model: Category,
-          where: {name: {[Op.or]: filters}}
-        }
-      ]
-    })
-
-    res.json(books)
-
-  } catch (err) {
-    next(err)
-  }
-})
-
 
 router.delete('/:id', adminOnly, async (req, res, next) => {
   try {
