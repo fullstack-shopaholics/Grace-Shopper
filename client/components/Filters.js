@@ -1,11 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {changeCategories, fetchFilteredBooks} from './../store/filters'
+import {fetchCategories} from '../store/category'
 
 export class Filters extends React.Component {
   constructor() {
     super()
     this.handleChange = this.handleChange.bind(this)
+  }
+
+  componentDidMount() {
+    this.props.fetchCategories()
   }
 
   async handleChange(evt) {
@@ -16,18 +21,21 @@ export class Filters extends React.Component {
   }
 
   render() {
+    const {categories} = this.props
     return (
       <form>
-        <label htmlFor="Category">Horror</label>
-        <input onChange={this.handleChange} type="checkbox" name="Horror" />
-
-        <label htmlFor="Category">Sci-Fi</label>
-        <input onChange={this.handleChange} type="checkbox" name="Sci-Fi" />
-
-        <label htmlFor="Category">Romance</label>
-        <input onChange={this.handleChange} type="checkbox" name="Romance" />
-
-        {/* <button type="submit">Filter</button> */}
+        {categories.map(curCat => {
+          return (
+            <div key={curCat.id}>
+              <label htmlFor="Category">{curCat.name}</label>
+              <input
+                onChange={this.handleChange}
+                type="checkbox"
+                name={curCat.name}
+              />
+            </div>
+          )
+        })}
       </form>
     )
   }
@@ -35,7 +43,8 @@ export class Filters extends React.Component {
 
 const mapState = state => {
   return {
-    filters: state.filterCategories.categories
+    filters: state.filterCategories.categories,
+    categories: state.getCategories
   }
 }
 
@@ -43,7 +52,8 @@ const mapDispatch = dispatch => {
   return {
     changeCategories: (category, display) =>
       dispatch(changeCategories(category, display)),
-    fetchFilteredBooks: filters => dispatch(fetchFilteredBooks(filters))
+    fetchFilteredBooks: filters => dispatch(fetchFilteredBooks(filters)),
+    fetchCategories: () => dispatch(fetchCategories())
   }
 }
 

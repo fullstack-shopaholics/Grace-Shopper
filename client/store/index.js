@@ -7,13 +7,15 @@ import allUsers from './allusers'
 import {books} from './book'
 import {singleBook} from './singleBook'
 import filterCategories from './filters'
+import {getCategories} from './category'
 
 const reducer = combineReducers({
   user,
   allUsers,
   books,
   singleBook,
-  filterCategories
+  filterCategories,
+  getCategories
 })
 
 const middleware = composeWithDevTools(
