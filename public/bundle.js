@@ -137,14 +137,24 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _reactBootstrap = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var AllBooks = function AllBooks(props) {
   var books = props.books;
-  return _react.default.createElement("div", null, _react.default.createElement("ul", null, books === undefined || books.length === 0 ? _react.default.createElement("li", null, "No Books!") : books.map(function (book) {
-    return _react.default.createElement("li", {
-      key: book.id
-    }, "Title: ", book.title, " Price: ", book.price);
+  return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.CardDeck, null, books === undefined || books.length === 0 ? _react.default.createElement("li", null, "No Books!") : books.map(function (book) {
+    return _react.default.createElement(_reactBootstrap.Card, {
+      key: book.id,
+      style: {
+        width: '250px'
+      }
+    }, _react.default.createElement(_reactBootstrap.Card.Img, {
+      variant: "top",
+      src: book.photoUrl
+    }), _react.default.createElement(_reactBootstrap.Card.Title, null, book.title), _react.default.createElement(_reactBootstrap.Card.Subtitle, {
+      className: "mb-2 text-muted"
+    }, book.price));
   })));
 };
 
@@ -274,6 +284,8 @@ var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ ".
 
 var _store = __webpack_require__(/*! ../store */ "./client/store/index.js");
 
+var _reactBootstrap = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -284,32 +296,29 @@ var AuthForm = function AuthForm(props) {
       displayName = props.displayName,
       handleSubmit = props.handleSubmit,
       error = props.error;
-  return _react.default.createElement("div", null, _react.default.createElement("form", {
+  return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Form, {
     onSubmit: handleSubmit,
     name: name
-  }, name === 'signup' && _react.default.createElement("div", null, _react.default.createElement("div", null, _react.default.createElement("label", {
-    htmlFor: "firstName"
-  }, _react.default.createElement("small", null, "First Name")), _react.default.createElement("input", {
+  }, name === 'signup' && _react.default.createElement(_reactBootstrap.Form.Row, null, _react.default.createElement(_reactBootstrap.Form.Group, null, _react.default.createElement(_reactBootstrap.Form.Label, null, "First Name"), _react.default.createElement(_reactBootstrap.Form.Control, {
     name: "firstName",
-    type: "text"
-  })), _react.default.createElement("label", {
-    htmlFor: "lastName"
-  }, _react.default.createElement("small", null, "Last Name")), _react.default.createElement("input", {
+    type: "text",
+    placeholder: "First Name"
+  })), _react.default.createElement(_reactBootstrap.Form.Group, null, _react.default.createElement(_reactBootstrap.Form.Label, null, "Last Name"), _react.default.createElement(_reactBootstrap.Form.Control, {
     name: "lastName",
-    type: "text"
-  })), _react.default.createElement("div", null, _react.default.createElement("label", {
-    htmlFor: "email"
-  }, _react.default.createElement("small", null, "Email")), _react.default.createElement("input", {
+    type: "text",
+    placeholder: "Last Name"
+  }))), _react.default.createElement(_reactBootstrap.Form.Row, null, _react.default.createElement(_reactBootstrap.Form.Group, null, _react.default.createElement(_reactBootstrap.Form.Label, null, "Email"), _react.default.createElement(_reactBootstrap.Form.Control, {
     name: "email",
-    type: "text"
-  })), _react.default.createElement("div", null, _react.default.createElement("label", {
-    htmlFor: "password"
-  }, _react.default.createElement("small", null, "Password")), _react.default.createElement("input", {
+    type: "text",
+    placeholder: "Email"
+  })), _react.default.createElement(_reactBootstrap.Form.Group, null, _react.default.createElement(_reactBootstrap.Form.Label, null, "Password"), _react.default.createElement(_reactBootstrap.Form.Control, {
     name: "password",
-    type: "password"
-  })), _react.default.createElement("div", null, _react.default.createElement("button", {
+    type: "password",
+    placeholder: "Password"
+  }))), _react.default.createElement(_reactBootstrap.Button, {
+    variant: "primary",
     type: "submit"
-  }, displayName)), error && error.response && _react.default.createElement("div", null, " ", error.response.data, " ")), _react.default.createElement("a", {
+  }, displayName), error && error.response && _react.default.createElement("div", null, " ", error.response.data, " ")), _react.default.createElement("a", {
     href: "/auth/google"
   }, displayName, " with Google"));
 };

@@ -12,11 +12,9 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
       {isLoggedIn ? (
         <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
-
           <Nav.Link as={Link} to="/home">
             Home
           </Nav.Link>
-
           <Nav.Link href="#" onClick={handleClick}>
             Logout
           </Nav.Link>
