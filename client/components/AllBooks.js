@@ -5,7 +5,8 @@ import {Link} from 'react-router-dom'
 import Filters from './Filters'
 
 const AllBooks = props => {
-  const {books} = props
+  const filters = props.filters || []
+  const books = filters.length === 0 ? props.books : props.filterBooks
   return (
     <div>
       <Filters />
@@ -34,7 +35,9 @@ const AllBooks = props => {
 
 const mapState = state => {
   return {
-    books: state.books
+    books: state.books,
+    filterBooks: state.filterCategories.filteredBooks,
+    filters: state.filterCategories.categories
   }
 }
 

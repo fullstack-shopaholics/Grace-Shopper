@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {changeCategories} from './../store/filters'
+import {changeCategories, fetchFilteredBooks} from './../store/filters'
 
 export class Filters extends React.Component {
   constructor() {
@@ -8,38 +8,24 @@ export class Filters extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChange(evt) {
+  async handleChange(evt) {
     const newFilter = evt.target.name
     const checked = evt.target.checked
-    this.props.changeCategories(newFilter, checked)
+    await this.props.changeCategories(newFilter, checked)
+    this.props.fetchFilteredBooks(this.props.filters)
   }
 
   render() {
     return (
       <form>
         <label htmlFor="Category">Horror</label>
-        <input
-          onChange={this.handleChange}
-          type="checkbox"
-          name="Horror"
-          value="Horror"
-        />
+        <input onChange={this.handleChange} type="checkbox" name="Horror" />
 
         <label htmlFor="Category">Sci-Fi</label>
-        <input
-          onChange={this.handleChange}
-          type="checkbox"
-          name="Sci-Fi"
-          value="Sci-Fi"
-        />
+        <input onChange={this.handleChange} type="checkbox" name="Sci-Fi" />
 
         <label htmlFor="Category">Romance</label>
-        <input
-          onChange={this.handleChange}
-          type="checkbox"
-          name="Romance"
-          value="Romance"
-        />
+        <input onChange={this.handleChange} type="checkbox" name="Romance" />
 
         {/* <button type="submit">Filter</button> */}
       </form>
@@ -47,11 +33,18 @@ export class Filters extends React.Component {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapState = state => {
   return {
-    changeCategories: (category, display) =>
-      dispatch(changeCategories(category, display))
+    filters: state.filterCategories.categories
   }
 }
 
-export default connect(null, mapDispatch)(Filters)
+const mapDispatch = dispatch => {
+  return {
+    changeCategories: (category, display) =>
+      dispatch(changeCategories(category, display)),
+    fetchFilteredBooks: filters => dispatch(fetchFilteredBooks(filters))
+  }
+}
+
+export default connect(mapState, mapDispatch)(Filters)
