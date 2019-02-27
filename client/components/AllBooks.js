@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {CardDeck, Card} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
 const AllBooks = props => {
   const {books} = props
@@ -12,13 +13,15 @@ const AllBooks = props => {
         ) : (
           books.map(book => {
             return (
-              <Card key={book.id} style={{width: '250px'}}>
-                <Card.Img variant="top" src={book.photoUrl} />
-                <Card.Title>{book.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  {book.price}
-                </Card.Subtitle>
-              </Card>
+              <Link key={book.id} to={`/books/${book.id}`}>
+                <Card style={{width: '250px'}}>
+                  <Card.Img variant="top" src={book.photoUrl} />
+                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    {book.price}
+                  </Card.Subtitle>
+                </Card>
+              </Link>
             )
           })
         )}

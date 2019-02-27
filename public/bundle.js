@@ -139,13 +139,17 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _reactBootstrap = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/es/index.js");
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var AllBooks = function AllBooks(props) {
   var books = props.books;
   return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.CardDeck, null, books === undefined || books.length === 0 ? _react.default.createElement("li", null, "No Books!") : books.map(function (book) {
-    return _react.default.createElement(_reactBootstrap.Card, {
+    return _react.default.createElement(_reactRouterDom.Link, {
       key: book.id,
+      to: "/books/".concat(book.id)
+    }, _react.default.createElement(_reactBootstrap.Card, {
       style: {
         width: '250px'
       }
@@ -154,7 +158,7 @@ var AllBooks = function AllBooks(props) {
       src: book.photoUrl
     }), _react.default.createElement(_reactBootstrap.Card.Title, null, book.title), _react.default.createElement(_reactBootstrap.Card.Subtitle, {
       className: "mb-2 text-muted"
-    }, book.price));
+    }, book.price)));
   })));
 };
 
@@ -256,6 +260,96 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AllUsers);
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./client/components/SingleBook.js":
+/*!*****************************************!*\
+  !*** ./client/components/SingleBook.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.SingleBook = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _singleBook = __webpack_require__(/*! ../store/singleBook */ "./client/store/singleBook.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var SingleBook =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(SingleBook, _React$Component);
+
+  function SingleBook() {
+    _classCallCheck(this, SingleBook);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(SingleBook).apply(this, arguments));
+  }
+
+  _createClass(SingleBook, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.loadBook(this.props.match.params.id);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var selectedBook = this.props.selectedBook;
+      return _react.default.createElement("div", null, _react.default.createElement("h1", null, selectedBook.title), _react.default.createElement("h5", null, "$", selectedBook.price), _react.default.createElement("p", null, selectedBook.description));
+    }
+  }]);
+
+  return SingleBook;
+}(_react.default.Component);
+
+exports.SingleBook = SingleBook;
+
+var mapState = function mapState(state) {
+  return {
+    selectedBook: state.singleBook
+  };
+};
+
+var mapDispatch = function mapDispatch(dispatch) {
+  return {
+    loadBook: function loadBook(id) {
+      return dispatch((0, _singleBook.fetchBook)(id));
+    }
+  };
+};
+
+var _default = (0, _reactRedux.connect)(mapState, mapDispatch)(SingleBook);
 
 exports.default = _default;
 
@@ -427,6 +521,12 @@ Object.defineProperty(exports, "AllBooks", {
     return _AllBooks.default;
   }
 });
+Object.defineProperty(exports, "SingleBook", {
+  enumerable: true,
+  get: function get() {
+    return _SingleBook.default;
+  }
+});
 
 var _navbar = _interopRequireDefault(__webpack_require__(/*! ./navbar */ "./client/components/navbar.js"));
 
@@ -437,6 +537,8 @@ var _authForm = __webpack_require__(/*! ./auth-form */ "./client/components/auth
 var _AllUsers = _interopRequireDefault(__webpack_require__(/*! ./AllUsers */ "./client/components/AllUsers.js"));
 
 var _AllBooks = _interopRequireDefault(__webpack_require__(/*! ./AllBooks */ "./client/components/AllBooks.js"));
+
+var _SingleBook = _interopRequireDefault(__webpack_require__(/*! ./SingleBook */ "./client/components/SingleBook.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -737,6 +839,7 @@ function (_Component) {
           isLoggedIn = _this$props.isLoggedIn,
           isAdmin = _this$props.isAdmin;
       return _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
+        exact: true,
         path: "/books",
         component: _components.AllBooks
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -745,6 +848,9 @@ function (_Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/signup",
         component: _components.Signup
+      }), _react.default.createElement(_reactRouterDom.Route, {
+        path: "/books/:id",
+        component: _components.SingleBook
       }), isLoggedIn && _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
         path: "/home",
         component: _components.UserHome
@@ -1074,6 +1180,8 @@ var _allusers = _interopRequireDefault(__webpack_require__(/*! ./allusers */ "./
 
 var _book = __webpack_require__(/*! ./book */ "./client/store/book.js");
 
+var _singleBook = __webpack_require__(/*! ./singleBook */ "./client/store/singleBook.js");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1081,7 +1189,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var reducer = (0, _redux.combineReducers)({
   user: _user.default,
   allUsers: _allusers.default,
-  books: _book.books
+  books: _book.books,
+  singleBook: _singleBook.singleBook
 });
 var middleware = (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk.default, (0, _reduxLogger.default)({
   collapsed: true
@@ -1089,6 +1198,104 @@ var middleware = (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.app
 var store = (0, _redux.createStore)(reducer, middleware);
 var _default = store;
 exports.default = _default;
+
+/***/ }),
+
+/***/ "./client/store/singleBook.js":
+/*!************************************!*\
+  !*** ./client/store/singleBook.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.singleBook = exports.fetchBook = exports.setBook = exports.SET_BOOK = void 0;
+
+var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var initialState = {};
+var SET_BOOK = 'SET_BOOK';
+exports.SET_BOOK = SET_BOOK;
+
+var setBook = function setBook(book) {
+  return {
+    type: SET_BOOK,
+    book: book
+  };
+};
+
+exports.setBook = setBook;
+
+var fetchBook = function fetchBook(id) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(dispatch) {
+        var res, data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return _axios.default.get("/api/books/".concat(id));
+
+              case 3:
+                res = _context.sent;
+                data = res.data;
+                dispatch(setBook(data));
+                _context.next = 11;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](0);
+                console.error(_context.t0);
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 8]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+exports.fetchBook = fetchBook;
+
+var singleBook = function singleBook() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case SET_BOOK:
+      return action.book;
+
+    default:
+      return state;
+  }
+};
+
+exports.singleBook = singleBook;
 
 /***/ }),
 
