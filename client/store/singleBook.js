@@ -28,17 +28,15 @@ export const fetchBook = id => async dispatch => {
   }
 }
 
-
 export const fetchReviews = id => async dispatch => {
   try {
     const result = await axios.get(`/api/books/review/${id}`)
     const reviews = result.data
     dispatch(getReviews(reviews))
   } catch (err) {
-    console.err(err)
+    console.error(err)
   }
 }
-
 
 export const putBook = book => async dispatch => {
   try {
