@@ -5,6 +5,7 @@ const Book = require('./book')
 const Author = require('./author')
 const Category = require('./category')
 const Review = require('./review')
+const BookCart = require('./bookCart')
 
 Address.belongsTo(User)
 User.hasOne(Address)
@@ -15,13 +16,17 @@ Author.hasMany(Book)
 Book.belongsToMany(Category, {through: 'book_category'})
 Category.belongsToMany(Book, {through: 'book_category'})
 
-
 Review.belongsTo(User)
 User.hasMany(Review)
 
 Review.belongsTo(Book)
 Book.hasMany(Review)
 
+BookCart.belongsTo(User)
+User.hasMany(BookCart)
+
+BookCart.belongsTo(Book)
+Book.hasMany(BookCart)
 
 module.exports = {
   User,
@@ -29,5 +34,6 @@ module.exports = {
   Book,
   Author,
   Category,
-  Review
+  Review,
+  BookCart
 }
