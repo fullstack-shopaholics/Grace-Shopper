@@ -8,14 +8,16 @@ export class Cart extends Component {
   }
   render() {
     const cartItems = this.props.cartItems || []
+    console.log(cartItems)
     return (
       <div>
         <h1>Shopping Cart</h1>
-        {!cartItems.length ? (
+        {!cartItems.length || cartItems === undefined ? (
           <h2>No Items in Cart!</h2>
         ) : (
           <ul>
             {cartItems.map(item => {
+              console.log(item.book.title)
               return (
                 <div key={item.id}>
                   <li>{item.book.title}</li>

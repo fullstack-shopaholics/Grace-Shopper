@@ -17,8 +17,6 @@ export const addToCart = book => ({
 
 export const fetchCart = userId => async dispatch => {
   try {
-    console.log('IN THE THUNK')
-
     const res = await axios.get(`/api/users/cart/${userId}`)
     const data = res.data
     dispatch(getCart(data))
@@ -35,6 +33,7 @@ export const addBookToCart = (userId, book, quantity) => async dispatch => {
       quantity
     })
     const data = res.data
+    console.log('IN THE THUNK => ', data)
     dispatch(addToCart(data))
   } catch (err) {
     console.error(err)
