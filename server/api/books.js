@@ -10,6 +10,9 @@ const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  // if (req.session.passport.user){
+  //   console.log()
+  // }
   try {
     const books = await Book.findAll({
       include: [{model: Author}, {model: Category}]
