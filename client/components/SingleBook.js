@@ -23,7 +23,6 @@ export class SingleBook extends React.Component {
         <BookReviews reviews={selectedBookReviews} />
 
         {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
-
       </div>
     )
   }
@@ -31,11 +30,9 @@ export class SingleBook extends React.Component {
 
 const mapState = state => {
   return {
-
     selectedBook: state.singleBook.book,
-    selectedBookReviews: state.singleBook.reviews
+    selectedBookReviews: state.singleBook.reviews,
     isAdmin: state.user.isAdmin
-
   }
 }
 
