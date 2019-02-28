@@ -17,7 +17,6 @@ class AllBooks extends React.Component {
     this.setState({
       searchTerm: event.target.value
     })
-    console.log(this.state.searchTerm)
   }
 
   render() {

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const initialState = []
 
-export const SET_BOOKS = 'SET_BOOKS'
+const SET_BOOKS = 'SET_BOOKS'
 
 export const setBooks = books => ({
   type: SET_BOOKS,

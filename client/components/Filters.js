@@ -1,6 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {changeCategories, fetchFilteredBooks} from './../store/filters'
+import {
+  changeCategories,
+  fetchFilteredBooks,
+  clearCategories
+} from './../store/filters'
 import {fetchCategories} from '../store/category'
 
 export class Filters extends React.Component {
@@ -11,6 +15,10 @@ export class Filters extends React.Component {
 
   componentDidMount() {
     this.props.fetchCategories()
+  }
+
+  componentWillUnmount() {
+    this.props.clearCategories()
   }
 
   async handleChange(evt) {
@@ -53,7 +61,8 @@ const mapDispatch = dispatch => {
     changeCategories: (category, display) =>
       dispatch(changeCategories(category, display)),
     fetchFilteredBooks: filters => dispatch(fetchFilteredBooks(filters)),
-    fetchCategories: () => dispatch(fetchCategories())
+    fetchCategories: () => dispatch(fetchCategories()),
+    clearCategories: () => dispatch(clearCategories())
   }
 }
 

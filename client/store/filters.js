@@ -7,12 +7,15 @@ const initialState = {
 
 const CHANGE_CATEGORIES = 'CHANGE_CATEGORIES'
 const GET_FILTERED_BOOKS = 'GET_FILTERED_BOOKS'
+const CLEAR_CATEGORY = 'CLEAR_CATEGORY'
 
 export const changeCategories = (category, display) => ({
   type: CHANGE_CATEGORIES,
   category,
   display
 })
+
+export const clearCategories = () => ({type: CLEAR_CATEGORY})
 
 export const getFilteredBooks = books => ({type: GET_FILTERED_BOOKS, books})
 
@@ -54,6 +57,8 @@ const filterReducer = (state = initialState, action) => {
       }
     case GET_FILTERED_BOOKS:
       return {...state, filteredBooks: action.books}
+    case CLEAR_CATEGORY:
+      return {...state, categories: []}
     default:
       return state
   }
