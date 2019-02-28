@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Book, Author, Category} = require('../server/db/models')
+const {User, Book, Author, Category, Review} = require('../server/db/models')
 
 const book1 = {
   title: 'Issa Book',
@@ -31,6 +31,23 @@ const book4 = {
 
 const books = [book1, book2, book3, book4]
 
+const review1 = {
+  content: 'Nice!',
+  rating: 4
+}
+
+const review2 = {
+  content: 'Eh not thzt nice...',
+  rating: 2
+}
+
+const review3 = {
+  content: 'Best Book Ever!!!!',
+  rating: 5
+}
+
+const reviews = [review1, review2, review3]
+
 //Dummy Authors
 const author1 = {name: 'Cody'}
 const author2 = {name: 'Fullstack'}
@@ -45,37 +62,40 @@ const cat3 = {name: 'Romance'}
 
 const categories = [cat1, cat2, cat3]
 
+const user1 = {email: 'cody@email.com', password: '123'}
+const user2 = {email: 'murphy@email.com', password: '123'}
+const user3 = {
+  firstName: 'Zach',
+  lastName: 'Marszal',
+  email: 'zm@email.com',
+  userType: 'admin',
+  password: '123'
+}
+
+const users = [user1, user2, user3]
+
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123', isGuest: false}),
-    User.create({email: 'murphy@email.com', password: '123', isGuest: false}),
-    User.create({
-      firstName: 'Zach',
-      lastName: 'Marszal',
-      email: 'zm@email.com',
-      isAdmin: true,
-      isGuest: false,
-      password: '123'
-    }),
-    User.create({
-      email: 'admin@admin.com',
-      password: '1234',
-      isAdmin: true,
-      isGuest: false
-    })
-  ])
-
   const createdBooks = Book.bulkCreate(books, {returning: true})
   const createdAuthors = Author.bulkCreate(authors, {returning: true})
   const createdCats = Category.bulkCreate(categories, {returning: true})
+  const createdReviews = Review.bulkCreate(reviews, {returning: true})
+  const createdUsers = User.bulkCreate(users, {returning: true})
 
-  const [savedBooks, savedAuthors, savedCats] = await Promise.all([
+  const [
+    savedBooks,
+    savedAuthors,
+    savedCats,
+    savedReviews,
+    savedUsers
+  ] = await Promise.all([
     createdBooks,
     createdAuthors,
-    createdCats
+    createdCats,
+    createdReviews,
+    createdUsers
   ])
 
   await Promise.all([
@@ -87,7 +107,15 @@ async function seed() {
     savedBooks[0].addCategory(savedCats[1]),
     savedBooks[1].addCategory(savedCats[1]),
     savedBooks[2].addCategory(savedCats[1]),
-    savedBooks[3].addCategory(savedCats[2])
+    savedBooks[3].addCategory(savedCats[2]),
+
+    savedReviews[0].setUser(savedUsers[2]),
+    savedReviews[1].setUser(savedUsers[1]),
+    savedReviews[2].setUser(savedUsers[0]),
+
+    savedReviews[0].setBook(savedBooks[0]),
+    savedReviews[1].setBook(savedBooks[0]),
+    savedReviews[2].setBook(savedBooks[2])
   ])
 
   console.log(`seeded ${users.length} users`)
