@@ -51,7 +51,7 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
-    isAdmin: state.user.userType === 'admin'
+    isAdmin: state.user.isAdmin
   }
 }
 

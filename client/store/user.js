@@ -10,7 +10,7 @@ const REMOVE_USER = 'REMOVE_USER'
 /**
  * INITIAL STATE
  */
-const defaultUser = {userType: 'guest'}
+const defaultUser = {isGuest: true}
 
 /**
  * ACTION CREATORS
@@ -44,7 +44,7 @@ export const auth = (
       password,
       firstName,
       lastName,
-      userType: 'user'
+      isGuest: false
     })
   } catch (authError) {
     return dispatch(getUser({error: authError}))

@@ -37,4 +37,11 @@ const Book = db.define('book', {
   }
 })
 
+Book.beforeValidate(book => {
+  book.photoUrl =
+    book.photoUrl === ''
+      ? 'http://smartmobilestudio.com/wp-content/uploads/2012/06/leather-book-preview.png'
+      : book.photoUrl
+})
+
 module.exports = Book

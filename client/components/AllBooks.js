@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {CardDeck, Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+
 import Filters from './Filters'
 
 class AllBooks extends React.Component {
@@ -60,6 +61,7 @@ class AllBooks extends React.Component {
             })
           )}
         </CardDeck>
+        {this.props.isAdmin && <Link to="/books/add">Add Book</Link>}
       </div>
     )
   }
@@ -67,6 +69,7 @@ class AllBooks extends React.Component {
 const mapState = state => {
   return {
     books: state.books,
+    isAdmin: state.user.isAdmin,
     filterBooks: state.filterCategories.filteredBooks,
     filters: state.filterCategories.categories
   }

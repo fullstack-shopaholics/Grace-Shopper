@@ -15,11 +15,13 @@ Author.hasMany(Book)
 Book.belongsToMany(Category, {through: 'book_category'})
 Category.belongsToMany(Book, {through: 'book_category'})
 
+
 Review.belongsTo(User)
 User.hasMany(Review)
 
 Review.belongsTo(Book)
 Book.hasMany(Review)
+
 
 module.exports = {
   User,
