@@ -2,8 +2,9 @@ import axios from 'axios'
 
 const initialState = []
 
-export const SET_BOOKS = 'SET_BOOKS'
-export const ADD_BOOK = 'ADD_BOOK'
+const SET_BOOKS = 'SET_BOOKS'
+const ADD_BOOK = 'ADD_BOOK'
+const UPDATE_BOOK = 'UPDATE_BOOK'
 
 export const setBooks = books => ({
   type: SET_BOOKS,
@@ -12,6 +13,11 @@ export const setBooks = books => ({
 
 export const addBook = book => ({
   type: ADD_BOOK,
+  book
+})
+
+export const updateBook = book => ({
+  type: UPDATE_BOOK,
   book
 })
 
@@ -41,6 +47,10 @@ export const books = (state = initialState, action) => {
       return [...action.books]
     case ADD_BOOK:
       return [...state, action.book]
+    case UPDATE_BOOK:
+      return state.filter(
+        book => (book.id !== action.book.id ? book : action.book)
+      )
     default:
       return state
   }
