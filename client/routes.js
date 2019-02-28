@@ -8,11 +8,12 @@ import {
   UserHome,
   AllUsers,
   AllBooks,
-  SingleBook
+  SingleBook,
+  AddBook,
+  UpdateBook
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
-import AddBook from './components/AddBook'
 
 /**
  * COMPONENT
@@ -34,6 +35,9 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         {isAdmin && <Route path="/users" component={AllUsers} />}
         {isAdmin && <Route exact path="/books/add" component={AddBook} />}
+        {isAdmin && (
+          <Route exact path="/books/:id/update" component={UpdateBook} />
+        )}
         <Route path="/books/:id" component={SingleBook} />
         {isLoggedIn && (
           <Switch>
@@ -56,7 +60,8 @@ const mapState = state => {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
-    isAdmin: state.user.isAdmin
+    isAdmin: state.user.isAdmin,
+    singleBook: state.singleBook
   }
 }
 
