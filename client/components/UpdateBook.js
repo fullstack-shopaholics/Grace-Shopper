@@ -21,10 +21,8 @@ export class UpdateBook extends Component {
   }
 
   componentDidMount = async () => {
-    console.log('IN THE COMP DID MT UPDATE BOOK')
     await this.props.fetchCategories()
     await this.props.fetchBook(this.props.match.params.id)
-    console.log('AFTER THUNKS UPDATE BOOK DID MT')
     const {
       id,
       title,
@@ -36,8 +34,6 @@ export class UpdateBook extends Component {
 
     const author = this.props.book.author ? this.props.book.author.name : ''
     const categories = this.props.book.categories.map(cat => cat.name)
-
-    console.log('BOOK FROM PROPS IN UPDATE COMP DID MT', this.props.book)
 
     const book = {
       id,

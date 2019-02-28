@@ -1,8 +1,6 @@
 import {Form, Button} from 'react-bootstrap'
 import React from 'react'
 
-// const categoryNames = ['Sci-Fi', 'Horror', 'Romance']
-
 export const BookForm = props => {
   const {
     title,
