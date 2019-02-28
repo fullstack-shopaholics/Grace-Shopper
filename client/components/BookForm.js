@@ -1,7 +1,7 @@
 import {Form, Button} from 'react-bootstrap'
 import React from 'react'
 
-const categoryNames = ['Sci-Fi', 'Horror', 'Romance']
+const categoryNames = ['Sci-Fi', 'Art', 'Romance']
 
 export const ComponentName = props => {
   const {
