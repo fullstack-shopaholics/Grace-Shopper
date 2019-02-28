@@ -8,11 +8,13 @@ import {books} from './book'
 import {singleBook} from './singleBook'
 import filterCategories from './filters'
 import {getCategories} from './category'
+import {cart} from './cart'
 
 const reducer = combineReducers({
   user,
   allUsers,
   books,
+  cart,
   singleBook,
   filterCategories,
   getCategories
