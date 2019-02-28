@@ -23,6 +23,17 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id, {
+      include: [{model: Author}, {model: Category}]
+    })
+    res.json(book)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/', adminOnly, async (req, res, next) => {
   try {
     const {
@@ -155,17 +166,6 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
     const {id} = req.params
     await Book.destroy({where: {id}})
     res.status(204).end()
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/:id', async (req, res, next) => {
-  try {
-    const book = await Book.findById(req.params.id, {
-      include: [{model: Author}, {model: Category}]
-    })
-    res.json(book)
   } catch (err) {
     next(err)
   }

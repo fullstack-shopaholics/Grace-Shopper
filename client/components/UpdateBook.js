@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import BookForm from './BookForm'
 import {fetchBook, putBook} from '../store/singleBook'
 import {updateBook} from '../store/book'
+import {fetchCategories} from '../store/category'
 
 export class UpdateBook extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export class UpdateBook extends Component {
   }
 
   componentDidMount = async () => {
+    await this.props.fetchCategories()
     await this.props.fetchBook(this.props.match.params.id)
     const {
       id,
@@ -29,8 +31,10 @@ export class UpdateBook extends Component {
       inventoryQuantity,
       photoUrl
     } = this.props.book
+
     const author = this.props.book.author ? this.props.book.author.name : ''
-    const categories = this.props.book.categories.map(category => category.name)
+    const categories = this.props.book.categories.map(cat => cat.name)
+
     const book = {
       id,
       title,
@@ -62,8 +66,8 @@ export class UpdateBook extends Component {
   handleSubmit = async event => {
     event.preventDefault()
     await this.props.putBook(this.state)
-    await this.props.updateBook(this.props.book)
-    this.props.history.push(`/books/${this.state.id}`)
+    this.props.updateBook(this.state)
+    this.props.history.push(`/books/${this.props.match.params.id}`)
   }
 
   render() {
@@ -73,19 +77,26 @@ export class UpdateBook extends Component {
         handleSubmit={this.handleSubmit}
         handleChange={this.handleChange}
         handleCheckboxChange={this.handleCheckboxChange}
+        allCategories={
+          this.props.allCategories
+            ? this.props.allCategories.map(cat => cat.name)
+            : []
+        }
       />
     )
   }
 }
 
 const mapState = state => ({
-  book: state.singleBook.book
+  book: state.singleBook.book,
+  allCategories: state.getCategories
 })
 
 const mapDispatch = dispatch => ({
   putBook: book => dispatch(putBook(book)),
   updateBook: book => dispatch(updateBook(book)),
-  fetchBook: id => dispatch(fetchBook(id))
+  fetchBook: id => dispatch(fetchBook(id)),
+  fetchCategories: () => dispatch(fetchCategories())
 })
 
 export default connect(mapState, mapDispatch)(UpdateBook)

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {postBook} from '../store/book'
 import {connect} from 'react-redux'
 import BookForm from './BookForm'
+import {fetchCategories} from '../store/category'
 
 export class AddBook extends Component {
   constructor(props) {
@@ -15,6 +16,10 @@ export class AddBook extends Component {
       author: '',
       categories: []
     }
+  }
+
+  componentDidMount = async () => {
+    await this.props.fetchCategories()
   }
 
   handleChange = event => {
@@ -45,13 +50,23 @@ export class AddBook extends Component {
         handleSubmit={this.handleSubmit}
         handleCheckboxChange={this.handleCheckboxChange}
         book={this.state}
+        allCategories={
+          this.props.allCategories
+            ? this.props.allCategories.map(cat => cat.name)
+            : []
+        }
       />
     )
   }
 }
 
-const mapDispatch = dispatch => ({
-  postBook: book => dispatch(postBook(book))
+const mapState = state => ({
+  allCategories: state.getCategories
 })
 
-export default connect(null, mapDispatch)(AddBook)
+const mapDispatch = dispatch => ({
+  postBook: book => dispatch(postBook(book)),
+  fetchCategories: () => dispatch(fetchCategories())
+})
+
+export default connect(mapState, mapDispatch)(AddBook)
