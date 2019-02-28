@@ -62,13 +62,14 @@ const cat3 = {name: 'Romance'}
 
 const categories = [cat1, cat2, cat3]
 
-const user1 = {email: 'cody@email.com', password: '123'}
-const user2 = {email: 'murphy@email.com', password: '123'}
+const user1 = {email: 'cody@email.com', password: '123', isGuest: false}
+const user2 = {email: 'murphy@email.com', password: '123', isGuest: false}
 const user3 = {
   firstName: 'Zach',
   lastName: 'Marszal',
   email: 'zm@email.com',
-  userType: 'admin',
+  isAdmin: true,
+  isGuest: false,
   password: '123'
 }
 

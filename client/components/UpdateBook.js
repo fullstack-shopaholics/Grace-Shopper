@@ -29,7 +29,7 @@ export class UpdateBook extends Component {
       inventoryQuantity,
       photoUrl
     } = this.props.book
-    const author = this.props.book.author.name
+    const author = this.props.book.author ? this.props.book.author.name : ''
     const categories = this.props.book.categories.map(category => category.name)
     const book = {
       id,
@@ -79,7 +79,7 @@ export class UpdateBook extends Component {
 }
 
 const mapState = state => ({
-  book: state.singleBook
+  book: state.singleBook.book
 })
 
 const mapDispatch = dispatch => ({
