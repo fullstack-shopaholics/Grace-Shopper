@@ -1,6 +1,9 @@
 const router = require('express').Router()
-const {Book, Author, Category} = require('../db/models')
+
+const {Book, Author, Category, Review} = require('../db/models')
+
 const adminOnly = require('./isAdmin')
+
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
@@ -76,6 +79,21 @@ router.put('/filter', async (req, res, next) => {
 
     res.json(books)
   } catch (err) {
+    next(err)
+  }
+})
+
+
+router.get('/review/:bookId', async (req, res, next) => {
+  try {
+    const {bookId} = req.params
+    const reviews = await Review.findAll({
+      where: {bookId},
+      include: ['user']
+    })
+
+    res.json(reviews)
+      } catch (err) {
     next(err)
   }
 })

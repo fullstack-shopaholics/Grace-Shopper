@@ -95,6 +95,7 @@ export const ComponentName = props => {
               name={catName}
               key={catName}
               id={catName}
+              checked={categories.includes(catName)}
               onChange={props.handleCheckboxChange}
             />
           )
