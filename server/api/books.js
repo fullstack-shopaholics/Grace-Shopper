@@ -80,7 +80,7 @@ router.put('/filter', async (req, res, next) => {
   }
 })
 
-router.put('/:id', adminOnly, async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
     const book = await Book.findById(id)
@@ -142,7 +142,9 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const book = await Book.findById(req.params.id)
+    const book = await Book.findById(req.params.id, {
+      include: [{model: Author}, {model: Category}]
+    })
     res.json(book)
   } catch (err) {
     next(err)
