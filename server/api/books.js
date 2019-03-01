@@ -82,6 +82,7 @@ router.post('/', adminOnly, async (req, res, next) => {
 router.put('/filter', async (req, res, next) => {
   try {
     const {filters} = req.body
+
     const books = await Book.findAll({
       include: [
         {

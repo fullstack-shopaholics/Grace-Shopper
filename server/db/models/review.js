@@ -11,7 +11,10 @@ const Review = db.define('review', {
   },
   rating: {
     type: Sequelize.INTEGER,
-    values: [1, 2, 3, 4, 5]
+    validate: {
+      min: 1,
+      max: 5
+    }
   }
 })
 

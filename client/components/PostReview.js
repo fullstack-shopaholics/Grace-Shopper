@@ -43,46 +43,56 @@ export class PostReview extends React.Component {
           />
           <div>
             <label htmlFor="rating">Stars: </label>
-            <input
-              type="radio"
-              name="rating"
-              value={1}
-              onChange={this.handleChange}
-              checked={this.state.rating === 1}
-            />{' '}
-            1
-            <input
-              type="radio"
-              name="rating"
-              value={2}
-              onChange={this.handleChange}
-              checked={this.state.rating === 2}
-            />{' '}
-            2
-            <input
-              type="radio"
-              name="rating"
-              value={3}
-              onChange={this.handleChange}
-              checked={this.state.rating === 3}
-            />{' '}
-            3
-            <input
-              type="radio"
-              name="rating"
-              value={4}
-              onChange={this.handleChange}
-              checked={this.state.rating === 4}
-            />{' '}
-            4
-            <input
-              type="radio"
-              name="rating"
-              value={5}
-              onChange={this.handleChange}
-              checked={this.state.rating === 5}
-            />{' '}
-            5
+            <div key={1}>
+              <input
+                type="radio"
+                name="rating"
+                value={1}
+                onChange={this.handleChange}
+                checked={this.state.rating === 1}
+              />{' '}
+              {1}
+            </div>
+            <div key={2}>
+              <input
+                type="radio"
+                name="rating"
+                value={2}
+                onChange={this.handleChange}
+                checked={this.state.rating === 2}
+              />{' '}
+              {2}
+            </div>
+            <div key={3}>
+              <input
+                type="radio"
+                name="rating"
+                value={3}
+                onChange={this.handleChange}
+                checked={this.state.rating === 3}
+              />{' '}
+              {3}
+            </div>
+            <div key={4}>
+              <input
+                type="radio"
+                name="rating"
+                value={4}
+                onChange={this.handleChange}
+                checked={this.state.rating === 4}
+              />{' '}
+              {4}
+            </div>
+            <div key={5}>
+              <input
+                type="radio"
+                name="rating"
+                value={5}
+                onChange={this.handleChange}
+                checked={this.state.rating === 5}
+              />{' '}
+              {5}
+            </div>
           </div>
           <button type="submit">Submit</button>
         </form>
