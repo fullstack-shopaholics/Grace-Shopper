@@ -3,7 +3,9 @@ import axios from 'axios'
 const initialState = []
 
 export const GET_CART = 'GET_CART'
+export const GET_GUEST_CART = 'GET_GUEST_CART'
 export const ADD_TO_CART = 'ADD_TO_CART'
+export const ADD_TO_GUEST_CART = 'ADD_TO_GUEST_CART'
 
 export const getCart = cart => ({
   type: GET_CART,
@@ -25,6 +27,16 @@ export const fetchCart = userId => async dispatch => {
   }
 }
 
+export const getGuestCart = () => async dispatch => {
+  try {
+    const res = await axios.get(`/api/users/cart/guest`)
+    const cart = res.data
+    dispatch(getCart(cart))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const addBookToCart = (userId, book, quantity) => async dispatch => {
   try {
     const bookId = book.id
@@ -33,7 +45,20 @@ export const addBookToCart = (userId, book, quantity) => async dispatch => {
       quantity
     })
     const data = res.data
-    console.log('IN THE THUNK => ', data)
+    dispatch(addToCart(data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const addToGuestCart = (book, quantity) => async dispatch => {
+  try {
+    const bookId = book.id
+    const res = await axios.post(`/api/users/cart/guest`, {
+      bookId,
+      quantity
+    })
+    const data = res.data
     dispatch(addToCart(data))
   } catch (err) {
     console.error(err)

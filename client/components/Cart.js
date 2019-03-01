@@ -1,15 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchCart} from '../store/cart'
+import {fetchCart, getGuestCart} from '../store/cart'
 import {Card} from 'react-bootstrap'
 
 export class Cart extends Component {
   componentDidMount() {
-    this.props.fetchItems(this.props.match.params.userId)
+    if (!this.props.isGuest)
+      this.props.fetchItems(this.props.match.params.userId)
+    else this.props.getGuestCart()
   }
   render() {
     const cartItems = this.props.cartItems || []
-    console.log(cartItems)
     return (
       <div>
         <h1>Shopping Cart</h1>
@@ -18,7 +19,6 @@ export class Cart extends Component {
         ) : (
           <ul>
             {cartItems.map(item => {
-              console.log(item.book.title)
               return (
                 <div key={item.id}>
                   <Card>
@@ -41,13 +41,15 @@ export class Cart extends Component {
 
 const mapState = state => {
   return {
-    cartItems: state.cart
+    cartItems: state.cart,
+    isGuest: state.user.isGuest
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    fetchItems: userId => dispatch(fetchCart(userId))
+    fetchItems: userId => dispatch(fetchCart(userId)),
+    getGuestCart: () => dispatch(getGuestCart())
     // deleteItems: (userId, bookId) => dispatch(deleteItem(userId, bookId)),
     // updateQuantity: (userId, bookId) => dispatch(updateQuantity(userId, bookId))
     // purchase:
