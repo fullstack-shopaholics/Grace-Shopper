@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const {Book, Author, Category, Review} = require('../db/models')
+const {Book, Author, Category, Review, User} = require('../db/models')
 
 const adminOnly = require('./isAdmin')
 
@@ -106,6 +106,27 @@ router.get('/review/:bookId', async (req, res, next) => {
     })
 
     res.json(reviews)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/review/:bookId', async (req, res, next) => {
+  try {
+    const {bookId} = req.params
+    const {userId, content, rating} = req.body
+    const createdReview = await Review.create({
+      bookId,
+      userId,
+      content,
+      rating
+    })
+
+    const review = await Review.findById(createdReview.id, {
+      include: [{model: User}, {model: Book}]
+    })
+
+    res.json(review)
   } catch (err) {
     next(err)
   }

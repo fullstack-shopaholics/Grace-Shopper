@@ -4,6 +4,8 @@ import {fetchBook, fetchReviews} from '../store/singleBook'
 import BookReviews from './BookReviews'
 import {Link} from 'react-router-dom'
 import {addBookToCart} from '../store/cart'
+import PostReview from './PostReview'
+
 export class SingleBook extends React.Component {
   constructor() {
     super()
@@ -35,7 +37,6 @@ export class SingleBook extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     let selectedBookReviews = this.props.selectedBookReviews || []
     let {selectedBook, isAdmin} = this.props
 
@@ -60,6 +61,9 @@ export class SingleBook extends React.Component {
           </button>
         </form>
         <BookReviews reviews={selectedBookReviews} />
+        {!this.props.isGuest && (
+          <PostReview selectedBook={selectedBook} userId={this.props.userId} />
+        )}
         {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
       </div>
     )
@@ -71,6 +75,7 @@ const mapState = state => {
     selectedBook: state.singleBook.book,
     selectedBookReviews: state.singleBook.reviews,
     isAdmin: state.user.isAdmin,
+    isGuest: state.user.isGuest,
     userId: state.user.id
   }
 }
