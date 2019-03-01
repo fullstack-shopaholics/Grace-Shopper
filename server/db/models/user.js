@@ -39,7 +39,7 @@ const User = db.define('user', {
   },
   isGuest: {
     type: Sequelize.BOOLEAN,
-    defaultValue: true
+    defaultValue: false
   }
 })
 

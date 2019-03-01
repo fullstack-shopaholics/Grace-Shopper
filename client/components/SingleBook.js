@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 import {fetchBook, fetchReviews} from '../store/singleBook'
 import BookReviews from './BookReviews'
 import {Link} from 'react-router-dom'
-import {addBookToCart} from '../store/cart'
+import {addBookToCart, addToGuestCart} from '../store/cart'
+import PostReview from './PostReview'
 import {
   Container,
   Row,
@@ -38,15 +39,19 @@ export class SingleBook extends React.Component {
   }
 
   clickHandler() {
-    const userId = this.props.userId
     const bookId = this.props.match.params
     const quantity = this.state.quantity
-    this.props.addBookToCart(userId, bookId, quantity)
-    console.log('Added to Cart!')
+
+    if (this.props.isGuest) {
+      this.props.addToGuestCart(bookId, quantity)
+    } else {
+      const userId = this.props.userId
+      this.props.addBookToCart(userId, bookId, quantity)
+      console.log('Added to Cart!')
+    }
   }
 
   render() {
-    console.log(this.state)
     let selectedBookReviews = this.props.selectedBookReviews || []
     let {selectedBook, isAdmin} = this.props
 
@@ -100,6 +105,11 @@ export class SingleBook extends React.Component {
           <p>{selectedBook.description}</p>
         </Row>
         <BookReviews reviews={selectedBookReviews} />
+
+        {!this.props.isGuest && (
+          <PostReview selectedBook={selectedBook} userId={this.props.userId} />
+        )}
+        {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
       </Container>
     )
   }
@@ -110,6 +120,7 @@ const mapState = state => {
     selectedBook: state.singleBook.book,
     selectedBookReviews: state.singleBook.reviews,
     isAdmin: state.user.isAdmin,
+    isGuest: state.user.isGuest,
     userId: state.user.id
   }
 }
@@ -119,7 +130,8 @@ const mapDispatch = dispatch => {
     loadBook: id => dispatch(fetchBook(id)),
     fetchReviews: id => dispatch(fetchReviews(id)),
     addBookToCart: (userId, bookId, quantity) =>
-      dispatch(addBookToCart(userId, bookId, quantity))
+      dispatch(addBookToCart(userId, bookId, quantity)),
+    addToGuestCart: (book, quantity) => dispatch(addToGuestCart(book, quantity))
   }
 }
 
