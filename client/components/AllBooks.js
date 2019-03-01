@@ -13,6 +13,12 @@ import {Link} from 'react-router-dom'
 
 import Filters from './Filters'
 
+const titleTrimmer = title => {
+  return title.length > 70
+    ? title.substring(0, 70 - 3) + '...'
+    : title.substring(0, 70)
+}
+
 class AllBooks extends React.Component {
   constructor() {
     super()
@@ -57,7 +63,9 @@ class AllBooks extends React.Component {
             {this.props.isAdmin && (
               <Col>
                 <Link to="/books/add">
-                  <Button style={{float: 'right'}}>Add Book</Button>
+                  <Button variant="secondary" style={{float: 'right'}}>
+                    Add Book
+                  </Button>
                 </Link>
               </Col>
             )}
@@ -71,10 +79,19 @@ class AllBooks extends React.Component {
             books.map(book => {
               return (
                 <Link key={book.id} to={`/books/${book.id}`}>
-                  <Card style={{width: '250px'}}>
-                    <Card.Img variant="top" src={book.photoUrl} />
-                    <Card.Title>{book.title}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
+                  <Card style={{width: '150px', height: '250px'}}>
+                    <Card.Img
+                      variant="top"
+                      src={book.photoUrl}
+                      style={{height: '175px'}}
+                    />
+                    <Card.Title style={{fontSize: '0.75rem'}}>
+                      {titleTrimmer(book.title)}
+                    </Card.Title>
+                    <Card.Subtitle
+                      className="mb-2 text-muted"
+                      style={{fontSize: '0.75rem'}}
+                    >
                       ${book.price}
                     </Card.Subtitle>
                   </Card>
