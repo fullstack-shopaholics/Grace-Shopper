@@ -8,8 +8,11 @@ const initialState = {
 // ACTION TYPES
 export const SET_BOOK = 'SET_BOOK'
 const GET_REVIEWS = 'GET_REVIEWS'
+const ADD_REVIEW = 'ADD_REVIEW'
 
 export const getReviews = reviews => ({type: GET_REVIEWS, reviews})
+
+export const addReview = review => ({type: ADD_REVIEW, review})
 
 // ACTION CREATORS
 export const setBook = book => ({
@@ -38,6 +41,25 @@ export const fetchReviews = id => async dispatch => {
   }
 }
 
+export const postReview = (
+  bookId,
+  userId,
+  rating,
+  content
+) => async dispatch => {
+  try {
+    const result = await axios.post(`/api/books/review/${bookId}`, {
+      userId,
+      content,
+      rating
+    })
+    const review = result.data
+    dispatch(addReview(review))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const putBook = book => async dispatch => {
   try {
     const {data} = await axios.put(`/api/books/${book.id}`, book)
@@ -54,6 +76,8 @@ export const singleBook = (state = initialState, action) => {
       return {...state, book: action.book}
     case GET_REVIEWS:
       return {...state, reviews: action.reviews}
+    case ADD_REVIEW:
+      return {...state, reviews: [...state.reviews, action.review]}
     default:
       return state
   }
