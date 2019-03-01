@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchAllUsers} from '../store/allusers'
 import {Card, CardDeck} from 'react-bootstrap'
 import ToggleAdminButton from './ToggleAdminButton'
+import DeleteUserButton from './DeleteUserButton'
 
 class AllUsers extends React.Component {
   componentDidMount() {
@@ -39,6 +40,7 @@ class AllUsers extends React.Component {
                       </Card.Subtitle>
                     )}
                     <ToggleAdminButton id={user.id} isAdmin={user.isAdmin} />
+                    <DeleteUserButton id={user.id} />
                   </Card.Body>
                 </Card>
                 <br />

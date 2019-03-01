@@ -58,8 +58,6 @@ router.put('/:id/toggleAdmin', adminOnly, async (req, res, next) => {
     const {id} = req.params
     const {isAdmin} = req.body
 
-    console.log('THIS IS WHAT I AM SENDING', {isAdmin})
-
     const [, updatedUser] = await User.update(
       {isAdmin},
       {

@@ -4,6 +4,7 @@ import {Next} from 'react-bootstrap/PageItem'
 //ACTION TYPE
 const GET_ALL_USERS = 'GET_ALL_USERS'
 const UPDATE_ADMIN_STATUS = 'UPDATE_ADMIN_STATUS'
+const REMOVE_USER_FROM_ARRAY = 'REMOVE_USER_FROM_ARRAY'
 
 //INITIAL STATE
 const initialState = []
@@ -17,6 +18,11 @@ const getAllUsers = users => ({
 const updateAdminStatus = (id, isAdmin) => ({
   type: UPDATE_ADMIN_STATUS,
   isAdmin,
+  id
+})
+
+const removeUser = id => ({
+  type: REMOVE_USER_FROM_ARRAY,
   id
 })
 
@@ -41,6 +47,15 @@ export const toggleAdmin = (id, isAdmin) => async dispatch => {
   }
 }
 
+export const deleteUser = id => async dispatch => {
+  try {
+    await axios.delete(`/api/users/${id}`)
+    dispatch(removeUser(id))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 //REDUCER
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -51,6 +66,8 @@ export default (state = initialState, action) => {
         user =>
           user.id !== action.id ? user : {...user, isAdmin: action.isAdmin}
       )
+    case REMOVE_USER_FROM_ARRAY:
+      return state.filter(user => user.id !== action.id)
     default:
       return state
   }
