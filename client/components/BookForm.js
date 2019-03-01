@@ -1,9 +1,7 @@
 import {Form, Button} from 'react-bootstrap'
 import React from 'react'
 
-const categoryNames = ['Sci-Fi', 'Horror', 'Romance']
-
-export const ComponentName = props => {
+export const BookForm = props => {
   const {
     title,
     description,
@@ -86,24 +84,25 @@ export const ComponentName = props => {
       </Form.Group>
       <Form.Group>
         <Form.Label>Genres</Form.Label>
-        {categoryNames.map(catName => {
-          return (
-            <Form.Check
-              custom
-              type="checkbox"
-              label={catName}
-              name={catName}
-              key={catName}
-              id={catName}
-              checked={categories.includes(catName)}
-              onChange={props.handleCheckboxChange}
-            />
-          )
-        })}
+        {props.allCategories.length &&
+          props.allCategories.map(cat => {
+            return (
+              <Form.Check
+                custom
+                type="checkbox"
+                label={cat}
+                name={cat}
+                key={cat}
+                id={cat}
+                checked={categories.includes(cat)}
+                onChange={props.handleCheckboxChange}
+              />
+            )
+          })}
       </Form.Group>
       <Button type="submit">Submit</Button>
     </Form>
   )
 }
 
-export default ComponentName
+export default BookForm

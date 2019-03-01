@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Navbar, Nav, NavItem} from 'react-bootstrap'
 
-const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
+const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user}) => (
   <Navbar bg="primary" variant="dark">
     <Navbar.Brand>The Book Stack</Navbar.Brand>
     <Nav className="mr-auto">
@@ -17,6 +17,9 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
           </Nav.Link>
           <Nav.Link href="#" onClick={handleClick}>
             Logout
+          </Nav.Link>
+          <Nav.Link to={`/user/${user.id}/cart`} as={Link}>
+            Cart
           </Nav.Link>
           {isAdmin && (
             <Nav.Link as={Link} to="/users">
@@ -51,7 +54,8 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
-    isAdmin: state.user.isAdmin
+    isAdmin: state.user.isAdmin,
+    user: state.user
   }
 }
 

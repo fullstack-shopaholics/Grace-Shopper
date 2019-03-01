@@ -10,11 +10,25 @@ const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  // if (req.session.passport.user){
+  //   console.log()
+  // }
   try {
     const books = await Book.findAll({
       include: [{model: Author}, {model: Category}]
     })
     res.json(books)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id, {
+      include: [{model: Author}, {model: Category}]
+    })
+    res.json(book)
   } catch (err) {
     next(err)
   }
@@ -83,7 +97,6 @@ router.put('/filter', async (req, res, next) => {
   }
 })
 
-
 router.get('/review/:bookId', async (req, res, next) => {
   try {
     const {bookId} = req.params
@@ -93,7 +106,7 @@ router.get('/review/:bookId', async (req, res, next) => {
     })
 
     res.json(reviews)
-      } catch (err) {
+  } catch (err) {
     next(err)
   }
 })
@@ -153,17 +166,6 @@ router.delete('/:id', adminOnly, async (req, res, next) => {
     const {id} = req.params
     await Book.destroy({where: {id}})
     res.status(204).end()
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/:id', async (req, res, next) => {
-  try {
-    const book = await Book.findById(req.params.id, {
-      include: [{model: Author}, {model: Category}]
-    })
-    res.json(book)
   } catch (err) {
     next(err)
   }

@@ -3,6 +3,8 @@ const {User} = require('../db/models')
 const adminOnly = require('./isAdmin.js')
 module.exports = router
 
+router.use('/cart', require('./cart'))
+
 router.get('/', adminOnly, async (req, res, next) => {
   try {
     const users = await User.findAll({

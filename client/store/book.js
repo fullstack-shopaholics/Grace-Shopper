@@ -48,7 +48,7 @@ export const books = (state = initialState, action) => {
     case ADD_BOOK:
       return [...state, action.book]
     case UPDATE_BOOK:
-      return state.filter(
+      return state.map(
         book => (book.id !== action.book.id ? book : action.book)
       )
     default:
