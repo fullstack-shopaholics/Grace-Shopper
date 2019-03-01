@@ -12,6 +12,7 @@ export const UserHome = props => {
 
   return (
     <div>
+      <br />
       <h3>Welcome, {displayName}</h3>
       <AllBooks />
     </div>

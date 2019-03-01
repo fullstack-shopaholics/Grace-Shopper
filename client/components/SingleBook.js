@@ -5,6 +5,17 @@ import BookReviews from './BookReviews'
 import {Link} from 'react-router-dom'
 import {addBookToCart} from '../store/cart'
 import PostReview from './PostReview'
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  Form,
+  FormControl,
+  Button,
+  InputGroup
+} from 'react-bootstrap'
+
 
 export class SingleBook extends React.Component {
   constructor() {
@@ -41,31 +52,62 @@ export class SingleBook extends React.Component {
     let {selectedBook, isAdmin} = this.props
 
     return (
-      <div>
-        <h1>{selectedBook.title}</h1>
-        {selectedBook.author && <h3>By {selectedBook.author.name}</h3>}
-        <h5>${selectedBook.price}</h5>
-        <p>{selectedBook.description}</p>
-        <form>
-          <input
-            type="number"
-            step="1"
-            min="1"
-            name="quantity"
-            value={this.state.quantity}
-            onChange={this.changeHandler}
-          />
-          Quantity
-          <button type="button" onClick={this.clickHandler}>
-            Add To Cart
-          </button>
-        </form>
+      <Container>
+        <br />
+        <Row>
+          <div className="singlePageImage">
+            <Col>
+              <Image src={selectedBook.photoUrl} rounded />
+            </Col>
+          </div>
+          <Col>
+            <h1>{selectedBook.title}</h1>
+            {selectedBook.author && <h4>By {selectedBook.author.name}</h4>}
+            <h5>${selectedBook.price}</h5>
+
+            <Form.Group as={Row}>
+              <Form.Label column sm={2}>
+                Quantity
+              </Form.Label>
+              <InputGroup as={Col} sm={10}>
+                <FormControl
+                  type="number"
+                  step="1"
+                  min="1"
+                  name="quantity"
+                  placeholder="Quantity"
+                  value={this.state.quantity}
+                  onChange={this.changeHandler}
+                />
+                <InputGroup.Append>
+                  <Button variant="secondary" onClick={this.clickHandler}>
+                    Add To Cart
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form.Group>
+
+            <br />
+            {isAdmin && (
+              <Link to={`/books/${selectedBook.id}/update`}>
+                <Button variant="secondary" style={{float: 'right'}}>
+                  Update
+                </Button>
+              </Link>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <p>{selectedBook.description}</p>
+        </Row>
         <BookReviews reviews={selectedBookReviews} />
+
         {!this.props.isGuest && (
           <PostReview selectedBook={selectedBook} userId={this.props.userId} />
         )}
         {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
       </div>
+      </Container>
     )
   }
 }
