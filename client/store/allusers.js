@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {Next} from 'react-bootstrap/PageItem'
 
 //ACTION TYPE
 const GET_ALL_USERS = 'GET_ALL_USERS'
