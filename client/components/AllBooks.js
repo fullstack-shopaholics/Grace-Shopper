@@ -1,6 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {CardDeck, Card} from 'react-bootstrap'
+import {
+  CardDeck,
+  Card,
+  Form,
+  Container,
+  Row,
+  Col,
+  Button
+} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 
 import Filters from './Filters'
@@ -34,14 +42,28 @@ class AllBooks extends React.Component {
     }
     return (
       <div>
-        <Filters />
-        <input
-          type="search"
-          placeholder="Search Books"
-          value={this.state.searchTerm}
-          name="searchTerm"
-          onChange={this.changeHandler}
-        />
+        <Container>
+          <Row>
+            <Col>
+              <Form.Control
+                type="search"
+                placeholder="Search Books"
+                value={this.state.searchTerm}
+                name="searchTerm"
+                onChange={this.changeHandler}
+                style={{margin: '5px', width: '250px'}}
+              />
+            </Col>
+            {this.props.isAdmin && (
+              <Col>
+                <Link to="/books/add">
+                  <Button style={{float: 'right'}}>Add Book</Button>
+                </Link>
+              </Col>
+            )}
+          </Row>
+          <Filters />
+        </Container>
         <CardDeck>
           {books === undefined || books.length === 0 ? (
             <li>No Books!</li>
@@ -56,12 +78,12 @@ class AllBooks extends React.Component {
                       ${book.price}
                     </Card.Subtitle>
                   </Card>
+                  <br />
                 </Link>
               )
             })
           )}
         </CardDeck>
-        {this.props.isAdmin && <Link to="/books/add">Add Book</Link>}
       </div>
     )
   }

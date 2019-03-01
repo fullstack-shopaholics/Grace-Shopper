@@ -4,6 +4,8 @@ import {fetchBook, fetchReviews} from '../store/singleBook'
 import BookReviews from './BookReviews'
 import {Link} from 'react-router-dom'
 import {addBookToCart} from '../store/cart'
+import {Container, Row, Col, Image, Form, Button} from 'react-bootstrap'
+
 export class SingleBook extends React.Component {
   constructor() {
     super()
@@ -40,28 +42,43 @@ export class SingleBook extends React.Component {
     let {selectedBook, isAdmin} = this.props
 
     return (
-      <div>
-        <h1>{selectedBook.title}</h1>
-        {selectedBook.author && <h3>By {selectedBook.author.name}</h3>}
-        <h5>${selectedBook.price}</h5>
-        <p>{selectedBook.description}</p>
-        <form>
-          <input
-            type="number"
-            step="1"
-            min="1"
-            name="quantity"
-            value={this.state.quantity}
-            onChange={this.changeHandler}
-          />
-          Quantity
-          <button type="button" onClick={this.clickHandler}>
-            Add To Cart
-          </button>
-        </form>
+      <Container>
+        <br />
+        <Row>
+          <div className="singlePageImage">
+            <Col>
+              <Image src={selectedBook.photoUrl} rounded />
+            </Col>
+          </div>
+          <Col>
+            <h1>{selectedBook.title}</h1>
+            {selectedBook.author && <h4>By {selectedBook.author.name}</h4>}
+            <h5>${selectedBook.price}</h5>
+            <Form>
+              <Form.Group>
+                <Form.Label>Quantity</Form.Label>
+                <Form.Control
+                  type="number"
+                  step="1"
+                  min="1"
+                  name="quantity"
+                  placeholder="Quantity"
+                  value={this.state.quantity}
+                  onChange={this.changeHandler}
+                />
+                <Button onClick={this.clickHandler} size="sm">
+                  Add To Cart
+                </Button>
+              </Form.Group>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <p>{selectedBook.description}</p>
+        </Row>
         <BookReviews reviews={selectedBookReviews} />
         {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
-      </div>
+      </Container>
     )
   }
 }

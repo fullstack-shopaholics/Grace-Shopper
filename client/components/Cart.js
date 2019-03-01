@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchCart} from '../store/cart'
+import {Card} from 'react-bootstrap'
 
 export class Cart extends Component {
   componentDidMount() {
@@ -20,9 +21,14 @@ export class Cart extends Component {
               console.log(item.book.title)
               return (
                 <div key={item.id}>
-                  <li>{item.book.title}</li>
-                  <li>{item.book.price}</li>
-                  <li>{item.quantity}</li>
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>{item.book.title}</Card.Title>
+                      <Card.Subtitle>Price: ${item.book.price}</Card.Subtitle>
+                      <Card.Text>Quantity:{' ' + item.quantity}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                  <br />
                 </div>
               )
             })}
