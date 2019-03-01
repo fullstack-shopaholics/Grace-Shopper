@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const {User} = require('../db/models')
 const adminOnly = require('./isAdmin.js')
+const selfOrAdminOnly = require('./selfOrAdmin')
+const selfOnly = require('./selfOnly')
 module.exports = router
 
 router.use('/cart', require('./cart'))
@@ -38,7 +40,7 @@ router.post('/', adminOnly, async (req, res, next) => {
   }
 })
 
-router.get('/:id', adminOnly, async (req, res, next) => {
+router.get('/:id', selfOrAdminOnly, async (req, res, next) => {
   try {
     const id = req.params.id
     const user = await User.findById(id, {
@@ -51,16 +53,34 @@ router.get('/:id', adminOnly, async (req, res, next) => {
   }
 })
 
-router.put('/:id', adminOnly, async (req, res, next) => {
+router.put('/:id/toggleAdmin', adminOnly, async (req, res, next) => {
   try {
     const {id} = req.params
-    const {password, isAdmin} = req.body
+    const {isAdmin} = req.body
 
-    let userBody = {}
-    userBody = password ? {...userBody, password} : userBody
-    userBody = isAdmin ? {...userBody, isAdmin} : userBody
+    console.log('THIS IS WHAT I AM SENDING', {isAdmin})
 
-    const [, updatedUser] = await User.update(userBody, {
+    const [, updatedUser] = await User.update(
+      {isAdmin},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
+
+    res.json(updatedUser[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:id/password', selfOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {password} = req.body
+
+    const [, updatedUser] = await User.update(password, {
       returning: true,
       where: {id},
       individualHooks: true
