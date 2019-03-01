@@ -22,14 +22,12 @@ router.get('/:userId', async (req, res, next) => {
 router.post('/:userId', async (req, res, next) => {
   try {
     const {bookId, quantity} = req.body
-    const addedBook = await BookCart.create(
-      {
-        bookId,
-        quantity,
-        userId: req.params.userId
-      },
-      {include: [{model: Book}]}
-    )
+    const addedBook = await BookCart.create({
+      bookId,
+      quantity,
+      userId: req.params.userId
+    })
+
     const foundBook = await BookCart.findById(addedBook.id, {
       include: [{model: Book}]
     })

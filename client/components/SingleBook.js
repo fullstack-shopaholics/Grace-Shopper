@@ -16,7 +16,6 @@ import {
   InputGroup
 } from 'react-bootstrap'
 
-
 export class SingleBook extends React.Component {
   constructor() {
     super()
@@ -106,7 +105,6 @@ export class SingleBook extends React.Component {
           <PostReview selectedBook={selectedBook} userId={this.props.userId} />
         )}
         {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
-      </div>
       </Container>
     )
   }
