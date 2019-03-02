@@ -2,7 +2,8 @@
 
 const db = require('../server/db')
 const {User, Book, Category, Review} = require('../server/db/models')
-const artBooks = require('./dummyArtBookData')
+const artBooks = require('./dummyDataFiles/dummyArtBookData')
+const classics = require('./dummyDataFiles/dummyClassicFictionData')
 
 const review1 = {
   content: 'Nice!',
@@ -23,7 +24,7 @@ const reviews = [review1, review2, review3]
 
 //Categories
 const cat1 = {name: 'Art'}
-const cat2 = {name: 'Sci-Fi'}
+const cat2 = {name: 'Classics'}
 const cat3 = {name: 'Romance'}
 
 const categories = [cat1, cat2, cat3]
@@ -54,12 +55,20 @@ async function seed() {
   console.log('db synced!')
 
   const createdArtBooks = Book.bulkCreate(artBooks, {returning: true})
+  const createdClassics = Book.bulkCreate(classics, {returning: true})
   const createdCats = Category.bulkCreate(categories, {returning: true})
   const createdReviews = Review.bulkCreate(reviews, {returning: true})
   const createdUsers = User.bulkCreate(users, {returning: true})
 
-  const [savedBooks, savedCats, savedReviews, savedUsers] = await Promise.all([
+  const [
+    savedArtBooks,
+    savedClassics,
+    savedCats,
+    savedReviews,
+    savedUsers
+  ] = await Promise.all([
     createdArtBooks,
+    createdClassics,
     createdCats,
     createdReviews,
     createdUsers
@@ -70,16 +79,20 @@ async function seed() {
     savedReviews[1].setUser(savedUsers[1]),
     savedReviews[2].setUser(savedUsers[0]),
 
-    savedReviews[0].setBook(savedBooks[0]),
-    savedReviews[1].setBook(savedBooks[0]),
-    savedReviews[2].setBook(savedBooks[2])
+    savedReviews[0].setBook(savedArtBooks[0]),
+    savedReviews[1].setBook(savedArtBooks[0]),
+    savedReviews[2].setBook(savedArtBooks[2])
   ])
 
-  const art_books = savedBooks.map(book => book.addCategory(savedCats[0]))
+  const art_books = savedArtBooks.map(book => book.addCategory(savedCats[0]))
+  const classic_books = savedClassics.map(book =>
+    book.addCategory(savedCats[1])
+  )
 
-  await Promise.all(art_books)
+  await Promise.all(art_books.concat(classic_books))
 
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${art_books.length + classic_books.length} books`)
   console.log(`seeded successfully`)
 }
 
