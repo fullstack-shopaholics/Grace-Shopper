@@ -66,7 +66,7 @@ export class SingleBook extends React.Component {
           </div>
           <Col>
             <h1>{selectedBook.title}</h1>
-            {selectedBook.author && <h4>By {selectedBook.author.name}</h4>}
+            {selectedBook.author && <h4>By {selectedBook.author}</h4>}
             <h5>${selectedBook.price}</h5>
 
             <Form.Group as={Row}>
