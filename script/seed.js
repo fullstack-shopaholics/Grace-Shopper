@@ -2,8 +2,9 @@
 
 const db = require('../server/db')
 const {User, Book, Category, Review} = require('../server/db/models')
-const artBooks = require('./dummyDataFiles/dummyArtBookData')
-const classics = require('./dummyDataFiles/dummyClassicFictionData')
+const artBooks = require('./dummyDataFiles/artBooks')
+const classics = require('./dummyDataFiles/classics')
+const childrensBooks = require('./dummyDataFiles/childrensBooks')
 
 const review1 = {
   content: 'Nice!',
@@ -25,7 +26,7 @@ const reviews = [review1, review2, review3]
 //Categories
 const cat1 = {name: 'Art'}
 const cat2 = {name: 'Classics'}
-const cat3 = {name: 'Romance'}
+const cat3 = {name: `Children's Books`}
 
 const categories = [cat1, cat2, cat3]
 
@@ -56,6 +57,9 @@ async function seed() {
 
   const createdArtBooks = Book.bulkCreate(artBooks, {returning: true})
   const createdClassics = Book.bulkCreate(classics, {returning: true})
+  const createdChildrensBooks = Book.bulkCreate(childrensBooks, {
+    returning: true
+  })
   const createdCats = Category.bulkCreate(categories, {returning: true})
   const createdReviews = Review.bulkCreate(reviews, {returning: true})
   const createdUsers = User.bulkCreate(users, {returning: true})
@@ -63,12 +67,14 @@ async function seed() {
   const [
     savedArtBooks,
     savedClassics,
+    savedChildrensBooks,
     savedCats,
     savedReviews,
     savedUsers
   ] = await Promise.all([
     createdArtBooks,
     createdClassics,
+    createdChildrensBooks,
     createdCats,
     createdReviews,
     createdUsers
@@ -88,11 +94,15 @@ async function seed() {
   const classic_books = savedClassics.map(book =>
     book.addCategory(savedCats[1])
   )
+  const childrens_books = savedChildrensBooks.map(book =>
+    book.addCategory(savedCats[2])
+  )
 
-  await Promise.all(art_books.concat(classic_books))
+  const allBooks = art_books.concat(classic_books, childrens_books)
+  await Promise.all(allBooks)
 
   console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${art_books.length + classic_books.length} books`)
+  console.log(`seeded ${allBooks.length} books`)
   console.log(`seeded successfully`)
 }
 
