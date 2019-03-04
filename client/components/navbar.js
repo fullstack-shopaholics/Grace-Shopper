@@ -15,7 +15,7 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
       {isLoggedIn ? (
         <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
-          <Nav.Link as={Link} to="/home">
+          <Nav.Link as={Link} to="/books">
             Books
           </Nav.Link>
           <Nav.Link to={`/user/${user.id}/cart`} as={Link}>

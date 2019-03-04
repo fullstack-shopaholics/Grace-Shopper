@@ -73,6 +73,26 @@ router.put('/:id/toggleAdmin', adminOnly, async (req, res, next) => {
   }
 })
 
+router.put('/:id/userInfo', selfOrAdminOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {firstName, lastName, email} = req.body
+
+    const [, updatedUser] = await User.update(
+      {firstName, lastName, email},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
+
+    res.json(updatedUser[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/:id/password', selfOnly, async (req, res, next) => {
   try {
     const {id} = req.params
