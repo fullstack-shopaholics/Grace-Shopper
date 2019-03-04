@@ -59,42 +59,47 @@ router.post('/checkout', async (req, res, next) => {
     subTotal = subTotal + item.book.price * item.quantity
     return subTotal
   }, 0)
+
   let newOrder
 
-  if (userId) {
-    newOrder = await Order.create({
-      status: 'Ordered',
-      address,
-      isGuest: false,
-      total,
-      userId
-    })
-    await BookCart.destroy({where: userId})
-  } else {
-    newOrder = await Order.create({
-      status: 'Ordered',
-      address,
-      isGuest: true,
-      total
+  try {
+    if (userId) {
+      newOrder = await Order.create({
+        status: 'Ordered',
+        address,
+        isGuest: false,
+        total,
+        userId
+      })
+      await BookCart.destroy({where: {userId}})
+    } else {
+      newOrder = await Order.create({
+        status: 'Ordered',
+        address,
+        isGuest: true,
+        total
+      })
+
+      req.session.cart = []
+    }
+    const data = cart.map(item => {
+      return OrderItem.create({
+        orderId: newOrder.id,
+        bookId: item.book.id,
+        quantity: item.quantity
+      })
     })
 
-    req.session.cart = []
+    await Promise.all(data)
+
+    const order = await Order.findById(newOrder.id, {
+      include: [{model: OrderItem}]
+    })
+
+    res.json(order)
+  } catch (err) {
+    next(err)
   }
-  const data = cart.map(item => {
-    return OrderItem.create({
-      orderId: Order.id,
-      bookId: item.book.id,
-      quantity: item.quantity
-    })
-  })
-
-  await Promise.all(data)
-
-  const order = Order.findById(newOrder.id, {
-    include: [{model: OrderItem}]
-  })
-
-  res.json(order)
 })
 
 router.post('/:userId', async (req, res, next) => {
