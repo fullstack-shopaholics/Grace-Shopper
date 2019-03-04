@@ -15,6 +15,14 @@ export class Cart extends Component {
     super()
     this.handleClick = this.handleClick.bind(this)
     this.handleQuantChange = this.handleQuantChange.bind(this)
+    this.calculateSubtotal = this.calculateSubtotal.bind(this)
+  }
+
+  calculateSubtotal(cart) {
+    return cart.reduce((total, currentItem) => {
+      total = total + currentItem.book.price * currentItem.quantity
+      return total
+    }, 0)
   }
 
   componentDidMount() {
@@ -55,39 +63,42 @@ export class Cart extends Component {
         {!cartItems.length || cartItems === undefined ? (
           <h2>No Items in Cart!</h2>
         ) : (
-          <ul>
-            {cartItems.map(item => {
-              return (
-                <div key={item.book.id}>
-                  <Card>
-                    <Card.Body>
-                      <Card.Title>{item.book.title}</Card.Title>
-                      <Card.Subtitle>Price: ${item.book.price}</Card.Subtitle>
-                      <Form.Label>Quantity: </Form.Label>
-                      <Form.Control
-                        name="Quantity"
-                        type="number"
-                        min="0"
-                        step="1"
-                        value={item.quantity}
-                        required
-                        onChange={evt =>
-                          this.handleQuantChange(evt, item.book.id)
-                        }
-                      />
-                      <Button
-                        variant="danger"
-                        onClick={() => this.handleClick(item.book.id)}
-                      >
-                        Remove Item
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                  <br />
-                </div>
-              )
-            })}
-          </ul>
+          <div>
+            <ul>
+              {cartItems.map(item => {
+                return (
+                  <div key={item.book.id}>
+                    <Card>
+                      <Card.Body>
+                        <Card.Title>{item.book.title}</Card.Title>
+                        <Card.Subtitle>Price: ${item.book.price}</Card.Subtitle>
+                        <Form.Label>Quantity: </Form.Label>
+                        <Form.Control
+                          name="Quantity"
+                          type="number"
+                          min="0"
+                          step="1"
+                          value={item.quantity}
+                          required
+                          onChange={evt =>
+                            this.handleQuantChange(evt, item.book.id)
+                          }
+                        />
+                        <Button
+                          variant="danger"
+                          onClick={() => this.handleClick(item.book.id)}
+                        >
+                          Remove Item
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                    <br />
+                  </div>
+                )
+              })}
+            </ul>
+            <h2>Subtotal: ${this.calculateSubtotal(this.props.cartItems)}</h2>
+          </div>
         )}
       </div>
     )
