@@ -14,13 +14,6 @@ const Order = db.define('order', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  items: {
-    type: Sequelize.JSON,
-    allowNull: false,
-    validate: {
-      len: [1]
-    }
-  },
   isGuest: {
     type: Sequelize.BOOLEAN,
     defaultValue: true,

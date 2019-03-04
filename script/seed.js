@@ -1,7 +1,14 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Book, Category, Review, Order} = require('../server/db/models')
+const {
+  User,
+  Book,
+  Category,
+  Review,
+  Order,
+  OrderItem
+} = require('../server/db/models')
 
 const artBooks = require('./dummyDataFiles/artBooks')
 const classics = require('./dummyDataFiles/classics')
@@ -64,77 +71,32 @@ const users = [user1, user2, user3, user4]
 
 //Orders
 const order1 = {
-  address: '123 Main Street, Hometown IL, 60657',
-  items: [
-    {
-      book: {
-        title: 'BOOK',
-        id: 8,
-        descriptions: 'heres FUN STUFF'
-      },
-      quantity: 1
-    },
-    {
-      book: {
-        title: 'ANOTERH BOOK',
-        id: 9,
-        descriptions: 'heres FUN STUFF'
-      },
-      quantity: 1
-    }
-  ]
+  address: '123 Main Street, Hometown IL, 60657'
 }
 const order2 = {
-  address: '543 Valid Road, Funtown MI, 40632',
-  items: [
-    {
-      book: {
-        title: 'superbook',
-        id: 1,
-        descriptions: 'heres FUN STUFF'
-      },
-      quantity: 1
-    },
-    {
-      book: {
-        title: 'suyperbook2',
-        id: 2,
-        descriptions: 'heres FUN STUFF'
-      },
-      quantity: 1
-    },
-    {
-      title: 'woooow',
-      id: 3,
-      descriptions: 'heres different FUN words...',
-      quantity: 1
-    }
-  ]
+  address: '543 Valid Road, Funtown MI, 40632'
 }
 const order3 = {
-  address: '5882300 Empire Road, Chicago IL, 60640',
-  items: [
-    {
-      book: {
-        title: 'a book',
-        id: 11,
-        descriptions: 'heres FUN STUFF'
-      },
-      quantity: 1
-    },
-    {
-      book: {
-        title: 'a book vol. 2',
-        id: 10,
-        descriptions: 'heres FUN STUFF'
-      },
-      quantity: 1
-    }
-  ]
+  address: '5882300 Empire Road, Chicago IL, 60640'
 }
 
 const orders = [order1, order2, order3]
 
+//Order Items
+
+const orderItem1 = {
+  quantity: 2
+}
+
+const orderItem2 = {
+  quantity: 3
+}
+
+const orderItem3 = {
+  quantity: 5
+}
+
+const orderItems = [orderItem1, orderItem2, orderItem3]
 // Seeding
 
 async function seed() {
@@ -142,46 +104,55 @@ async function seed() {
   console.log('db synced!')
 
   const createdArtBooks = Book.bulkCreate(artBooks, {returning: true})
-  const createdClassics = Book.bulkCreate(classics, {returning: true})
-  const createdChildrensBooks = Book.bulkCreate(childrensBooks, {
-    returning: true
-  })
-  const createdBios = Book.bulkCreate(bios, {returning: true})
-  const createdSciFi = Book.bulkCreate(sciFiBooks, {returning: true})
-  const createdCookbooks = Book.bulkCreate(cookBooks, {returning: true})
-  const createdMysteries = Book.bulkCreate(mysteryBooks, {returning: true})
-
   const createdCats = Category.bulkCreate(categories, {returning: true})
   const createdReviews = Review.bulkCreate(reviews, {returning: true})
   const createdUsers = User.bulkCreate(users, {returning: true})
   const createdOrders = Order.bulkCreate(orders, {returning: true})
+  const createdOrderItems = OrderItem.bulkCreate(orderItems, {returing: true})
 
   const [
     savedArtBooks,
-    savedClassics,
-    savedChildrensBooks,
-    savedBios,
-    savedSciFi,
-    savedCookbooks,
-    savedMysteries,
     savedCats,
     savedReviews,
     savedUsers,
-    savedOrders
+    savedOrders,
+    savedOrderItems
   ] = await Promise.all([
     createdArtBooks,
-    createdClassics,
-    createdChildrensBooks,
-    createdBios,
-    createdSciFi,
-    createdCookbooks,
-    createdMysteries,
     createdCats,
     createdReviews,
     createdUsers,
-    createdOrders
+    createdOrders,
+    createdOrderItems
   ])
 
+  const findOrCreateCallback = book => {
+    return Book.findOrCreate({
+      where: {title: book.title},
+      defaults: book
+    })
+  }
+
+  //find or creating all arrays of books
+  const savedClassics = await Promise.all(
+    classics.map(book => findOrCreateCallback(book))
+  )
+  const savedBios = await Promise.all(
+    bios.map(book => findOrCreateCallback(book))
+  )
+  const savedChildrensBooks = await Promise.all(
+    childrensBooks.map(book => findOrCreateCallback(book))
+  )
+  const savedSciFi = await Promise.all(
+    sciFiBooks.map(book => findOrCreateCallback(book))
+  )
+  const savedCookbooks = await Promise.all(
+    cookBooks.map(book => findOrCreateCallback(book))
+  )
+  const savedMysteries = await Promise.all(
+    mysteryBooks.map(book => findOrCreateCallback(book))
+  )
+  console.log(savedReviews[0])
   await Promise.all([
     savedReviews[0].setUser(savedUsers[2]),
     savedReviews[1].setUser(savedUsers[1]),
@@ -193,23 +164,32 @@ async function seed() {
 
     savedOrders[0].setUser(savedUsers[0]),
     savedOrders[1].setUser(savedUsers[1]),
-    savedOrders[2].setUser(savedUsers[0])
+    savedOrders[2].setUser(savedUsers[0]),
+
+    savedOrderItems[0].setOrder(savedOrders[1]),
+    savedOrderItems[2].setOrder(savedOrders[2])
+    // savedOrders[0].addOrderItem(savedOrderItems[0])
+    // savedClassics[0].setOrderItem(savedOrderItems[0]),
+    // savedBios[0].setOrderItem(savedOrderItems[1]),
+    // savedOrderItems[0].setBook(savedArtBooks[0])
+    // savedOrderItems[1].setBook(savedClassics[0]),
+    // savedOrderItems[2].setBook(savedSciFi[0])
   ])
 
   const art_books = savedArtBooks.map(book => book.addCategory(savedCats[0]))
   const classic_books = savedClassics.map(book =>
-    book.addCategory(savedCats[1])
+    book[0].addCategory(savedCats[1])
   )
   const childrens_books = savedChildrensBooks.map(book =>
-    book.addCategory(savedCats[2])
+    book[0].addCategory(savedCats[2])
   )
-  const bios_books = savedBios.map(book => book.addCategory(savedCats[3]))
-  const sci_fi_books = savedSciFi.map(book => book.addCategory(savedCats[4]))
+  const bios_books = savedBios.map(book => book[0].addCategory(savedCats[3]))
+  const sci_fi_books = savedSciFi.map(book => book[0].addCategory(savedCats[4]))
   const cookbooks_food_and_wine_books = savedCookbooks.map(book =>
-    book.addCategory(savedCats[5])
+    book[0].addCategory(savedCats[5])
   )
   const mystery_books = savedMysteries.map(book =>
-    book.addCategory(savedCats[6])
+    book[0].addCategory(savedCats[6])
   )
 
   const allBooks = art_books.concat(
@@ -223,7 +203,6 @@ async function seed() {
   await Promise.all(allBooks)
 
   console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${allBooks.length} books`)
   console.log(`seeded successfully`)
 }
 
