@@ -69,27 +69,31 @@ export class SingleBook extends React.Component {
             {selectedBook.author && <h4>By {selectedBook.author}</h4>}
             <h5>${selectedBook.price}</h5>
 
-            <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                Quantity
-              </Form.Label>
-              <InputGroup as={Col} sm={10}>
-                <FormControl
-                  type="number"
-                  step="1"
-                  min="1"
-                  name="quantity"
-                  placeholder="Quantity"
-                  value={this.state.quantity}
-                  onChange={this.changeHandler}
-                />
-                <InputGroup.Append>
-                  <Button variant="secondary" onClick={this.clickHandler}>
-                    Add To Cart
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </Form.Group>
+            {selectedBook.inventoryQuantity > 0 ? (
+              <Form.Group as={Row}>
+                <Form.Label column sm={2}>
+                  Quantity
+                </Form.Label>
+                <InputGroup as={Col} sm={10}>
+                  <FormControl
+                    type="number"
+                    step="1"
+                    min="1"
+                    name="quantity"
+                    placeholder="Quantity"
+                    value={this.state.quantity}
+                    onChange={this.changeHandler}
+                  />
+                  <InputGroup.Append>
+                    <Button variant="secondary" onClick={this.clickHandler}>
+                      Add To Cart
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form.Group>
+            ) : (
+              <h4>This item is currently out of stock.</h4>
+            )}
 
             <br />
             {isAdmin && (
@@ -109,7 +113,6 @@ export class SingleBook extends React.Component {
         {!this.props.isGuest && (
           <PostReview selectedBook={selectedBook} userId={this.props.userId} />
         )}
-        {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
       </Container>
     )
   }
