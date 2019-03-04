@@ -25,6 +25,14 @@ const Order = db.define('order', {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
     allowNull: false
+  },
+  total: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+    validate: {
+      isNumeric: true
+    }
   }
 })
 
