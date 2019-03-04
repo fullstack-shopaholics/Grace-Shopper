@@ -6,6 +6,8 @@ export const GET_CART = 'GET_CART'
 export const GET_GUEST_CART = 'GET_GUEST_CART'
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const ADD_TO_GUEST_CART = 'ADD_TO_GUEST_CART'
+export const DELETE_ITEM_FROM_CART = 'DELETE_ITEM_FROM_CART'
+export const CHANGE_QUANTITY = 'CHANGE_QUANTITY'
 
 export const getCart = cart => ({
   type: GET_CART,
@@ -15,6 +17,16 @@ export const getCart = cart => ({
 export const addToCart = book => ({
   type: ADD_TO_CART,
   book
+})
+
+export const deleteItemFromCart = bookId => ({
+  type: DELETE_ITEM_FROM_CART,
+  bookId
+})
+
+export const changeQuantity = cartItem => ({
+  type: CHANGE_QUANTITY,
+  cartItem
 })
 
 export const fetchCart = userId => async dispatch => {
@@ -65,12 +77,56 @@ export const addToGuestCart = (book, quantity) => async dispatch => {
   }
 }
 
+export const deleteFromCart = (bookId, userId) => {
+  return async dispatch => {
+    await axios.delete(`/api/users/cart/${userId}`, {data: {bookId}})
+    dispatch(deleteItemFromCart(bookId))
+  }
+}
+
+export const deleteFromGuestCart = bookId => {
+  return async dispatch => {
+    await axios.delete('/api/users/cart/guest', {data: {bookId}})
+    dispatch(deleteItemFromCart(bookId))
+  }
+}
+
+export const editQuantity = (userId, bookId, quantity) => {
+  return async dispatch => {
+    const result = await axios.put(`/api/users/cart/${userId}/changeQuantity`, {
+      bookId,
+      quantity
+    })
+    const updatedBook = result.data
+    dispatch(changeQuantity(updatedBook))
+  }
+}
+
+export const editGuestQuantity = (bookId, quantity) => {
+  return async dispatch => {
+    const result = await axios.put(`/api/users/cart/guest/changeQuantity`, {
+      bookId,
+      quantity
+    })
+    const updatedItem = result.data
+    dispatch(changeQuantity(updatedItem))
+  }
+}
+
 export const cart = (state = initialState, action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart
     case ADD_TO_CART:
       return [...state, action.book]
+    case DELETE_ITEM_FROM_CART:
+      return state.filter(item => item.book.id !== action.bookId)
+    case CHANGE_QUANTITY:
+      return state.map(item => {
+        if (item.book.id === action.cartItem.book.id)
+          return {...item, quantity: action.cartItem.quantity}
+        else return item
+      })
     default:
       return state
   }
