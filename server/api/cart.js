@@ -32,7 +32,7 @@ router.post('/guest', async (req, res, next) => {
     const book = await Book.findById(bookId)
     const orderItem = {book, quantity}
     req.session.cart.push(orderItem)
-
+    console.log(req.session.cart[1])
     res.send(orderItem)
   } catch (err) {
     next(err)
