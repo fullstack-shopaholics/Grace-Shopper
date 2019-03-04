@@ -20,6 +20,7 @@ router.get('/:userId', async (req, res, next) => {
     })
 
     await Promise.all(addToCart)
+    req.session.cart = []
   }
 
   try {
