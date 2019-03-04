@@ -71,13 +71,16 @@ const users = [user1, user2, user3, user4]
 
 //Orders
 const order1 = {
-  address: '123 Main Street, Hometown IL, 60657'
+  address: '123 Main Street, Hometown IL, 60657',
+  email: 'cody@cody.com'
 }
 const order2 = {
-  address: '543 Valid Road, Funtown MI, 40632'
+  address: '543 Valid Road, Funtown MI, 40632',
+  email: 'cody@cody.com'
 }
 const order3 = {
-  address: '5882300 Empire Road, Chicago IL, 60640'
+  address: '5882300 Empire Road, Chicago IL, 60640',
+  email: 'cody@cody.com'
 }
 
 const orders = [order1, order2, order3]
@@ -152,7 +155,7 @@ async function seed() {
   const savedMysteries = await Promise.all(
     mysteryBooks.map(book => findOrCreateCallback(book))
   )
-  console.log(savedReviews[0])
+
   await Promise.all([
     savedReviews[0].setUser(savedUsers[2]),
     savedReviews[1].setUser(savedUsers[1]),
@@ -166,14 +169,9 @@ async function seed() {
     savedOrders[1].setUser(savedUsers[1]),
     savedOrders[2].setUser(savedUsers[0]),
 
+    // These are not working??????
     savedOrderItems[0].setOrder(savedOrders[1]),
     savedOrderItems[2].setOrder(savedOrders[2])
-    // savedOrders[0].addOrderItem(savedOrderItems[0])
-    // savedClassics[0].setOrderItem(savedOrderItems[0]),
-    // savedBios[0].setOrderItem(savedOrderItems[1]),
-    // savedOrderItems[0].setBook(savedArtBooks[0])
-    // savedOrderItems[1].setBook(savedClassics[0]),
-    // savedOrderItems[2].setBook(savedSciFi[0])
   ])
 
   const art_books = savedArtBooks.map(book => book.addCategory(savedCats[0]))
