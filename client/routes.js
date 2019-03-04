@@ -11,7 +11,8 @@ import {
   SingleBook,
   AddBook,
   UpdateBook,
-  Cart
+  Cart,
+  Checkout
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
@@ -36,6 +37,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/user/guest/cart" component={Cart} />{' '}
+        <Route path="/checkout" component={Checkout} />{' '}
         {/*Make so only the logged in user can see their cart & hide guest when logged in*/}
         <Route path="/user/:userId/cart" component={Cart} />
         {isAdmin && <Route path="/users" component={AllUsers} />}

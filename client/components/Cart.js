@@ -9,6 +9,7 @@ import {
   editGuestQuantity
 } from '../store/cart'
 import {Card, Button, Form} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
 export class Cart extends Component {
   constructor() {
@@ -98,6 +99,9 @@ export class Cart extends Component {
               })}
             </ul>
             <h2>Subtotal: ${this.calculateSubtotal(this.props.cartItems)}</h2>
+            <Link to="/checkout">
+              <Button>Checkout</Button>
+            </Link>
           </div>
         )}
       </div>
