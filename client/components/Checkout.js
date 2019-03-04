@@ -1,6 +1,8 @@
 import React from 'react'
 import {Form, Card, Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
+import {fetchCart} from './../store/cart'
+import {submitOrder} from './../store/orders'
 
 let states = [
   'AK',
@@ -75,6 +77,11 @@ export class Checkout extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  componentDidUpdate(nextProps) {
+    if (this.props.user.id !== nextProps.user.id)
+      this.props.fetchCart(this.props.user.id)
+  }
+
   handleChange(evt) {
     const name = evt.target.name
     const value = evt.target.value
@@ -84,12 +91,12 @@ export class Checkout extends React.Component {
   handleSubmit(evt) {
     evt.preventDefault()
     const {email, name, street, town, zip, state} = this.state
-    console.log(this.props.cart)
+    const address = `${street}, ${town}, ${state}, ${zip}`
     const cart = this.props.cart.map(item => {
       const {book, quantity} = item
       return {book, quantity}
     })
-    console.log(cart)
+    this.props.submitOrder(address, cart, this.props.user.id)
   }
 
   render() {
@@ -176,7 +183,7 @@ export class Checkout extends React.Component {
               <Card.Body>
                 <Card.Title>{item.book.title}</Card.Title>
                 <Card.Subtitle>Price: ${item.book.price}</Card.Subtitle>
-                <Card.Subtitle>Quantity: ${item.quantity}</Card.Subtitle>
+                <Card.Subtitle>Quantity: {item.quantity}</Card.Subtitle>
               </Card.Body>
             </Card>
             <br />
@@ -190,10 +197,19 @@ export class Checkout extends React.Component {
 const mapState = state => {
   return {
     cart: state.cart,
+    user: state.user,
     subtotal: state.cart.reduce((total, currentItem) => {
       total = total + currentItem.quantity * currentItem.book.price
     }, 0)
   }
 }
 
-export default connect(mapState, null)(Checkout)
+const mapDispatch = dispatch => {
+  return {
+    fetchCart: userId => dispatch(fetchCart(userId)),
+    submitOrder: (address, cart, userId) =>
+      dispatch(submitOrder(address, cart, userId))
+  }
+}
+
+export default connect(mapState, mapDispatch)(Checkout)
