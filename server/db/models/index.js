@@ -5,6 +5,7 @@ const Category = require('./category')
 const Review = require('./review')
 const BookCart = require('./bookCart')
 const Order = require('./order')
+const OrderItem = require('./orderItem')
 
 Address.belongsTo(User)
 User.hasOne(Address)
@@ -27,6 +28,12 @@ Book.hasMany(BookCart)
 Order.belongsTo(User)
 User.hasMany(Order)
 
+OrderItem.belongsTo(Order)
+Order.hasMany(OrderItem)
+
+OrderItem.belongsTo(Book)
+Book.hasMany(OrderItem)
+
 module.exports = {
   User,
   Address,
@@ -34,5 +41,6 @@ module.exports = {
   Category,
   Review,
   BookCart,
-  Order
+  Order,
+  OrderItem
 }
