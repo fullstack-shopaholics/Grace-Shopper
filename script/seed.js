@@ -2,9 +2,13 @@
 
 const db = require('../server/db')
 const {User, Book, Category, Review} = require('../server/db/models')
+
 const artBooks = require('./dummyDataFiles/artBooks')
 const classics = require('./dummyDataFiles/classics')
 const childrensBooks = require('./dummyDataFiles/childrensBooks')
+const bios = require('./dummyDataFiles/biosAndMemiors')
+const sciFiBooks = require('./dummyDataFiles/sciFiBooks')
+const cookBooks = require('./dummyDataFiles/cookbooksFoodAndWineBooks')
 
 const review1 = {
   content: 'Nice!',
@@ -27,8 +31,11 @@ const reviews = [review1, review2, review3]
 const cat1 = {name: 'Art'}
 const cat2 = {name: 'Classics'}
 const cat3 = {name: `Children's Books`}
+const cat4 = {name: `Biographies and Memiors`}
+const cat5 = {name: 'Science Fiction'}
+const cat6 = {name: 'Cookbooks, Food & Wine'}
 
-const categories = [cat1, cat2, cat3]
+const categories = [cat1, cat2, cat3, cat4, cat5, cat6]
 
 const user1 = {email: 'cody@email.com', password: '123', isGuest: false}
 const user2 = {email: 'murphy@email.com', password: '123', isGuest: false}
@@ -60,6 +67,10 @@ async function seed() {
   const createdChildrensBooks = Book.bulkCreate(childrensBooks, {
     returning: true
   })
+  const createdBios = Book.bulkCreate(bios, {returning: true})
+  const createdSciFi = Book.bulkCreate(sciFiBooks, {returning: true})
+  const createdCookbooks = Book.bulkCreate(cookBooks, {returning: true})
+
   const createdCats = Category.bulkCreate(categories, {returning: true})
   const createdReviews = Review.bulkCreate(reviews, {returning: true})
   const createdUsers = User.bulkCreate(users, {returning: true})
@@ -68,6 +79,9 @@ async function seed() {
     savedArtBooks,
     savedClassics,
     savedChildrensBooks,
+    savedBios,
+    savedSciFi,
+    savedCookbooks,
     savedCats,
     savedReviews,
     savedUsers
@@ -75,6 +89,9 @@ async function seed() {
     createdArtBooks,
     createdClassics,
     createdChildrensBooks,
+    createdBios,
+    createdSciFi,
+    createdCookbooks,
     createdCats,
     createdReviews,
     createdUsers
@@ -97,8 +114,19 @@ async function seed() {
   const childrens_books = savedChildrensBooks.map(book =>
     book.addCategory(savedCats[2])
   )
+  const bios_books = savedBios.map(book => book.addCategory(savedCats[3]))
+  const sci_fi_books = savedSciFi.map(book => book.addCategory(savedCats[4]))
+  const cookbooks_food_and_wine_books = savedCookbooks.map(book =>
+    book.addCategory(savedCats[5])
+  )
 
-  const allBooks = art_books.concat(classic_books, childrens_books)
+  const allBooks = art_books.concat(
+    classic_books,
+    childrens_books,
+    bios_books,
+    sci_fi_books,
+    cookbooks_food_and_wine_books
+  )
   await Promise.all(allBooks)
 
   console.log(`seeded ${users.length} users`)
