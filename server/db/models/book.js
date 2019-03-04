@@ -9,6 +9,9 @@ const Book = db.define('book', {
       notEmpty: true
     }
   },
+  author: {
+    type: Sequelize.STRING
+  },
   description: {
     type: Sequelize.TEXT,
     allowNull: false,

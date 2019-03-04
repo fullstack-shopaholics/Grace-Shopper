@@ -29,10 +29,10 @@ export class UpdateBook extends Component {
       description,
       price,
       inventoryQuantity,
-      photoUrl
+      photoUrl,
+      author
     } = this.props.book
 
-    const author = this.props.book.author ? this.props.book.author.name : ''
     const categories = this.props.book.categories.map(cat => cat.name)
 
     const book = {

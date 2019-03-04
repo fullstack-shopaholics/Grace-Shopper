@@ -32,3 +32,9 @@ form div {
 .userCard .card-body {
   padding: 0.75rem;
 }
+
+.btn-group-sm > .btn,
+.btn-sm {
+  font-size: 0.75rem;
+  line-height: 1;
+}
