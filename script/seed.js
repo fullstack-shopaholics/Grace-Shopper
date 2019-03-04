@@ -67,15 +67,19 @@ const order1 = {
   address: '123 Main Street, Hometown IL, 60657',
   items: [
     {
-      title: 'A Book',
-      id: 5,
-      descriptions: 'heres words...',
+      book: {
+        title: 'BOOK',
+        id: 8,
+        descriptions: 'heres FUN STUFF'
+      },
       quantity: 1
     },
     {
-      title: 'A Different Book',
-      id: 1,
-      descriptions: 'heres different words...',
+      book: {
+        title: 'ANOTERH BOOK',
+        id: 9,
+        descriptions: 'heres FUN STUFF'
+      },
       quantity: 1
     }
   ]
@@ -84,14 +88,24 @@ const order2 = {
   address: '543 Valid Road, Funtown MI, 40632',
   items: [
     {
-      title: 'FUNBOOK',
-      id: 7,
-      descriptions: 'heres FUN STUFF',
+      book: {
+        title: 'superbook',
+        id: 1,
+        descriptions: 'heres FUN STUFF'
+      },
       quantity: 1
     },
     {
-      title: 'FUNBOOK2',
-      id: 8,
+      book: {
+        title: 'suyperbook2',
+        id: 2,
+        descriptions: 'heres FUN STUFF'
+      },
+      quantity: 1
+    },
+    {
+      title: 'woooow',
+      id: 3,
       descriptions: 'heres different FUN words...',
       quantity: 1
     }
@@ -101,15 +115,19 @@ const order3 = {
   address: '5882300 Empire Road, Chicago IL, 60640',
   items: [
     {
-      title: 'Carpet 101',
-      id: 58,
-      descriptions: 'heres carpet words...',
+      book: {
+        title: 'a book',
+        id: 11,
+        descriptions: 'heres FUN STUFF'
+      },
       quantity: 1
     },
     {
-      title: 'A Different Carpet Book',
-      id: 59,
-      descriptions: 'heres different carpet words...',
+      book: {
+        title: 'a book vol. 2',
+        id: 10,
+        descriptions: 'heres FUN STUFF'
+      },
       quantity: 1
     }
   ]
