@@ -108,8 +108,8 @@ export const editGuestQuantity = (bookId, quantity) => {
       bookId,
       quantity
     })
-    const updatedBook = result.data
-    dispatch(changeQuantity(updatedBook))
+    const updatedItem = result.data
+    dispatch(changeQuantity(updatedItem))
   }
 }
 
