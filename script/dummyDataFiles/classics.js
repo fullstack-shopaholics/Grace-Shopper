@@ -73,15 +73,6 @@ module.exports = [
       'A milestone in American literature--a book that has continued to engage readers since its appearance in 1952.\nNominated as one of America’s best-loved novels by PBS’s The Great American Read\nA first novel by an unknown writer, it remained on the bestseller list for sixteen weeks, won the National Book Award for fiction, and established Ralph Ellison as one of the key writers of the century. The nameless narrator of the novel describes growing up in a black community in the South, attending a Negro college from which he is expelled, moving to New York and becoming the chief spokesman of the Harlem branch of "the Brotherhood", and retreating amid violence and confusion to the basement lair of the Invisible Man he imagines himself to be. The book is a passionate and witty tour de force of style, strongly influenced by T.S. Eliot\'s The Waste Land, Joyce, and Dostoevsky.'
   },
   {
-    title: 'The Little Prince',
-    author: 'Antoine de Saint-Exupéry',
-    photoUrl: 'https://m.media-amazon.com/images/I/61Zi2jjgfIL._AC_UL436_.jpg',
-    price: 10.79,
-    inventoryQuantity: 58,
-    description:
-      "A PBS Great American Read Top 100 Pick\nFew stories are as widely read and as universally cherished by children and adults alike as The Little Prince. Richard Howard's translation of the beloved classic beautifully reflects Saint-Exupéry's unique and gifted style. Howard, an acclaimed poet and one of the preeminent translators of our time, has excelled in bringing the English text as close as possible to the French, in language, style, and most important, spirit. The artwork in this edition has been restored to match in detail and in color Saint-Exupéry's original artwork. Combining Richard Howard's translation with restored original art, this definitive English-language edition of The Little Prince will capture the hearts of readers of all ages.\nThis title has been selected as a Common Core Text Exemplar (Grades 4-5, Stories)."
-  },
-  {
     title: 'A Raisin in the Sun',
     author: 'Lorraine Hansberry',
     photoUrl: 'https://m.media-amazon.com/images/I/81QIOqBDSAL._AC_UL436_.jpg',
@@ -152,15 +143,6 @@ module.exports = [
     inventoryQuantity: 184,
     description:
       "Hamlet: An UPDATED EDITION from the Folger Shakespeare Library\nHamlet is Shakespeare's most popular, and most puzzling, play. It follows the form of a \"revenge tragedy,\" in which the hero, Hamlet, seeks vengeance against his father's murderer, his uncle Claudius, now the king of Denmark. Much of its fascination, however, lies in its uncertainties.\nAmong them: What is the Ghost--Hamlet's father demanding justice, a tempting demon, an angelic messenger? Does Hamlet go mad, or merely pretend to? Once he is sure that Claudius is a murderer, why does he not act? Was his mother, Gertrude, unfaithful to her husband or complicit in his murder?\nThe authoritative edition of Hamlet from The Folger Shakespeare Library, the trusted and widely used Shakespeare series for students and general readers, includes:\n-Freshly edited text based on the best early printed version of the play\n-Newly revised explanatory notes conveniently placed on pages facing the text of the play\n-Scene-by-scene plot summaries\n-A key to the play's famous lines and phrases\n-An introduction to reading Shakespeare's language\n-An essay by a leading Shakespeare scholar providing a modern perspective on the play\n-Fresh images from the Folger Shakespeare Library's vast holdings of rare books\n-An up-to-date annotated guide to further reading\nEssay by Michael Neill\nEnjoy this updated Folger edition of Hamlet in either the handy pocket-sized mass market paperback (ISBN 978-0743477123), elegant trade paperback featuring finer paper and wider margins (ISBN 978-1451669411), or Kindle edition (ASIN B00IWTWDA6)."
-  },
-  {
-    title: 'Frankenstein',
-    author: 'Mary Shelley',
-    photoUrl: 'https://m.media-amazon.com/images/I/51Ye-YRqLaL._AC_UL436_.jpg',
-    price: 6.99,
-    inventoryQuantity: 10,
-    description:
-      "Approved by the Holden-Crowther Literary Organisation.\nFew creatures of horror have seized readers' imaginations and held them for so long as the anguished monster of Mary Shelley's Frankenstein. The story of Victor Frankenstein's terrible creation and the havoc it caused has enthralled generations of readers and inspired countless writers of horror and suspense. Considering the novel's enduring success, it is remarkable that it began merely as a whim of Lord Byron's.\n\"We will each write a story,\" Byron announced to his next-door neighbors, Mary Wollstonecraft Godwin and her lover Percy Bysshe Shelley. The friends were summering on the shores of Lake Geneva in Switzerland in 1816, Shelley still unknown as a poet and Byron writing the third canto of Childe Harold. When continued rains kept them confined indoors, all agreed to Byron's proposal.\nThe illustrious poets failed to complete their ghost stories, but Mary Shelley rose supremely to the challenge. With Frankenstein, she succeeded admirably in the task she set for herself: to create a story that, in her own words, \"would speak to the mysterious fears of our nature and awaken thrilling horror -- one to make the reader dread to look round, to curdle the blood, and quicken the beatings of the heart.\""
   },
   {
     title: 'The Lion, the Witch and the Wardrobe (The Chronicles of Narnia)',

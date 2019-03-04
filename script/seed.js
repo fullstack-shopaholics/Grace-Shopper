@@ -124,15 +124,6 @@ async function seed() {
   console.log('db synced!')
 
   const createdArtBooks = Book.bulkCreate(artBooks, {returning: true})
-  const createdClassics = Book.bulkCreate(classics, {returning: true})
-  const createdChildrensBooks = Book.bulkCreate(childrensBooks, {
-    returning: true
-  })
-  const createdBios = Book.bulkCreate(bios, {returning: true})
-  const createdSciFi = Book.bulkCreate(sciFiBooks, {returning: true})
-  const createdCookbooks = Book.bulkCreate(cookBooks, {returning: true})
-  const createdMysteries = Book.bulkCreate(mysteryBooks, {returning: true})
-
   const createdCats = Category.bulkCreate(categories, {returning: true})
   const createdReviews = Review.bulkCreate(reviews, {returning: true})
   const createdUsers = User.bulkCreate(users, {returning: true})
@@ -140,29 +131,44 @@ async function seed() {
 
   const [
     savedArtBooks,
-    savedClassics,
-    savedChildrensBooks,
-    savedBios,
-    savedSciFi,
-    savedCookbooks,
-    savedMysteries,
     savedCats,
     savedReviews,
     savedUsers,
     savedOrders
   ] = await Promise.all([
     createdArtBooks,
-    createdClassics,
-    createdChildrensBooks,
-    createdBios,
-    createdSciFi,
-    createdCookbooks,
-    createdMysteries,
     createdCats,
     createdReviews,
     createdUsers,
     createdOrders
   ])
+
+  const findOrCreateCallback = book => {
+    return Book.findOrCreate({
+      where: {title: book.title},
+      defaults: book
+    })
+  }
+
+  //find or creating all arrays of books
+  const savedClassics = await Promise.all(
+    classics.map(book => findOrCreateCallback(book))
+  )
+  const savedBios = await Promise.all(
+    bios.map(book => findOrCreateCallback(book))
+  )
+  const savedChildrensBooks = await Promise.all(
+    childrensBooks.map(book => findOrCreateCallback(book))
+  )
+  const savedSciFi = await Promise.all(
+    sciFiBooks.map(book => findOrCreateCallback(book))
+  )
+  const savedCookbooks = await Promise.all(
+    cookBooks.map(book => findOrCreateCallback(book))
+  )
+  const savedMysteries = await Promise.all(
+    mysteryBooks.map(book => findOrCreateCallback(book))
+  )
 
   await Promise.all([
     savedReviews[0].setUser(savedUsers[2]),
@@ -180,18 +186,18 @@ async function seed() {
 
   const art_books = savedArtBooks.map(book => book.addCategory(savedCats[0]))
   const classic_books = savedClassics.map(book =>
-    book.addCategory(savedCats[1])
+    book[0].addCategory(savedCats[1])
   )
   const childrens_books = savedChildrensBooks.map(book =>
-    book.addCategory(savedCats[2])
+    book[0].addCategory(savedCats[2])
   )
-  const bios_books = savedBios.map(book => book.addCategory(savedCats[3]))
-  const sci_fi_books = savedSciFi.map(book => book.addCategory(savedCats[4]))
+  const bios_books = savedBios.map(book => book[0].addCategory(savedCats[3]))
+  const sci_fi_books = savedSciFi.map(book => book[0].addCategory(savedCats[4]))
   const cookbooks_food_and_wine_books = savedCookbooks.map(book =>
-    book.addCategory(savedCats[5])
+    book[0].addCategory(savedCats[5])
   )
   const mystery_books = savedMysteries.map(book =>
-    book.addCategory(savedCats[6])
+    book[0].addCategory(savedCats[6])
   )
 
   const allBooks = art_books.concat(
@@ -205,7 +211,6 @@ async function seed() {
   await Promise.all(allBooks)
 
   console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${allBooks.length} books`)
   console.log(`seeded successfully`)
 }
 
