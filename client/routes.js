@@ -15,6 +15,7 @@ import {
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
+import UpdateSelf from './components/UpdateSelf'
 
 /**
  * COMPONENT
@@ -47,6 +48,9 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
+            <Route path="/profile/update" component={UpdateSelf} />
+            {/* Displays user home as default when signed in */}
+            <Route component={UserHome} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
