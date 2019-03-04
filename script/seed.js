@@ -9,6 +9,7 @@ const childrensBooks = require('./dummyDataFiles/childrensBooks')
 const bios = require('./dummyDataFiles/biosAndMemiors')
 const sciFiBooks = require('./dummyDataFiles/sciFiBooks')
 const cookBooks = require('./dummyDataFiles/cookbooksFoodAndWineBooks')
+const mysteryBooks = require('./dummyDataFiles/mysteryBooks')
 
 const review1 = {
   content: 'Nice!',
@@ -34,8 +35,9 @@ const cat3 = {name: `Children's Books`}
 const cat4 = {name: `Biographies and Memiors`}
 const cat5 = {name: 'Science Fiction'}
 const cat6 = {name: 'Cookbooks, Food & Wine'}
+const cat7 = {name: 'Mystery, Thriller & Suspense'}
 
-const categories = [cat1, cat2, cat3, cat4, cat5, cat6]
+const categories = [cat1, cat2, cat3, cat4, cat5, cat6, cat7]
 
 const user1 = {email: 'cody@email.com', password: '123', isGuest: false}
 const user2 = {email: 'murphy@email.com', password: '123', isGuest: false}
@@ -70,6 +72,7 @@ async function seed() {
   const createdBios = Book.bulkCreate(bios, {returning: true})
   const createdSciFi = Book.bulkCreate(sciFiBooks, {returning: true})
   const createdCookbooks = Book.bulkCreate(cookBooks, {returning: true})
+  const createdMysteries = Book.bulkCreate(mysteryBooks, {returning: true})
 
   const createdCats = Category.bulkCreate(categories, {returning: true})
   const createdReviews = Review.bulkCreate(reviews, {returning: true})
@@ -82,6 +85,7 @@ async function seed() {
     savedBios,
     savedSciFi,
     savedCookbooks,
+    savedMysteries,
     savedCats,
     savedReviews,
     savedUsers
@@ -92,6 +96,7 @@ async function seed() {
     createdBios,
     createdSciFi,
     createdCookbooks,
+    createdMysteries,
     createdCats,
     createdReviews,
     createdUsers
@@ -119,13 +124,17 @@ async function seed() {
   const cookbooks_food_and_wine_books = savedCookbooks.map(book =>
     book.addCategory(savedCats[5])
   )
+  const mystery_books = savedMysteries.map(book =>
+    book.addCategory(savedCats[6])
+  )
 
   const allBooks = art_books.concat(
     classic_books,
     childrens_books,
     bios_books,
     sci_fi_books,
-    cookbooks_food_and_wine_books
+    cookbooks_food_and_wine_books,
+    mystery_books
   )
   await Promise.all(allBooks)
 
