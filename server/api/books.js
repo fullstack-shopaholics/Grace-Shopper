@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const {Book, Author, Category, Review} = require('../db/models')
+const {Book, Category, Review, User} = require('../db/models')
 
 const adminOnly = require('./isAdmin')
 
@@ -10,12 +10,9 @@ const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
-  // if (req.session.passport.user){
-  //   console.log()
-  // }
   try {
     const books = await Book.findAll({
-      include: [{model: Author}, {model: Category}]
+      include: [{model: Category}]
     })
     res.json(books)
   } catch (err) {
@@ -26,7 +23,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const book = await Book.findById(req.params.id, {
-      include: [{model: Author}, {model: Category}]
+      include: [{model: Category}]
     })
     res.json(book)
   } catch (err) {
@@ -46,11 +43,6 @@ router.post('/', adminOnly, async (req, res, next) => {
       categories
     } = req.body
 
-    const [authorInstance] = await Author.findOrCreate({
-      where: {
-        name: author
-      }
-    })
     const bookCategories = await categories.reduce(async function(
       allCats,
       category
@@ -66,12 +58,12 @@ router.post('/', adminOnly, async (req, res, next) => {
       description,
       price,
       inventoryQuantity,
-      photoUrl
+      photoUrl,
+      author
     })
-    await newBook.setAuthor(authorInstance)
     await newBook.setCategories(bookCategories)
     newBook = await Book.findById(newBook.id, {
-      include: [{model: Author}, {model: Category}]
+      include: [{model: Category}]
     })
     res.json(newBook)
   } catch (err) {
@@ -82,16 +74,26 @@ router.post('/', adminOnly, async (req, res, next) => {
 router.put('/filter', async (req, res, next) => {
   try {
     const {filters} = req.body
+
     const books = await Book.findAll({
       include: [
         {
           model: Category,
-          where: {name: {[Op.or]: filters}}
+          where: {name: {[Op.or]: filters}},
+          attributes: ['name']
         }
       ]
     })
 
-    res.json(books)
+    const filteredBooks = books.filter(book => {
+      return filters.every(filter => {
+        return book.categories
+          .map(bookCategory => bookCategory.name)
+          .includes(filter)
+      })
+    })
+
+    res.json(filteredBooks)
   } catch (err) {
     next(err)
   }
@@ -111,6 +113,27 @@ router.get('/review/:bookId', async (req, res, next) => {
   }
 })
 
+router.post('/review/:bookId', async (req, res, next) => {
+  try {
+    const {bookId} = req.params
+    const {userId, content, rating} = req.body
+    const createdReview = await Review.create({
+      bookId,
+      userId,
+      content,
+      rating
+    })
+
+    const review = await Review.findById(createdReview.id, {
+      include: [{model: User}, {model: Book}]
+    })
+
+    res.json(review)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
@@ -124,11 +147,7 @@ router.put('/:id', async (req, res, next) => {
       author,
       categories
     } = req.body
-    const [authorInstance] = await Author.findOrCreate({
-      where: {
-        name: author
-      }
-    })
+
     const bookCategories = await categories.reduce(async function(
       allCats,
       category
@@ -145,14 +164,14 @@ router.put('/:id', async (req, res, next) => {
       description,
       price,
       inventoryQuantity,
-      photoUrl
+      photoUrl,
+      author
     })
 
-    await updatedBook.setAuthor(authorInstance)
     await updatedBook.setCategories(bookCategories)
 
     updatedBook = await Book.findById(updatedBook.id, {
-      include: [{model: Author}, {model: Category}]
+      include: [{model: Category}]
     })
 
     res.json(updatedBook)

@@ -19,3 +19,22 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.appContainer {
+  padding: 1em;
+}
+
+.card.userCard {
+  width: 45vw;
+  height: 6em;
+}
+
+.userCard .card-body {
+  padding: 0.75rem;
+}
+
+.btn-group-sm > .btn,
+.btn-sm {
+  font-size: 0.75rem;
+  line-height: 1;
+}

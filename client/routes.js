@@ -34,6 +34,8 @@ class Routes extends Component {
         <Route exact path="/books" component={AllBooks} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/user/guest/cart" component={Cart} />{' '}
+        {/*Make so only the logged in user can see their cart & hide guest when logged in*/}
         <Route path="/user/:userId/cart" component={Cart} />
         {isAdmin && <Route path="/users" component={AllUsers} />}
         {isAdmin && <Route exact path="/books/add" component={AddBook} />}

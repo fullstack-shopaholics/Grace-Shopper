@@ -5,18 +5,18 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Navbar, Nav, NavItem} from 'react-bootstrap'
 
-const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user}) => (
-  <Navbar bg="primary" variant="dark">
-    <Navbar.Brand>The Book Stack</Navbar.Brand>
+const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
+  <Navbar bg="dark" variant="dark" style={{padding: '0em'}}>
+    {/* <Navbar.Brand>BookStack</Navbar.Brand> */}
+    <Navbar.Brand as={Link} to="/home">
+      BookStack
+    </Navbar.Brand>
     <Nav className="mr-auto">
       {isLoggedIn ? (
         <Nav className="mr-auto">
           {/* The navbar will show these links after you log in */}
           <Nav.Link as={Link} to="/home">
-            Home
-          </Nav.Link>
-          <Nav.Link href="#" onClick={handleClick}>
-            Logout
+            Books
           </Nav.Link>
           <Nav.Link to={`/user/${user.id}/cart`} as={Link}>
             Cart
@@ -26,10 +26,18 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user}) => (
               Users
             </Nav.Link>
           )}
+          <Nav className="justify-content-end">
+            <Nav.Link href="#" onClick={handleClick}>
+              Logout
+            </Nav.Link>
+          </Nav>
         </Nav>
       ) : (
         <Nav>
           {/* The navbar will show these links before you log in */}
+          <Nav.Link as={Link} to="/books">
+            Books
+          </Nav.Link>
 
           <Nav.Link as={Link} to="/login">
             Login
@@ -38,8 +46,9 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user}) => (
           <Nav.Link as={Link} to="/signup">
             Sign Up
           </Nav.Link>
-          <Nav.Link as={Link} to="/books">
-            Books
+
+          <Nav.Link to="/user/guest/cart" as={Link}>
+            Cart
           </Nav.Link>
         </Nav>
       )}
@@ -55,7 +64,8 @@ const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
     isAdmin: state.user.isAdmin,
-    user: state.user
+    user: state.user,
+    isGuest: state.user.isGuest
   }
 }
 
