@@ -58,6 +58,29 @@ router.post('/:userId', async (req, res, next) => {
   }
 })
 
+router.delete('/guest', async (req, res, next) => {
+  const {bookId} = req.body
+  req.session.cart = req.session.cart.filter(item => item.book.id !== bookId)
+  res.sendStatus(204)
+})
+
+router.delete('/:userId', async (req, res, next) => {
+  try {
+    const {userId} = req.params
+    const {bookId} = req.body
+    await BookCart.destroy({
+      where: {
+        userId,
+        bookId
+      }
+    })
+
+    res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = router
 
 //Needs post, put, delete routes
