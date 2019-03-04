@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, BookCart, Book} = require('../db/models')
+const {User, BookCart, Book, Order, OrderItem} = require('../db/models')
 
 router.get('/guest', (req, res, next) => {
   if (!req.session.cart || req.session.cart.length === 0) req.session.cart = []
@@ -48,6 +48,55 @@ router.post('/guest', async (req, res, next) => {
     const orderItem = {book, quantity}
     req.session.cart.push(orderItem)
     res.send(orderItem)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/checkout', async (req, res, next) => {
+  const {cart, userId, address} = req.body
+  const total = cart.reduce((subTotal, item) => {
+    subTotal = subTotal + item.book.price * item.quantity
+    return subTotal
+  }, 0)
+
+  let newOrder
+
+  try {
+    if (userId) {
+      newOrder = await Order.create({
+        status: 'Ordered',
+        address,
+        isGuest: false,
+        total,
+        userId
+      })
+      await BookCart.destroy({where: {userId}})
+    } else {
+      newOrder = await Order.create({
+        status: 'Ordered',
+        address,
+        isGuest: true,
+        total
+      })
+
+      req.session.cart = []
+    }
+    const data = cart.map(item => {
+      return OrderItem.create({
+        orderId: newOrder.id,
+        bookId: item.book.id,
+        quantity: item.quantity
+      })
+    })
+
+    await Promise.all(data)
+
+    const order = await Order.findById(newOrder.id, {
+      include: [{model: OrderItem}]
+    })
+
+    res.json(order)
   } catch (err) {
     next(err)
   }
