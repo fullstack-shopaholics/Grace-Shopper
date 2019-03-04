@@ -37,6 +37,7 @@ class AllBooks extends React.Component {
   render() {
     const filters = this.props.filters || []
     let books = filters.length === 0 ? this.props.books : this.props.filterBooks
+    books = books.filter(book => book.inventoryQuantity > 0)
     if (this.state.searchTerm) {
       books = books.filter(book => {
         return (
