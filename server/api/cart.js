@@ -8,6 +8,20 @@ router.get('/guest', (req, res, next) => {
 
 router.get('/:userId', async (req, res, next) => {
   if (req.params.userId === 'guest') res.sendStatus(200)
+  if (req.session.cart && req.session.cart.length > 0) {
+    const addToCart = req.session.cart.map(item => {
+      return BookCart.findOrCreate({
+        where: {
+          bookId: item.book.id,
+          quantity: item.quantity,
+          userId: req.params.userId
+        }
+      })
+    })
+
+    await Promise.all(addToCart)
+  }
+
   try {
     let cart = await BookCart.findAll({
       where: {
