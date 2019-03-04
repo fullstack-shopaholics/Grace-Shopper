@@ -81,6 +81,43 @@ router.delete('/:userId', async (req, res, next) => {
   }
 })
 
+router.put('/guest/changeQuantity', async (req, res, next) => {
+  try {
+    const {bookId, quantity} = req.body
+    req.session.cart = req.session.cart.map(item => {
+      if (bookId === item.book.id) return {...item, quantity}
+      else return item
+    })
+
+    const updatedItem = req.session.cart.filter(item => bookId === item.book.id)
+
+    res.json(updatedItem[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:userId/changeQuantity', async (req, res, next) => {
+  try {
+    const {userId} = req.params
+    const {quantity, bookId} = req.body
+    const [, updatedItem] = await BookCart.update(
+      {
+        quantity
+      },
+      {returning: true, where: {userId, bookId}}
+    )
+
+    const foundBook = await BookCart.findById(updatedItem[0].id, {
+      include: [{model: Book}]
+    })
+
+    res.json(foundBook)
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = router
 
 //Needs post, put, delete routes
