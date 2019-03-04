@@ -8,6 +8,20 @@ router.get('/guest', (req, res, next) => {
 
 router.get('/:userId', async (req, res, next) => {
   if (req.params.userId === 'guest') res.sendStatus(200)
+  if (req.session.cart && req.session.cart.length > 0) {
+    const addToCart = req.session.cart.map(item => {
+      return BookCart.findOrCreate({
+        where: {
+          bookId: item.book.id,
+          quantity: item.quantity,
+          userId: req.params.userId
+        }
+      })
+    })
+
+    await Promise.all(addToCart)
+  }
+
   try {
     let cart = await BookCart.findAll({
       where: {
@@ -76,6 +90,43 @@ router.delete('/:userId', async (req, res, next) => {
     })
 
     res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/guest/changeQuantity', async (req, res, next) => {
+  try {
+    const {bookId, quantity} = req.body
+    req.session.cart = req.session.cart.map(item => {
+      if (bookId === item.book.id) return {...item, quantity}
+      else return item
+    })
+
+    const updatedItem = req.session.cart.filter(item => bookId === item.book.id)
+
+    res.json(updatedItem[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:userId/changeQuantity', async (req, res, next) => {
+  try {
+    const {userId} = req.params
+    const {quantity, bookId} = req.body
+    const [, updatedItem] = await BookCart.update(
+      {
+        quantity
+      },
+      {returning: true, where: {userId, bookId}}
+    )
+
+    const foundBook = await BookCart.findById(updatedItem[0].id, {
+      include: [{model: Book}]
+    })
+
+    res.json(foundBook)
   } catch (err) {
     next(err)
   }
