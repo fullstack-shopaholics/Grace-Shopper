@@ -68,7 +68,6 @@ router.delete('/:userId', async (req, res, next) => {
   try {
     const {userId} = req.params
     const {bookId} = req.body
-    console.log(bookId, userId)
     await BookCart.destroy({
       where: {
         userId,

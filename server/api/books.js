@@ -10,9 +10,6 @@ const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
-  // if (req.session.passport.user){
-  //   console.log()
-  // }
   try {
     const books = await Book.findAll({
       include: [{model: Author}, {model: Category}]
@@ -87,12 +84,21 @@ router.put('/filter', async (req, res, next) => {
       include: [
         {
           model: Category,
-          where: {name: {[Op.or]: filters}}
+          where: {name: {[Op.or]: filters}},
+          attributes: ['name']
         }
       ]
     })
 
-    res.json(books)
+    const filteredBooks = books.filter(book => {
+      return filters.every(filter => {
+        return book.categories
+          .map(bookCategory => bookCategory.name)
+          .includes(filter)
+      })
+    })
+
+    res.json(filteredBooks)
   } catch (err) {
     next(err)
   }
