@@ -54,13 +54,14 @@ router.post('/guest', async (req, res, next) => {
 })
 
 router.post('/checkout', async (req, res, next) => {
-  const {cart, userId, address} = req.body
+  const {cart, userId, address, email} = req.body
   const total = cart.reduce((subTotal, item) => {
     subTotal = subTotal + item.book.price * item.quantity
     return subTotal
   }, 0)
 
   let newOrder
+  console.log(email)
 
   try {
     if (userId) {
@@ -69,6 +70,7 @@ router.post('/checkout', async (req, res, next) => {
         address,
         isGuest: false,
         total,
+        email,
         userId
       })
       await BookCart.destroy({where: {userId}})
@@ -76,6 +78,7 @@ router.post('/checkout', async (req, res, next) => {
       newOrder = await Order.create({
         status: 'Ordered',
         address,
+        email,
         isGuest: true,
         total
       })

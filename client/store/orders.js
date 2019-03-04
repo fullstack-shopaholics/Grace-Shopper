@@ -11,11 +11,12 @@ export const addOrder = order => {
   }
 }
 
-export const submitOrder = (address, cart, userId) => {
+export const submitOrder = (address, cart, email, userId) => {
   return async dispatch => {
     const result = await axios.post(`api/users/cart/checkout`, {
       address,
       cart,
+      email,
       userId
     })
     const newOrder = result.data

@@ -96,7 +96,7 @@ export class Checkout extends React.Component {
       const {book, quantity} = item
       return {book, quantity}
     })
-    this.props.submitOrder(address, cart, this.props.user.id)
+    this.props.submitOrder(address, cart, email, this.props.user.id)
   }
 
   render() {
@@ -207,8 +207,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     fetchCart: userId => dispatch(fetchCart(userId)),
-    submitOrder: (address, cart, userId) =>
-      dispatch(submitOrder(address, cart, userId))
+    submitOrder: (address, cart, email, userId) =>
+      dispatch(submitOrder(address, cart, email, userId))
   }
 }
 
