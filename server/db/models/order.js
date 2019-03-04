@@ -26,6 +26,13 @@ const Order = db.define('order', {
     validate: {
       isNumeric: true
     }
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   }
 })
 

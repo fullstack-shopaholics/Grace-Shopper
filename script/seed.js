@@ -71,13 +71,16 @@ const users = [user1, user2, user3, user4]
 
 //Orders
 const order1 = {
-  address: '123 Main Street, Hometown IL, 60657'
+  address: '123 Main Street, Hometown IL, 60657',
+  email: 'cody@cody.com'
 }
 const order2 = {
-  address: '543 Valid Road, Funtown MI, 40632'
+  address: '543 Valid Road, Funtown MI, 40632',
+  email: 'cody@cody.com'
 }
 const order3 = {
-  address: '5882300 Empire Road, Chicago IL, 60640'
+  address: '5882300 Empire Road, Chicago IL, 60640',
+  email: 'cody@cody.com'
 }
 
 const orders = [order1, order2, order3]
