@@ -228,11 +228,12 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch, ownProps) => {
+  const {history} = ownProps
   return {
     fetchCart: userId => dispatch(fetchCart(userId)),
     submitOrder: (address, cart, email, userId) =>
-      dispatch(submitOrder(address, cart, email, userId)),
+      dispatch(submitOrder(address, cart, email, history, userId)),
     getGuestCart: () => dispatch(getGuestCart()),
     clearCart: () => dispatch(clearCart())
   }

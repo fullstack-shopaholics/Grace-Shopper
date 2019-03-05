@@ -10,6 +10,7 @@ import filterCategories from './filters'
 import {getCategories} from './category'
 import {cart} from './cart'
 import currentOrders from './userOrders'
+import singleOrder from './singleOrder'
 import allOrders from './allorders'
 
 const reducer = combineReducers({
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   filterCategories,
   getCategories,
   currentOrders,
+  singleOrder,
   allOrders
 })
 

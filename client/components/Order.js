@@ -19,9 +19,11 @@ export class Orders extends React.Component {
     return (
       <div>
         <Card style={{width: '94vw'}}>
-          <Card.Header style={{fontWeight: '400'}}>
-            Order Placed {' ' + this.formatDate(order.createdAt)}
-          </Card.Header>
+          <Link to={`/order/${order.id}`}>
+            <Card.Header style={{fontWeight: '400'}}>
+              Order Placed {' ' + this.formatDate(order.createdAt)}
+            </Card.Header>
+          </Link>
           <Card.Body>
             <Card.Title>{order.status.toUpperCase()}</Card.Title>
             <ListGroup className="list-group-flush">

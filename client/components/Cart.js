@@ -71,7 +71,9 @@ export class Cart extends Component {
                   <div key={item.book.id}>
                     <Card>
                       <Card.Body>
-                        <Card.Title>{item.book.title}</Card.Title>
+                        <Link to={`/books/${item.book.id}`}>
+                          <Card.Title>{item.book.title}</Card.Title>
+                        </Link>
                         <Card.Subtitle>Price: ${item.book.price}</Card.Subtitle>
                         <Form.Label>Quantity: </Form.Label>
                         <Form.Control
