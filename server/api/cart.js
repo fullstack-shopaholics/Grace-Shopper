@@ -100,7 +100,13 @@ router.post('/checkout', async (req, res, next) => {
         quantity: item.quantity
       })
     })
+    const adjustInventory = cart.map(item => {
+      return Book.findById(item.book.id).then(book => {
+        return book.decrement('inventoryQuantity', {by: item.quantity})
+      })
+    })
 
+    await Promise.all(adjustInventory)
     await Promise.all(data)
 
     const order = await Order.findById(newOrder.id, {
