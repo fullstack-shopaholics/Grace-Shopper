@@ -125,8 +125,6 @@ export class Checkout extends React.Component {
   }
 
   render() {
-    const {subtotal} = this.props
-    console.log(subtotal)
     let check = Object.values(this.state)
     return (
       <div>

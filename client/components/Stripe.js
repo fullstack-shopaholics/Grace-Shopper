@@ -17,7 +17,7 @@ export default class TakeMoney extends React.Component {
       <StripeCheckout
         token={this.onToken}
         stripeKey="pk_test_PjYEHMeTcIduivMe25wGR53O"
-        // amount={charge}
+        amount={charge}
       />
     )
   }
