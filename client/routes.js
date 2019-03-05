@@ -14,7 +14,10 @@ import {
   Cart,
   Checkout,
   ResetPassword,
-  ForcePWResetPage
+  ForcePWResetPage,
+  SingleOrder,
+  DisplayPastOrders,
+  AllOrdersView
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
@@ -48,14 +51,16 @@ class Routes extends Component {
         {isAdmin && (
           <Route exact path="/books/:id/update" component={UpdateBook} />
         )}
+        {isAdmin && <Route path="/orders" component={AllOrdersView} />}
         <Route path="/books/:id" component={SingleBook} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-
+            <Route path="/order/:orderId" component={SingleOrder} />
             <Route path="/home" component={UserHome} />
             <Route path="/profile/update" component={UpdateSelf} />
             <Route path="/profile/resetPassword" component={ResetPassword} />
+            <Route path="/profile/orders" component={DisplayPastOrders} />
             {/* Displays user home as default when signed in */}
             <Route component={UserHome} />
           </Switch>

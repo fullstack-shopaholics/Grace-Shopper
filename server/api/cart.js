@@ -46,7 +46,16 @@ router.post('/guest', async (req, res, next) => {
     const {bookId, quantity} = req.body
     const book = await Book.findById(bookId)
     const orderItem = {book, quantity}
-    req.session.cart.push(orderItem)
+    let isFound = false
+    req.session.cart = req.session.cart.map(item => {
+      if (item.book.id === book.id) {
+        isFound = true
+        return {...item, quantity: quantity + item.quantity}
+      } else return item
+    })
+
+    if (!isFound) req.session.cart.push(orderItem)
+
     res.send(orderItem)
   } catch (err) {
     next(err)
@@ -87,7 +96,6 @@ router.post('/checkout', async (req, res, next) => {
   }, 0)
 
   let newOrder
-  console.log(email)
 
   try {
     if (userId) {
@@ -134,13 +142,16 @@ router.post('/checkout', async (req, res, next) => {
 router.post('/:userId', async (req, res, next) => {
   try {
     const {bookId, quantity} = req.body
-    const addedBook = await BookCart.create({
-      bookId,
-      quantity,
-      userId: req.params.userId
+    let [book, created] = await BookCart.findOrCreate({
+      where: {bookId, userId: req.params.userId},
+      defaults: {quantity}
     })
 
-    const foundBook = await BookCart.findById(addedBook.id, {
+    if (!created) {
+      book.increment('quantity', {by: quantity})
+    }
+
+    const foundBook = await BookCart.findById(book.id, {
       include: [{model: Book}]
     })
 
