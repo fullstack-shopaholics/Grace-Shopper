@@ -2,7 +2,7 @@ const router = require('express').Router()
 const adminOnly = require('./isAdmin.js')
 const {Order, OrderItem, Book} = require('../db/models')
 
-router.get('/', async (req, res, next) => {
+router.get('/', adminOnly, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       include: [{model: OrderItem, include: [{model: Book}]}]

@@ -4,14 +4,28 @@ import {Button, ButtonToolbar} from 'react-bootstrap'
 
 export const AdminHome = () => {
   return (
-    <ButtonToolbar style={{justifyContent: 'space-around'}}>
-      <Link to="/users">
-        <Button variant="secondary">Manage Users</Button>
-      </Link>
-      <Link to="/books/add">
-        <Button variant="secondary">Add a Book</Button>
-      </Link>
-    </ButtonToolbar>
+    <div>
+      <h5>Admin Dashboard</h5>
+      <ButtonToolbar>
+        <Button
+          as={Link}
+          to="/users"
+          variant="secondary"
+          className="home-page-btn"
+        >
+          Manage Users
+        </Button>
+
+        <Button
+          as={Link}
+          to="/books/add"
+          variant="secondary"
+          className="home-page-btn"
+        >
+          Add a Book
+        </Button>
+      </ButtonToolbar>
+    </div>
   )
 }
 
