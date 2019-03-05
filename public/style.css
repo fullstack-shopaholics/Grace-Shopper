@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  font-weight: 200;
 }
 
 a {
@@ -10,12 +11,34 @@ label {
   display: block;
 }
 
-nav a {
-  display: inline-block;
+/* nav a {
   margin: 1em;
-}
+} */
 
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.appContainer {
+  padding: 1em;
+}
+
+.card.userCard {
+  height: 6em;
+  width: 94vw;
+}
+
+.userCard .card-body {
+  padding: 0.75rem;
+}
+
+.btn-group-sm > .btn,
+.btn-sm {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.home-page-btn {
+  margin: 0.7em;
 }

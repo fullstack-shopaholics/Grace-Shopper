@@ -1,14 +1,27 @@
 const router = require('express').Router()
 const {User} = require('../db/models')
+const adminOnly = require('./isAdmin.js')
+const selfOrAdminOnly = require('./selfOrAdmin')
+const selfOnly = require('./selfOnly')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.use('/cart', require('./cart'))
+
+router.get('/', adminOnly, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'email', 'firstName', 'lastName', 'userType']
+      attributes: [
+        'id',
+        'email',
+        'firstName',
+        'lastName',
+        'isGuest',
+        'isAdmin',
+        'forcePWReset'
+      ]
     })
     res.json(users)
   } catch (err) {
@@ -16,16 +29,17 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', adminOnly, async (req, res, next) => {
   try {
-    const {firstName, lastName, email, password, userType} = req.body
+    const {firstName, lastName, email, password, isGuest, isAdmin} = req.body
 
     const newUser = await User.create({
       firstName,
       lastName,
       email,
       password,
-      userType
+      isGuest,
+      isAdmin
     })
 
     res.json(newUser)
@@ -34,11 +48,11 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', selfOrAdminOnly, async (req, res, next) => {
   try {
     const id = req.params.id
     const user = await User.findById(id, {
-      attributes: ['id', 'email', 'firstName', 'lastName', 'userType']
+      attributes: ['id', 'email', 'firstName', 'lastName', 'isAdmin', 'isGuest']
     })
 
     res.json(user)
@@ -47,20 +61,19 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id/toggleAdmin', adminOnly, async (req, res, next) => {
   try {
     const {id} = req.params
-    const {password, userType} = req.body
+    const {isAdmin} = req.body
 
-    let userBody = {}
-    userBody = password ? {...userBody, password} : userBody
-    userBody = userType ? {...userBody, userType} : userBody
-
-    const [, updatedUser] = await User.update(userBody, {
-      returning: true,
-      where: {id},
-      individualHooks: true
-    })
+    const [, updatedUser] = await User.update(
+      {isAdmin},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
 
     res.json(updatedUser[0])
   } catch (err) {
@@ -68,7 +81,67 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.put('/:id/forcePWReset', adminOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {forcePWReset} = req.body
+
+    const [, updatedUser] = await User.update(
+      {forcePWReset},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
+
+    res.json(updatedUser[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:id/userInfo', selfOrAdminOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {firstName, lastName, email} = req.body
+
+    const [, updatedUser] = await User.update(
+      {firstName, lastName, email},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
+
+    res.json(updatedUser[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:id/password', selfOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {password} = req.body
+
+    const [, updatedUser] = await User.update(
+      {password, forcePWReset: false},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
+
+    res.json(updatedUser[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:id', adminOnly, async (req, res, next) => {
   try {
     const {id} = req.params
     await User.destroy({where: {id}})

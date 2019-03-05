@@ -10,7 +10,14 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+const keyPublishable = 'pk_test_PjYEHMeTcIduivMe25wGR53O'
+const keySecret = 'sk_test_3tpz5hwNI3ldwAcZ3Isd5Hmq'
+const stripe = require('stripe')(keySecret)
 module.exports = app
+
+stripe.charges.retrieve('ch_1EAiFHDqd1Wqix8yMv8XRb2V', {
+  api_key: 'sk_test_3tpz5hwNI3ldwAcZ3Isd5Hmq'
+})
 
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
@@ -57,7 +64,7 @@ const createApp = () => {
       secret: process.env.SESSION_SECRET || 'my best friend is Cody',
       store: sessionStore,
       resave: false,
-      saveUninitialized: false
+      saveUninitialized: true
     })
   )
   app.use(passport.initialize())

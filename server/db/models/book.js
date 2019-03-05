@@ -9,6 +9,9 @@ const Book = db.define('book', {
       notEmpty: true
     }
   },
+  author: {
+    type: Sequelize.STRING
+  },
   description: {
     type: Sequelize.TEXT,
     allowNull: false,
@@ -25,7 +28,7 @@ const Book = db.define('book', {
   },
   inventoryQuantity: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    defaultValue: 0
   },
   photoUrl: {
     type: Sequelize.STRING,
@@ -35,6 +38,13 @@ const Book = db.define('book', {
       isUrl: true
     }
   }
+})
+
+Book.beforeValidate(book => {
+  book.photoUrl =
+    book.photoUrl === ''
+      ? 'http://smartmobilestudio.com/wp-content/uploads/2012/06/leather-book-preview.png'
+      : book.photoUrl
 })
 
 module.exports = Book
