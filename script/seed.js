@@ -196,7 +196,7 @@ async function seed() {
     book[0].addCategory(savedCats[6])
   )
   const travel_books = savedTravelBooks.map(book =>
-    book[0].addCategory(savedCats[8])
+    book[0].addCategory(savedCats[7])
   )
 
   const allBooks = art_books.concat(
