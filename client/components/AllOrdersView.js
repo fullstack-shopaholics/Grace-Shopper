@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getAllOrders} from './../store/allorders'
-import {Table, DropdownButton, Dropdown} from 'react-bootstrap'
+import {Table} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {editOrderStatus} from '../store/singleOrder'
+import UpdateStatusButton from './UpdateStatusButton'
 
 export class AllOrders extends Component {
   constructor() {
@@ -79,36 +80,10 @@ export class AllOrders extends Component {
                 <td>{this.formatDate(order.createdAt)}</td>
                 <td>{order.status}</td>
                 <td>
-                  <DropdownButton
-                    title="Update Status"
-                    disabled={
-                      order.status === 'Canceled' ||
-                      order.status === 'Delivered'
-                    }
-                  >
-                    {order.status === 'Ordered' && (
-                      <Dropdown.Item
-                        name="Shipped"
-                        onClick={evt => this.handleClick(evt, order.id)}
-                      >
-                        Shipped
-                      </Dropdown.Item>
-                    )}
-                    {order.status !== 'Delivered' && (
-                      <Dropdown.Item
-                        name="Delivered"
-                        onClick={evt => this.handleClick(evt, order.id)}
-                      >
-                        Delivered
-                      </Dropdown.Item>
-                    )}
-                    <Dropdown.Item
-                      name="Canceled"
-                      onClick={evt => this.handleClick(evt, order.id)}
-                    >
-                      Canceled
-                    </Dropdown.Item>
-                  </DropdownButton>
+                  <UpdateStatusButton
+                    order={order}
+                    editOrderStatus={this.props.editOrderStatus}
+                  />
                 </td>
               </tr>
             ))}
