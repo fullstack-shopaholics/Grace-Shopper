@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {makeDisplayName} from '../store/user'
 import AdminHome from './AdminHome'
 import {Link} from 'react-router-dom'
-import {Button, ButtonToolbar} from 'react-bootstrap'
+import {Button, ButtonToolbar, Card} from 'react-bootstrap'
 
 /**
  * COMPONENT
@@ -15,7 +15,7 @@ export const UserHome = props => {
   return (
     <div>
       <br />
-      <h3>Welcome, {displayName}</h3>
+      <h5>Welcome, {displayName}</h5>
       <br />
       <ButtonToolbar style={{justifyContent: 'space-around'}}>
         <Link to="profile/update">
