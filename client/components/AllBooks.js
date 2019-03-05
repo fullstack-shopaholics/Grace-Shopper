@@ -10,6 +10,7 @@ import {
   Button
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+import {fetchBooks} from '../store/book'
 
 import Filters from './Filters'
 
@@ -23,15 +24,28 @@ class AllBooks extends React.Component {
   constructor() {
     super()
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      page: 1
     }
     this.changeHandler = this.changeHandler.bind(this)
+    this.clickHandler = this.clickHandler.bind(this)
   }
 
   changeHandler(event) {
     this.setState({
       searchTerm: event.target.value
     })
+  }
+
+  clickHandler(event) {
+    let curpage = this.state.page
+    if (event.target.name === 'next') {
+      this.setState({page: curpage + 1})
+      this.props.nextPage(this.state.page + 1)
+    } else {
+      this.setState({page: curpage - 1})
+      this.props.nextPage(this.state.page - 1)
+    }
   }
 
   render() {
@@ -71,6 +85,7 @@ class AllBooks extends React.Component {
               </Col>
             )}
           </Row>
+
           <Filters />
         </Container>
         <CardDeck>
@@ -102,6 +117,20 @@ class AllBooks extends React.Component {
             })
           )}
         </CardDeck>
+        {this.state.page > 1 ? (
+          <div>
+            <Button name="prev" onClick={this.clickHandler}>
+              Prev
+            </Button>
+            <Button name="next" onClick={this.clickHandler}>
+              Next
+            </Button>
+          </div>
+        ) : (
+          <Button name="next" onClick={this.clickHandler}>
+            Next
+          </Button>
+        )}
       </div>
     )
   }
@@ -115,4 +144,10 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(AllBooks)
+const mapDispatch = dispatch => {
+  return {
+    nextPage: page => dispatch(fetchBooks(page))
+  }
+}
+
+export default connect(mapState, mapDispatch)(AllBooks)

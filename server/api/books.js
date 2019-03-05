@@ -10,8 +10,13 @@ const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  const page = req.query.page
+  const bookLimit = 100
+  let offsetLimit = bookLimit * (page - 1)
   try {
     const books = await Book.findAll({
+      limit: bookLimit,
+      offset: offsetLimit,
       include: [{model: Category}]
     })
     res.json(books)
