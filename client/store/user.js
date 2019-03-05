@@ -80,6 +80,16 @@ export const putSelf = user => async dispatch => {
   }
 }
 
+export const resetPassword = (id, password) => async dispatch => {
+  try {
+    const res = await axios.put(`/api/users/${id}/password`, {password})
+    const returnedUser = res.data
+    dispatch(updateSelf(returnedUser))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * REDUCER
  */

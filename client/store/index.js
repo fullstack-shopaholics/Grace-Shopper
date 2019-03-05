@@ -9,7 +9,7 @@ import {singleBook} from './singleBook'
 import filterCategories from './filters'
 import {getCategories} from './category'
 import {cart} from './cart'
-import currentOrders from './orders'
+import currentOrders from './userOrders'
 
 const reducer = combineReducers({
   user,

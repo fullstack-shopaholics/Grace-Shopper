@@ -13,4 +13,7 @@ export {default as AddBook} from './AddBook'
 export {default as UpdateBook} from './UpdateBook'
 export {default as Cart} from './Cart'
 export {default as Checkout} from './Checkout'
-export {default as PurchasePage} from './PurchasePage'
+export {default as ResetPassword} from './ResetPasswordComponents/ResetPassword'
+export {
+  default as ForcePWResetPage
+} from './ResetPasswordComponents/ForcePWResetPage'

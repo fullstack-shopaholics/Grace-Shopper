@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 import {makeDisplayName} from '../store/user'
 import AdminHome from './AdminHome'
 import {Link} from 'react-router-dom'
-import {Button} from 'react-bootstrap'
+import {Button, ButtonToolbar, Card} from 'react-bootstrap'
+import DisplayPastOrders from './DisplayPastOrders'
 
 /**
  * COMPONENT
@@ -15,11 +16,16 @@ export const UserHome = props => {
   return (
     <div>
       <br />
-      <h3>Welcome, {displayName}</h3>
+      <h5>Welcome, {displayName}</h5>
       <br />
-      <Link to="profile/update">
-        <Button variant="secondary">Update Your Profile Information</Button>
-      </Link>
+      <ButtonToolbar style={{justifyContent: 'space-around'}}>
+        <Link to="profile/update">
+          <Button variant="secondary">Update Your Profile Information</Button>
+        </Link>
+        <Link to="profile/resetPassword">
+          <Button variant="secondary">Reset Your Password</Button>
+        </Link>
+      </ButtonToolbar>
       <br />
       <br />
       {user.isAdmin && (
@@ -28,6 +34,7 @@ export const UserHome = props => {
           <AdminHome />
         </span>
       )}
+      <DisplayPastOrders userId={user.id} />
     </div>
   )
 }

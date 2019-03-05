@@ -3,56 +3,62 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {Navbar, Nav, NavItem} from 'react-bootstrap'
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap'
 
 const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
-  <Navbar bg="dark" variant="dark" style={{padding: '0em'}}>
-    {/* <Navbar.Brand>BookStack</Navbar.Brand> */}
-    <Navbar.Brand as={Link} to="/home">
+  <Navbar bg="dark" variant="dark" className="justify-content-between">
+    <Navbar.Brand as={Link} to="/books">
       BookStack
     </Navbar.Brand>
-    <Nav className="mr-auto">
-      {isLoggedIn ? (
-        <Nav className="mr-auto">
-          {/* The navbar will show these links after you log in */}
-          <Nav.Link as={Link} to="/books">
-            Books
-          </Nav.Link>
-          <Nav.Link to={`/user/${user.id}/cart`} as={Link}>
-            Cart
-          </Nav.Link>
+
+    {isLoggedIn ? (
+      <Nav>
+        {/* The navbar will show these links after you log in */}
+        <Nav.Link to={`/user/${user.id}/cart`} as={Link}>
+          Cart
+        </Nav.Link>
+
+        <NavDropdown title="My Account">
+          <NavDropdown.Item as={Link} to="/home">
+            My Account
+          </NavDropdown.Item>
+          <NavDropdown.Item as={Link} to="/profile/update">
+            Edit Account Settings
+          </NavDropdown.Item>
+          {isAdmin && <NavDropdown.Divider />}
           {isAdmin && (
-            <Nav.Link as={Link} to="/users">
-              Users
-            </Nav.Link>
+            <NavDropdown.Item as={Link} to="/users">
+              Manage Users
+            </NavDropdown.Item>
           )}
-          <Nav className="justify-content-end">
-            <Nav.Link href="#" onClick={handleClick}>
-              Logout
-            </Nav.Link>
-          </Nav>
-        </Nav>
-      ) : (
-        <Nav>
-          {/* The navbar will show these links before you log in */}
-          <Nav.Link as={Link} to="/books">
-            Books
-          </Nav.Link>
+          {isAdmin && (
+            <NavDropdown.Item as={Link} to="/books/add">
+              Add a Book
+            </NavDropdown.Item>
+          )}
+          <NavDropdown.Divider />
+          <NavDropdown.Item onClick={handleClick}>Logout</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    ) : (
+      <Nav>
+        {/* The navbar will show these links before you log in */}
+        <Nav.Link to="/user/guest/cart" as={Link} className="ml-auto">
+          Cart
+        </Nav.Link>
 
-          <Nav.Link as={Link} to="/login">
+        <NavDropdown title="Account">
+          <NavDropdown.Item as={Link} to="/login">
             Login
-          </Nav.Link>
+          </NavDropdown.Item>
 
-          <Nav.Link as={Link} to="/signup">
+          <NavDropdown.Item as={Link} to="/signup">
             Sign Up
-          </Nav.Link>
+          </NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    )}
 
-          <Nav.Link to="/user/guest/cart" as={Link}>
-            Cart
-          </Nav.Link>
-        </Nav>
-      )}
-    </Nav>
     <hr />
   </Navbar>
 )

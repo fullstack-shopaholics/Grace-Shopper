@@ -2,7 +2,7 @@ import React from 'react'
 import {Form, Card, Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {fetchCart, getGuestCart, clearCart} from './../store/cart'
-import {submitOrder} from './../store/orders'
+import {submitOrder} from '../store/userOrders'
 
 let states = [
   'AK',

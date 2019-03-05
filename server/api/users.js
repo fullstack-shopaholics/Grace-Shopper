@@ -13,7 +13,15 @@ router.get('/', adminOnly, async (req, res, next) => {
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'email', 'firstName', 'lastName', 'isGuest', 'isAdmin']
+      attributes: [
+        'id',
+        'email',
+        'firstName',
+        'lastName',
+        'isGuest',
+        'isAdmin',
+        'forcePWReset'
+      ]
     })
     res.json(users)
   } catch (err) {
@@ -73,6 +81,26 @@ router.put('/:id/toggleAdmin', adminOnly, async (req, res, next) => {
   }
 })
 
+router.put('/:id/forcePWReset', adminOnly, async (req, res, next) => {
+  try {
+    const {id} = req.params
+    const {forcePWReset} = req.body
+
+    const [, updatedUser] = await User.update(
+      {forcePWReset},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
+
+    res.json(updatedUser[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/:id/userInfo', selfOrAdminOnly, async (req, res, next) => {
   try {
     const {id} = req.params
@@ -98,11 +126,14 @@ router.put('/:id/password', selfOnly, async (req, res, next) => {
     const {id} = req.params
     const {password} = req.body
 
-    const [, updatedUser] = await User.update(password, {
-      returning: true,
-      where: {id},
-      individualHooks: true
-    })
+    const [, updatedUser] = await User.update(
+      {password, forcePWReset: false},
+      {
+        returning: true,
+        where: {id},
+        individualHooks: true
+      }
+    )
 
     res.json(updatedUser[0])
   } catch (err) {

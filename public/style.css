@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  font-weight: 200;
 }
 
 a {
@@ -10,10 +11,9 @@ label {
   display: block;
 }
 
-nav a {
-  display: inline-block;
+/* nav a {
   margin: 1em;
-}
+} */
 
 form div {
   margin: 1em;
@@ -25,8 +25,8 @@ form div {
 }
 
 .card.userCard {
-  width: 45vw;
   height: 6em;
+  width: 94vw;
 }
 
 .userCard .card-body {

@@ -48,6 +48,8 @@ const orderFilter = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ORDER:
       return [...state, action.order]
+    case GET_ORDERS:
+      return action.orders
     default:
       return state
   }
