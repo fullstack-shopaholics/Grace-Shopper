@@ -13,9 +13,9 @@ const setAllOrders = orders => ({
 })
 
 //THUNK CREATORS
-export const getAllOrders = () => async dispatch => {
+export const getAllOrders = filter => async dispatch => {
   try {
-    const res = await axios.get('/api/orders/')
+    const res = await axios.get('/api/orders/', {params: {filter}})
     const orders = res.data
     dispatch(setAllOrders(orders))
   } catch (err) {

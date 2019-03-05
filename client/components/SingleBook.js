@@ -15,6 +15,7 @@ import {
   Button,
   InputGroup
 } from 'react-bootstrap'
+import AddedToCartModal from './AddedToCartModal'
 
 export class SingleBook extends React.Component {
   constructor() {
@@ -48,8 +49,12 @@ export class SingleBook extends React.Component {
     } else {
       const userId = this.props.userId
       this.props.addBookToCart(userId, bookId, quantity)
-      console.log('Added to Cart!')
     }
+    this.setState({show: true})
+  }
+
+  modalClose = () => {
+    this.setState({show: false})
   }
 
   render() {
@@ -87,7 +92,6 @@ export class SingleBook extends React.Component {
                   />
                   <InputGroup.Append>
                     <Button
-                      ref="addToCart"
                       variant="secondary"
                       onClick={() => {
                         this.setState({show: !show})
@@ -98,6 +102,12 @@ export class SingleBook extends React.Component {
                     </Button>
                   </InputGroup.Append>
                 </InputGroup>
+
+                <AddedToCartModal
+                  show={this.state.show}
+                  book={selectedBook}
+                  modalClose={this.modalClose}
+                />
               </Form.Group>
             ) : (
               <h4>This item is currently out of stock.</h4>
