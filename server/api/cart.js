@@ -53,6 +53,32 @@ router.post('/guest', async (req, res, next) => {
   }
 })
 
+router.get('/checkout', async (req, res, next) => {
+  try {
+    res.render('index.pug', {keyPublishable})
+  } catch (err) {
+    next(err)
+  }
+})
+
+// router.post('/charge', (req, res) => {
+//   let amount = 500
+//   stripe.customers
+//     .create({
+//       email: req.body.stripeEmail,
+//       source: req.body.stripeToken
+//     })
+//     .then(customer =>
+//       stripe.charges.create({
+//         amount,
+//         description: 'Sample Charge',
+//         currency: 'usd',
+//         customer: customer.id
+//       })
+//     )
+//     .then(() => res.send('Success'))
+// })
+
 router.post('/checkout', async (req, res, next) => {
   const {cart, userId, address, email} = req.body
   const total = cart.reduce((subTotal, item) => {

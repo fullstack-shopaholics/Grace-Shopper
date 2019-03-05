@@ -1,8 +1,9 @@
 import React from 'react'
-import {Form, Card, Button} from 'react-bootstrap'
+import {Form, Card, Button, Alert} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {fetchCart, getGuestCart, clearCart} from './../store/cart'
 import {submitOrder} from '../store/userOrders'
+import Stripe from './Stripe'
 
 let states = [
   'AK',
@@ -124,6 +125,7 @@ export class Checkout extends React.Component {
   }
 
   render() {
+    let check = Object.values(this.state)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
@@ -199,7 +201,6 @@ export class Checkout extends React.Component {
               ))}
             </Form.Control>
           </Form.Group>
-          <Button type="submit">Submit</Button>
         </Form>
         {this.props.cart.map(item => (
           <div key={item.book.id}>
@@ -213,6 +214,11 @@ export class Checkout extends React.Component {
             <br />
           </div>
         ))}
+        {!check.includes('') ? (
+          <Stripe amount={this.state.subtotal} onSubmit={this.handleSubmit} />
+        ) : (
+          <Alert variant="warning">Complete Form</Alert>
+        )}
       </div>
     )
   }
