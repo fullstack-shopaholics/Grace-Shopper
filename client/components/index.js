@@ -20,3 +20,4 @@ export {
 export {default as SingleOrder} from './SingleOrder'
 export {default as DisplayPastOrders} from './DisplayPastOrders'
 export {default as AllOrdersView} from './AllOrdersView'
+export {default as OrderRedirect} from './OrderRedirect'
