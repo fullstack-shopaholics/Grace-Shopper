@@ -1147,15 +1147,6 @@ module.exports = [
       'In 2000 Harcourt proudly reissued Antoine de Saint-Exupéry’s masterpiece, The Little Prince, in a sparkling new format. Newly translated by Pulitzer Prize–winning poet Richard Howard, this timeless classic was embraced by critics and readers across the country for its purity and beauty of expression. And Saint-Exupéry’s beloved artwork was restored and remastered to present his work in its original and vibrant colors.\nThe restored artwork glows like never before in the uniform full-color foreign language editions issued in 2001. These affordable and beautiful editions are sure to delight an entire new generation of readers, students, children, and adults for whom Saint-Exupéry’s story will open the door to a new understanding of life.'
   },
   {
-    title: 'El principito (Spanish)',
-    author: 'Antoine de Saint-Exupéry',
-    photoUrl: 'https://m.media-amazon.com/images/I/51hyi0j5BJL._AC_UL436_.jpg',
-    price: 11.99,
-    inventoryQuantity: 58,
-    description:
-      'In 2000 Harcourt proudly reissued Antoine de Saint-Exupéry’s masterpiece, The Little Prince, in a sparkling new format. Newly translated by Pulitzer Prize–winning poet Richard Howard, this timeless classic was embraced by critics and readers across the country for its purity and beauty of expression. And Saint-Exupéry’s beloved artwork was restored and remastered to present his work in its original and vibrant colors.\nThe restored artwork glows like never before in the uniform full-color foreign language editions issued in 2001. These affordable and beautiful editions are sure to delight an entire new generation of readers, students, children, and adults for whom Saint-Exupéry’s story will open the door to a new understanding of life.'
-  },
-  {
     title: 'Mein Kampf',
     author: 'Adolf Hitler',
     photoUrl: 'https://m.media-amazon.com/images/I/91K8d5YeMjL._AC_UL436_.jpg',

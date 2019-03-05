@@ -17,6 +17,7 @@ const bios = require('./dummyDataFiles/biosAndMemiors')
 const sciFiBooks = require('./dummyDataFiles/sciFiBooks')
 const cookBooks = require('./dummyDataFiles/cookbooksFoodAndWineBooks')
 const mysteryBooks = require('./dummyDataFiles/mysteryBooks')
+const travelBooks = require('./dummyDataFiles/travelBooks')
 
 //Reviews
 const review1 = {
@@ -44,8 +45,9 @@ const cat4 = {name: `Biographies and Memiors`}
 const cat5 = {name: 'Science Fiction'}
 const cat6 = {name: 'Cookbooks, Food & Wine'}
 const cat7 = {name: 'Mystery, Thriller & Suspense'}
+const cat8 = {name: 'Travel'}
 
-const categories = [cat1, cat2, cat3, cat4, cat5, cat6, cat7]
+const categories = [cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8]
 
 //Users
 const user1 = {email: 'cody@email.com', password: '123', isGuest: false}
@@ -102,6 +104,7 @@ const orderItem3 = {
 const orderItems = [orderItem1, orderItem2, orderItem3]
 // Seeding
 
+//eslint-disable-next-line max-statements
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
@@ -155,6 +158,9 @@ async function seed() {
   const savedMysteries = await Promise.all(
     mysteryBooks.map(book => findOrCreateCallback(book))
   )
+  const savedTravelBooks = await Promise.all(
+    travelBooks.map(book => findOrCreateCallback(book))
+  )
 
   await Promise.all([
     savedReviews[0].setUser(savedUsers[2]),
@@ -189,6 +195,9 @@ async function seed() {
   const mystery_books = savedMysteries.map(book =>
     book[0].addCategory(savedCats[6])
   )
+  const travel_books = savedTravelBooks.map(book =>
+    book[0].addCategory(savedCats[8])
+  )
 
   const allBooks = art_books.concat(
     classic_books,
@@ -196,7 +205,8 @@ async function seed() {
     bios_books,
     sci_fi_books,
     cookbooks_food_and_wine_books,
-    mystery_books
+    mystery_books,
+    travel_books
   )
   await Promise.all(allBooks)
 
