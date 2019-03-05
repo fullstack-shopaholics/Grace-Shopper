@@ -16,17 +16,35 @@ export const UserHome = props => {
   return (
     <div>
       <br />
-      <h5>Welcome, {displayName}</h5>
-      <br />
-      <ButtonToolbar style={{justifyContent: 'space-around'}}>
-        <Link to="profile/update">
-          <Button variant="secondary">Update Your Profile Information</Button>
-        </Link>
-        <Link to="profile/resetPassword">
-          <Button variant="secondary">Reset Your Password</Button>
-        </Link>
+      <h4>Welcome, {displayName}</h4>
+      <ButtonToolbar>
+        <Button
+          as={Link}
+          variant="secondary"
+          to="/profile/orders"
+          className="home-page-btn"
+        >
+          View Your Orders
+        </Button>
+
+        <Button
+          as={Link}
+          to="profile/update"
+          variant="secondary"
+          className="home-page-btn"
+        >
+          Update Your Profile Information
+        </Button>
+
+        <Button
+          as={Link}
+          to="profile/resetPassword"
+          variant="secondary"
+          className="home-page-btn"
+        >
+          Reset Your Password
+        </Button>
       </ButtonToolbar>
-      <br />
       <br />
       {user.isAdmin && (
         <span>
@@ -34,7 +52,6 @@ export const UserHome = props => {
           <AdminHome />
         </span>
       )}
-      <DisplayPastOrders userId={user.id} />
     </div>
   )
 }

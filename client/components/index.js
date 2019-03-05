@@ -18,3 +18,5 @@ export {
   default as ForcePWResetPage
 } from './ResetPasswordComponents/ForcePWResetPage'
 export {default as SingleOrder} from './SingleOrder'
+export {default as DisplayPastOrders} from './DisplayPastOrders'
+export {default as AllOrdersView} from './AllOrdersView'
