@@ -79,12 +79,22 @@ class AllBooks extends React.Component {
           ) : (
             books.map(book => {
               return (
-                <Link key={book.id} to={`/books/${book.id}`}>
-                  <Card style={{width: '200px', height: '300px'}}>
+                <div key={book.id}>
+                  {/* <Link key={book.id} to={`/books/${book.id}`}> */}
+                  <Card
+                    as={Link}
+                    key={book.id}
+                    to={`/books/${book.id}`}
+                    style={{
+                      width: '200px',
+                      height: '330px',
+                      textDecoration: 'none'
+                    }}
+                  >
                     <Card.Img
                       variant="top"
                       src={book.photoUrl}
-                      style={{height: '210px'}}
+                      style={{height: '240px'}}
                     />
                     <Card.Title style={{fontSize: '0.75rem'}}>
                       {titleTrimmer(book.title)}
@@ -105,7 +115,8 @@ class AllBooks extends React.Component {
                     </Card.Subtitle>
                   </Card>
                   <br />
-                </Link>
+                  {/* </Link> */}
+                </div>
               )
             })
           )}
