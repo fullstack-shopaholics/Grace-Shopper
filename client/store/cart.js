@@ -8,6 +8,7 @@ export const ADD_TO_CART = 'ADD_TO_CART'
 export const ADD_TO_GUEST_CART = 'ADD_TO_GUEST_CART'
 export const DELETE_ITEM_FROM_CART = 'DELETE_ITEM_FROM_CART'
 export const CHANGE_QUANTITY = 'CHANGE_QUANTITY'
+export const CLEAR_CART = 'CLEAR_CART'
 
 export const getCart = cart => ({
   type: GET_CART,
@@ -27,6 +28,9 @@ export const deleteItemFromCart = bookId => ({
 export const changeQuantity = cartItem => ({
   type: CHANGE_QUANTITY,
   cartItem
+})
+export const clearCart = () => ({
+  type: CLEAR_CART
 })
 
 export const fetchCart = userId => async dispatch => {
@@ -127,6 +131,8 @@ export const cart = (state = initialState, action) => {
           return {...item, quantity: action.cartItem.quantity}
         else return item
       })
+    case CLEAR_CART:
+      return initialState
     default:
       return state
   }
