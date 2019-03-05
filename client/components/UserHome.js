@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {makeDisplayName} from '../store/user'
 import AdminHome from './AdminHome'
 import {Link} from 'react-router-dom'
-import {Button} from 'react-bootstrap'
+import {Card, Button} from 'react-bootstrap'
 
 /**
  * COMPONENT
@@ -15,7 +15,7 @@ export const UserHome = props => {
   return (
     <div>
       <br />
-      <h3>Welcome, {displayName}</h3>
+      <h5>Welcome, {displayName}</h5>
       <br />
       <Link to="profile/update">
         <Button variant="secondary">Update Your Profile Information</Button>
