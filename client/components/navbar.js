@@ -35,6 +35,11 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
             </NavDropdown.Item>
           )}
           {isAdmin && (
+            <NavDropdown.Item as={Link} to="/orders">
+              Manage Orders
+            </NavDropdown.Item>
+          )}
+          {isAdmin && (
             <NavDropdown.Item as={Link} to="/books/add">
               Add a Book
             </NavDropdown.Item>

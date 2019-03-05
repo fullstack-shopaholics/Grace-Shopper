@@ -18,6 +18,15 @@ export const AdminHome = () => {
 
         <Button
           as={Link}
+          to="/orders"
+          variant="secondary"
+          className="home-page-btn"
+        >
+          Manage Orders
+        </Button>
+
+        <Button
+          as={Link}
           to="/books/add"
           variant="secondary"
           className="home-page-btn"
