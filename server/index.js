@@ -10,6 +10,9 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+const keyPublishable = pk_test_PjYEHMeTcIduivMe25wGR53O
+const keySecret = sk_test_3tpz5hwNI3ldwAcZ3Isd5Hmq
+const stripe = require('stripe')(keySecret)
 module.exports = app
 
 // This is a global Mocha hook, used for resource cleanup.
@@ -45,6 +48,7 @@ const createApp = () => {
   app.use(morgan('dev'))
 
   // body parsing middleware
+  app.set('view engine', 'pug')
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
 
