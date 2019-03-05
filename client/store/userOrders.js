@@ -29,7 +29,7 @@ export const submitOrder = (address, cart, email, history, userId) => {
     })
     const newOrder = result.data
     dispatch(addOrder(newOrder))
-    if (userId) history.push(`order/${newOrder.id}`)
+    history.push(`order/confirm`)
   }
 }
 

@@ -14,18 +14,22 @@ class SingleOrder extends React.Component {
     const orderItems = order.orderItems || []
     return (
       <div>
-        <h1>Order</h1>
+        <h1>Order Summary</h1>
         <h2>Email: {order.email}</h2>
-        <h2>Shipping Address: {order.address}</h2>
-        <h2>Status: {order.status}</h2>
+        <h3>Shipping Address: {order.address}</h3>
+        <h3>Status: {order.status}</h3>
         <h2>Items:</h2>
         {orderItems.map(item => (
           <Card key={item.id}>
             <Card.Body>
-              <Card.Subtitle>Title: {item.book.title}</Card.Subtitle>
-              <Card.Subtitle>Author: {item.book.author}</Card.Subtitle>
-              <Card.Subtitle>Quantity: {item.quantity}</Card.Subtitle>
-              <Card.Subtitle>Price: ${item.book.price}</Card.Subtitle>
+              <Card.Title>
+                Title: {item.book.title} by {item.book.author}
+              </Card.Title>
+              <div>
+                Quantity: {item.quantity}
+                <br />
+                Price: ${item.book.price}
+              </div>
             </Card.Body>
           </Card>
         ))}

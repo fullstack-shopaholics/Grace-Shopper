@@ -1,18 +1,86 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getAllOrders} from './../store/allorders'
-import Order from './Order'
+import {Table, DropdownButton, Dropdown} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
+import {editOrderStatus} from '../store/singleOrder'
 
 export class AllOrders extends Component {
   componentDidMount() {
     this.props.getAllOrders()
   }
+  formatDate = dateStr => {
+    const [splitDate] = dateStr.split('T')
+    const [year, month, day] = splitDate.split('-')
+    return `${month}/${day}/${year}`
+  }
+
+  handleClick = (event, id) => {
+    this.props.editOrderStatus(id, event.target.name)
+  }
+
   render() {
     const orders = this.props.orders || []
+    orders.sort((a, b) => +a.id - +b.id)
+
     return (
       <div>
         <h4>Manage Orders</h4>
-        {orders.map(order => <Order key={order.id} order={order} />)}
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>User Email</th>
+              <th>Date Ordered</th>
+              <th>Status</th>
+              <th>Update Order Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map(order => (
+              <tr key={order.id}>
+                <td>
+                  <Link to={`/order/${order.id}`}>{order.id}</Link>
+                </td>
+                <td>{order.email}</td>
+                <td>{this.formatDate(order.createdAt)}</td>
+                <td>{order.status}</td>
+                <td>
+                  <DropdownButton
+                    title="Update Status"
+                    disabled={
+                      order.status === 'Canceled' ||
+                      order.status === 'Delivered'
+                    }
+                  >
+                    {order.status === 'Ordered' && (
+                      <Dropdown.Item
+                        name="Shipped"
+                        onClick={evt => this.handleClick(evt, order.id)}
+                      >
+                        Shipped
+                      </Dropdown.Item>
+                    )}
+                    {order.status !== 'Delivered' && (
+                      <Dropdown.Item
+                        name="Delivered"
+                        onClick={evt => this.handleClick(evt, order.id)}
+                      >
+                        Delivered
+                      </Dropdown.Item>
+                    )}
+                    <Dropdown.Item
+                      name="Canceled"
+                      onClick={evt => this.handleClick(evt, order.id)}
+                    >
+                      Canceled
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     )
   }
@@ -23,7 +91,9 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  getAllOrders: () => dispatch(getAllOrders())
+  getAllOrders: () => dispatch(getAllOrders()),
+  editOrderStatus: (orderId, status) =>
+    dispatch(editOrderStatus(orderId, status))
 })
 
 export default connect(mapState, mapDispatch)(AllOrders)
