@@ -1,48 +1,19 @@
 import React from 'react'
 import {getUserOrders} from './../store/userOrders'
-import {Card} from 'react-bootstrap'
+import Order from './Order'
 import {connect} from 'react-redux'
 
 class DisplayPastOrders extends React.Component {
-  constructor() {
-    super()
-    this.formatDate = this.formatDate.bind(this)
-  }
   componentDidMount() {
     this.props.getUserOrders(this.props.userId)
-  }
-
-  formatDate(dateStr) {
-    const [splitDate] = dateStr.split('T')
-    const [year, month, day] = splitDate.split('-')
-    return `${month}/${day}/${year}`
   }
 
   render() {
     const orders = this.props.orders || []
     return (
       <div>
-        <h2>Past Orders</h2>
-        {orders.map(order => (
-          <div key={order.id}>
-            <Card>
-              <Card.Body>
-                <Card.Subtitle>Shipping Address: {order.address}</Card.Subtitle>
-                <Card.Subtitle>
-                  Date: {this.formatDate(order.createdAt)}
-                </Card.Subtitle>
-                Items:{' '}
-                {order.orderItems.map(item => (
-                  <div key={item.id}>
-                    Title: {item.book.title} Price: ${item.book.price} Quantity:{' '}
-                    {item.quantity}
-                  </div>
-                ))}
-                Subtotal: ${order.total}
-              </Card.Body>
-            </Card>
-          </div>
-        ))}
+        <h4>Your Orders</h4>
+        {orders.map(order => <Order key={order.id} order={order} />)}
       </div>
     )
   }
@@ -50,6 +21,7 @@ class DisplayPastOrders extends React.Component {
 
 const mapState = state => {
   return {
+    userId: state.user.id,
     orders: state.currentOrders
   }
 }

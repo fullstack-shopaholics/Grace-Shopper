@@ -14,7 +14,11 @@ import {
   Cart,
   Checkout,
   ResetPassword,
-  ForcePWResetPage
+  ForcePWResetPage,
+  SingleOrder,
+  DisplayPastOrders,
+  AllOrdersView,
+  OrderRedirect
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
@@ -41,6 +45,7 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/user/guest/cart" component={Cart} />{' '}
         <Route path="/checkout" component={Checkout} />{' '}
+        <Route path="/order/confirm" component={OrderRedirect} />{' '}
         {/*Make so only the logged in user can see their cart & hide guest when logged in*/}
         <Route path="/user/:userId/cart" component={Cart} />
         {isAdmin && <Route path="/users" component={AllUsers} />}
@@ -48,14 +53,16 @@ class Routes extends Component {
         {isAdmin && (
           <Route exact path="/books/:id/update" component={UpdateBook} />
         )}
+        {isAdmin && <Route path="/orders" component={AllOrdersView} />}
         <Route path="/books/:id" component={SingleBook} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-
+            <Route path="/order/:orderId" component={SingleOrder} />
             <Route path="/home" component={UserHome} />
             <Route path="/profile/update" component={UpdateSelf} />
             <Route path="/profile/resetPassword" component={ResetPassword} />
+            <Route path="/profile/orders" component={DisplayPastOrders} />
             {/* Displays user home as default when signed in */}
             <Route component={UserHome} />
           </Switch>

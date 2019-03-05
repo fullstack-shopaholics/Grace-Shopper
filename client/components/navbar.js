@@ -22,6 +22,9 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
           <NavDropdown.Item as={Link} to="/home">
             My Account
           </NavDropdown.Item>
+          <NavDropdown.Item as={Link} to="/profile/orders">
+            My Orders
+          </NavDropdown.Item>
           <NavDropdown.Item as={Link} to="/profile/update">
             Edit Account Settings
           </NavDropdown.Item>
@@ -29,6 +32,11 @@ const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
           {isAdmin && (
             <NavDropdown.Item as={Link} to="/users">
               Manage Users
+            </NavDropdown.Item>
+          )}
+          {isAdmin && (
+            <NavDropdown.Item as={Link} to="/orders">
+              Manage Orders
             </NavDropdown.Item>
           )}
           {isAdmin && (
