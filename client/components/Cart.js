@@ -60,9 +60,9 @@ export class Cart extends Component {
     const cartItems = this.props.cartItems || []
     return (
       <div>
-        <h1>Shopping Cart</h1>
+        <h3>Shopping Cart</h3>
         {!cartItems.length || cartItems === undefined ? (
-          <h2>No Items in Cart!</h2>
+          <h5>Empty</h5>
         ) : (
           <div>
             <ul>
