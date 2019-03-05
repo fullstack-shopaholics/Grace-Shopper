@@ -125,6 +125,8 @@ export class Checkout extends React.Component {
   }
 
   render() {
+    const {subtotal} = this.props
+    console.log(subtotal)
     let check = Object.values(this.state)
     return (
       <div>
@@ -214,8 +216,9 @@ export class Checkout extends React.Component {
             <br />
           </div>
         ))}
+        <h3>Subtotal: ${this.props.subtotal}</h3>
         {!check.includes('') ? (
-          <Stripe amount={this.state.subtotal} onSubmit={this.handleSubmit} />
+          <Stripe amount={this.props.subtotal} onSubmit={this.handleSubmit} />
         ) : (
           <Alert variant="warning">Complete Form</Alert>
         )}
@@ -229,7 +232,7 @@ const mapState = state => {
     cart: state.cart,
     user: state.user,
     subtotal: state.cart.reduce((total, currentItem) => {
-      total = total + currentItem.quantity * currentItem.book.price
+      return (total = total + currentItem.quantity * currentItem.book.price)
     }, 0)
   }
 }
