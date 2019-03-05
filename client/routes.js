@@ -11,10 +11,18 @@ import {
   SingleBook,
   AddBook,
   UpdateBook,
-  Cart
+  Cart,
+  Checkout,
+  ResetPassword,
+  ForcePWResetPage,
+  SingleOrder,
+  DisplayPastOrders,
+  AllOrdersView,
+  OrderRedirect
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
+import UpdateSelf from './components/UpdateSelf'
 
 /**
  * COMPONENT
@@ -26,15 +34,18 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, isAdmin} = this.props
+    const {isLoggedIn, isAdmin, forcePWReset} = this.props
 
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+        {forcePWReset && <Route component={ForcePWResetPage} />}
         <Route exact path="/books" component={AllBooks} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/user/guest/cart" component={Cart} />{' '}
+        <Route path="/checkout" component={Checkout} />{' '}
+        <Route path="/order/confirm" component={OrderRedirect} />{' '}
         {/*Make so only the logged in user can see their cart & hide guest when logged in*/}
         <Route path="/user/:userId/cart" component={Cart} />
         {isAdmin && <Route path="/users" component={AllUsers} />}
@@ -42,11 +53,18 @@ class Routes extends Component {
         {isAdmin && (
           <Route exact path="/books/:id/update" component={UpdateBook} />
         )}
+        {isAdmin && <Route path="/orders" component={AllOrdersView} />}
         <Route path="/books/:id" component={SingleBook} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+            <Route path="/order/:orderId" component={SingleOrder} />
             <Route path="/home" component={UserHome} />
+            <Route path="/profile/update" component={UpdateSelf} />
+            <Route path="/profile/resetPassword" component={ResetPassword} />
+            <Route path="/profile/orders" component={DisplayPastOrders} />
+            {/* Displays user home as default when signed in */}
+            <Route component={UserHome} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
@@ -65,6 +83,7 @@ const mapState = state => {
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
     isAdmin: state.user.isAdmin,
+    forcePWReset: state.user.forcePWReset,
     singleBook: state.singleBook
   }
 }

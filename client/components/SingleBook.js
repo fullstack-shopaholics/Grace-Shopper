@@ -20,7 +20,8 @@ export class SingleBook extends React.Component {
   constructor() {
     super()
     this.state = {
-      quantity: 1
+      quantity: 1,
+      show: false
     }
     this.changeHandler = this.changeHandler.bind(this)
     this.clickHandler = this.clickHandler.bind(this)
@@ -54,7 +55,7 @@ export class SingleBook extends React.Component {
   render() {
     let selectedBookReviews = this.props.selectedBookReviews || []
     let {selectedBook, isAdmin} = this.props
-
+    let show = this.state.show || false
     return (
       <Container>
         <br />
@@ -69,27 +70,38 @@ export class SingleBook extends React.Component {
             {selectedBook.author && <h4>By {selectedBook.author}</h4>}
             <h5>${selectedBook.price}</h5>
 
-            <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                Quantity
-              </Form.Label>
-              <InputGroup as={Col} sm={10}>
-                <FormControl
-                  type="number"
-                  step="1"
-                  min="1"
-                  name="quantity"
-                  placeholder="Quantity"
-                  value={this.state.quantity}
-                  onChange={this.changeHandler}
-                />
-                <InputGroup.Append>
-                  <Button variant="secondary" onClick={this.clickHandler}>
-                    Add To Cart
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </Form.Group>
+            {selectedBook.inventoryQuantity > 0 ? (
+              <Form.Group as={Row}>
+                <Form.Label column sm={2}>
+                  Quantity
+                </Form.Label>
+                <InputGroup as={Col} sm={10}>
+                  <FormControl
+                    type="number"
+                    step="1"
+                    min="1"
+                    name="quantity"
+                    placeholder="Quantity"
+                    value={this.state.quantity}
+                    onChange={this.changeHandler}
+                  />
+                  <InputGroup.Append>
+                    <Button
+                      ref="addToCart"
+                      variant="secondary"
+                      onClick={() => {
+                        this.setState({show: !show})
+                        this.clickHandler()
+                      }}
+                    >
+                      Add To Cart
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form.Group>
+            ) : (
+              <h4>This item is currently out of stock.</h4>
+            )}
 
             <br />
             {isAdmin && (
@@ -109,7 +121,6 @@ export class SingleBook extends React.Component {
         {!this.props.isGuest && (
           <PostReview selectedBook={selectedBook} userId={this.props.userId} />
         )}
-        {isAdmin && <Link to={`/books/${selectedBook.id}/update`}>Update</Link>}
       </Container>
     )
   }

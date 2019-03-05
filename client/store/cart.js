@@ -7,6 +7,8 @@ export const GET_GUEST_CART = 'GET_GUEST_CART'
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const ADD_TO_GUEST_CART = 'ADD_TO_GUEST_CART'
 export const DELETE_ITEM_FROM_CART = 'DELETE_ITEM_FROM_CART'
+export const CHANGE_QUANTITY = 'CHANGE_QUANTITY'
+export const CLEAR_CART = 'CLEAR_CART'
 
 export const getCart = cart => ({
   type: GET_CART,
@@ -21,6 +23,14 @@ export const addToCart = book => ({
 export const deleteItemFromCart = bookId => ({
   type: DELETE_ITEM_FROM_CART,
   bookId
+})
+
+export const changeQuantity = cartItem => ({
+  type: CHANGE_QUANTITY,
+  cartItem
+})
+export const clearCart = () => ({
+  type: CLEAR_CART
 })
 
 export const fetchCart = userId => async dispatch => {
@@ -85,6 +95,28 @@ export const deleteFromGuestCart = bookId => {
   }
 }
 
+export const editQuantity = (userId, bookId, quantity) => {
+  return async dispatch => {
+    const result = await axios.put(`/api/users/cart/${userId}/changeQuantity`, {
+      bookId,
+      quantity
+    })
+    const updatedBook = result.data
+    dispatch(changeQuantity(updatedBook))
+  }
+}
+
+export const editGuestQuantity = (bookId, quantity) => {
+  return async dispatch => {
+    const result = await axios.put(`/api/users/cart/guest/changeQuantity`, {
+      bookId,
+      quantity
+    })
+    const updatedItem = result.data
+    dispatch(changeQuantity(updatedItem))
+  }
+}
+
 export const cart = (state = initialState, action) => {
   switch (action.type) {
     case GET_CART:
@@ -93,6 +125,14 @@ export const cart = (state = initialState, action) => {
       return [...state, action.book]
     case DELETE_ITEM_FROM_CART:
       return state.filter(item => item.book.id !== action.bookId)
+    case CHANGE_QUANTITY:
+      return state.map(item => {
+        if (item.book.id === action.cartItem.book.id)
+          return {...item, quantity: action.cartItem.quantity}
+        else return item
+      })
+    case CLEAR_CART:
+      return initialState
     default:
       return state
   }

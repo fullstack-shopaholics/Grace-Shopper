@@ -40,6 +40,10 @@ const User = db.define('user', {
   isGuest: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  forcePWReset: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 })
 
