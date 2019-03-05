@@ -4,6 +4,7 @@ import {fetchAllUsers} from '../store/allusers'
 import {Card, CardDeck} from 'react-bootstrap'
 import ToggleAdminButton from './ToggleAdminButton'
 import DeleteUserButton from './DeleteUserButton'
+import ForcePasswordReset from './ResetPasswordComponents/ForcePWResetButton'
 
 class AllUsers extends React.Component {
   componentDidMount() {
@@ -39,7 +40,11 @@ class AllUsers extends React.Component {
                         <br />
                       </Card.Subtitle>
                     )}
-                    <ToggleAdminButton id={user.id} isAdmin={user.isAdmin} />
+                    <ToggleAdminButton id={user.id} isAdmin={user.isAdmin} />{' '}
+                    <ForcePasswordReset
+                      id={user.id}
+                      forcePWReset={user.forcePWReset}
+                    />
                     <DeleteUserButton id={user.id} />
                   </Card.Body>
                 </Card>

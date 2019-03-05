@@ -25,8 +25,8 @@ form div {
 }
 
 .card.userCard {
-  width: 45vw;
   height: 6em;
+  width: 94vw;
 }
 
 .userCard .card-body {
