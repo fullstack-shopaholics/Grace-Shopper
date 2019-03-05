@@ -19,7 +19,7 @@ export const getOrders = orders => {
   }
 }
 
-export const submitOrder = (address, cart, email, userId) => {
+export const submitOrder = (address, cart, email, history, userId) => {
   return async dispatch => {
     const result = await axios.post(`api/users/cart/checkout`, {
       address,
@@ -29,6 +29,7 @@ export const submitOrder = (address, cart, email, userId) => {
     })
     const newOrder = result.data
     dispatch(addOrder(newOrder))
+    if (userId) history.push(`order/${newOrder.id}`)
   }
 }
 

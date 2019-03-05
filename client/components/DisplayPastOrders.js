@@ -1,6 +1,7 @@
 import React from 'react'
 import {getUserOrders} from './../store/userOrders'
 import {Card} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 class DisplayPastOrders extends React.Component {
@@ -27,7 +28,11 @@ class DisplayPastOrders extends React.Component {
           <div key={order.id}>
             <Card>
               <Card.Body>
-                <Card.Subtitle>Shipping Address: {order.address}</Card.Subtitle>
+                <Link to={`/order/${order.id}`}>
+                  <Card.Subtitle>
+                    Shipping Address: {order.address}
+                  </Card.Subtitle>
+                </Link>
                 <Card.Subtitle>
                   Date: {this.formatDate(order.createdAt)}
                 </Card.Subtitle>

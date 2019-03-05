@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const adminOnly = require('./isAdmin.js')
+const selfOrAdmin = require('./selfOrAdmin')
 const {Order, OrderItem, Book} = require('../db/models')
 
 router.get('/', async (req, res, next) => {
@@ -32,6 +33,19 @@ router.put('/updateStatus', adminOnly, async (req, res, next) => {
     )
 
     const order = await Order.findById(updatedOrder[0].id, {
+      include: [{model: OrderItem, include: {model: Book}}]
+    })
+
+    res.json(order)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:id/singleOrder/:orderId', selfOrAdmin, async (req, res, next) => {
+  try {
+    const {orderId} = req.params
+    const order = await Order.findById(orderId, {
       include: [{model: OrderItem, include: {model: Book}}]
     })
 

@@ -14,7 +14,8 @@ import {
   Cart,
   Checkout,
   ResetPassword,
-  ForcePWResetPage
+  ForcePWResetPage,
+  SingleOrder
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
@@ -52,7 +53,7 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-
+            <Route path="/order/:orderId" component={SingleOrder} />
             <Route path="/home" component={UserHome} />
             <Route path="/profile/update" component={UpdateSelf} />
             <Route path="/profile/resetPassword" component={ResetPassword} />

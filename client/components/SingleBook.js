@@ -20,7 +20,8 @@ export class SingleBook extends React.Component {
   constructor() {
     super()
     this.state = {
-      quantity: 1
+      quantity: 1,
+      show: false
     }
     this.changeHandler = this.changeHandler.bind(this)
     this.clickHandler = this.clickHandler.bind(this)
@@ -54,7 +55,7 @@ export class SingleBook extends React.Component {
   render() {
     let selectedBookReviews = this.props.selectedBookReviews || []
     let {selectedBook, isAdmin} = this.props
-
+    let show = this.state.show || false
     return (
       <Container>
         <br />
@@ -85,7 +86,14 @@ export class SingleBook extends React.Component {
                     onChange={this.changeHandler}
                   />
                   <InputGroup.Append>
-                    <Button variant="secondary" onClick={this.clickHandler}>
+                    <Button
+                      ref="addToCart"
+                      variant="secondary"
+                      onClick={() => {
+                        this.setState({show: !show})
+                        this.clickHandler()
+                      }}
+                    >
                       Add To Cart
                     </Button>
                   </InputGroup.Append>
