@@ -12,7 +12,9 @@ import {
   AddBook,
   UpdateBook,
   Cart,
-  Checkout
+  Checkout,
+  ResetPassword,
+  ForcePWResetPage
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
@@ -28,11 +30,12 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, isAdmin} = this.props
+    const {isLoggedIn, isAdmin, forcePWReset} = this.props
 
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+        {forcePWReset && <Route component={ForcePWResetPage} />}
         <Route exact path="/books" component={AllBooks} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
@@ -49,8 +52,10 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+
             <Route path="/home" component={UserHome} />
             <Route path="/profile/update" component={UpdateSelf} />
+            <Route path="/profile/resetPassword" component={ResetPassword} />
             {/* Displays user home as default when signed in */}
             <Route component={UserHome} />
           </Switch>
@@ -71,6 +76,7 @@ const mapState = state => {
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
     isAdmin: state.user.isAdmin,
+    forcePWReset: state.user.forcePWReset,
     singleBook: state.singleBook
   }
 }
