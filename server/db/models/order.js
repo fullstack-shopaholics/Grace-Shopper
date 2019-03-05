@@ -7,7 +7,7 @@ const Order = db.define('order', {
     defaultValue: 'Ordered',
     allowNull: false,
     validate: {
-      isIn: [['Ordered', 'Shipped', 'Delivered']]
+      isIn: [['Ordered', 'Shipped', 'Delivered', 'Cancled']]
     }
   },
   address: {

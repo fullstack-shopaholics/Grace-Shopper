@@ -5,6 +5,7 @@ import {makeDisplayName} from '../store/user'
 import AdminHome from './AdminHome'
 import {Link} from 'react-router-dom'
 import {Button, ButtonToolbar, Card} from 'react-bootstrap'
+import DisplayPastOrders from './DisplayPastOrders'
 
 /**
  * COMPONENT
@@ -33,6 +34,7 @@ export const UserHome = props => {
           <AdminHome />
         </span>
       )}
+      <DisplayPastOrders userId={user.id} />
     </div>
   )
 }

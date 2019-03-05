@@ -1,8 +1,8 @@
 import React from 'react'
 import {Form, Card, Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {fetchCart} from './../store/cart'
-import {submitOrder} from './../store/orders'
+import {fetchCart, getGuestCart, clearCart} from './../store/cart'
+import {submitOrder} from '../store/userOrders'
 
 let states = [
   'AK',
@@ -77,9 +77,24 @@ export class Checkout extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidUpdate(nextProps) {
-    if (this.props.user.id !== nextProps.user.id)
+  componentDidMount() {
+    if (!this.props.user.isGuest) {
       this.props.fetchCart(this.props.user.id)
+      this.setState({
+        email: this.props.user.email,
+        name: `${this.props.user.firstName} ${this.props.user.lastName}`
+      })
+    } else this.props.getGuestCart()
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.user.id !== nextProps.user.id) {
+      this.props.fetchCart(this.props.user.id)
+      this.setState({
+        email: this.props.user.email,
+        name: `${this.props.user.firstName} ${this.props.user.lastName}`
+      })
+    }
   }
 
   handleChange(evt) {
@@ -97,6 +112,15 @@ export class Checkout extends React.Component {
       return {book, quantity}
     })
     this.props.submitOrder(address, cart, email, this.props.user.id)
+    this.setState({
+      email: '',
+      name: '',
+      street: '',
+      town: '',
+      zip: '',
+      state: ''
+    })
+    this.props.clearCart()
   }
 
   render() {
@@ -208,7 +232,9 @@ const mapDispatch = dispatch => {
   return {
     fetchCart: userId => dispatch(fetchCart(userId)),
     submitOrder: (address, cart, email, userId) =>
-      dispatch(submitOrder(address, cart, email, userId))
+      dispatch(submitOrder(address, cart, email, userId)),
+    getGuestCart: () => dispatch(getGuestCart()),
+    clearCart: () => dispatch(clearCart())
   }
 }
 

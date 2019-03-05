@@ -6,7 +6,7 @@ import {logout} from '../store'
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap'
 
 const StyledNavbar = ({handleClick, isLoggedIn, isAdmin, user, isGuest}) => (
-  <Navbar bg="dark" variant="dark" class="justify-content-between">
+  <Navbar bg="dark" variant="dark" className="justify-content-between">
     <Navbar.Brand as={Link} to="/books">
       BookStack
     </Navbar.Brand>

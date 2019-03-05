@@ -96,7 +96,7 @@ router.post('/checkout', async (req, res, next) => {
     await Promise.all(data)
 
     const order = await Order.findById(newOrder.id, {
-      include: [{model: OrderItem}]
+      include: [{model: OrderItem, include: [{model: Book}]}]
     })
 
     res.json(order)
