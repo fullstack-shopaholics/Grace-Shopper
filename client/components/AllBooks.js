@@ -14,9 +14,9 @@ import {Link} from 'react-router-dom'
 import Filters from './Filters'
 
 const titleTrimmer = title => {
-  return title.length > 70
-    ? title.substring(0, 70 - 3) + '...'
-    : title.substring(0, 70)
+  return title.length > 50
+    ? title.substring(0, 50 - 3) + '...'
+    : title.substring(0, 50)
 }
 
 class AllBooks extends React.Component {
@@ -80,15 +80,23 @@ class AllBooks extends React.Component {
             books.map(book => {
               return (
                 <Link key={book.id} to={`/books/${book.id}`}>
-                  <Card style={{width: '150px', height: '250px'}}>
+                  <Card style={{width: '200px', height: '300px'}}>
                     <Card.Img
                       variant="top"
                       src={book.photoUrl}
-                      style={{height: '175px'}}
+                      style={{height: '210px'}}
                     />
                     <Card.Title style={{fontSize: '0.75rem'}}>
                       {titleTrimmer(book.title)}
                     </Card.Title>
+                    {book.author && (
+                      <Card.Subtitle
+                        className="mb-2 text-muted"
+                        style={{fontSize: '0.75rem'}}
+                      >
+                        By{' ' + book.author}
+                      </Card.Subtitle>
+                    )}
                     <Card.Subtitle
                       className="mb-2 text-muted"
                       style={{fontSize: '0.75rem'}}
