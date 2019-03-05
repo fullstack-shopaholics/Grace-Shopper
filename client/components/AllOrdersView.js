@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {getAllOrders} from './../store/allorders'
 import {Table, DropdownButton, Dropdown} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+import {editOrderStatus} from '../store/singleOrder'
 
 export class AllOrders extends Component {
   componentDidMount() {
@@ -14,10 +15,14 @@ export class AllOrders extends Component {
     return `${month}/${day}/${year}`
   }
 
+  handleClick = (event, id) => {
+    this.props.editOrderStatus(id, event.target.name)
+  }
+
   render() {
     const orders = this.props.orders || []
     orders.sort((a, b) => +a.id - +b.id)
-    console.log(orders)
+
     return (
       <div>
         <h4>Manage Orders</h4>
@@ -49,12 +54,27 @@ export class AllOrders extends Component {
                     }
                   >
                     {order.status === 'Ordered' && (
-                      <Dropdown.Item>Shipped</Dropdown.Item>
+                      <Dropdown.Item
+                        name="Shipped"
+                        onClick={evt => this.handleClick(evt, order.id)}
+                      >
+                        Shipped
+                      </Dropdown.Item>
                     )}
                     {order.status !== 'Delivered' && (
-                      <Dropdown.Item>Delivered</Dropdown.Item>
+                      <Dropdown.Item
+                        name="Delivered"
+                        onClick={evt => this.handleClick(evt, order.id)}
+                      >
+                        Delivered
+                      </Dropdown.Item>
                     )}
-                    <Dropdown.Item>Canceled</Dropdown.Item>
+                    <Dropdown.Item
+                      name="Canceled"
+                      onClick={evt => this.handleClick(evt, order.id)}
+                    >
+                      Canceled
+                    </Dropdown.Item>
                   </DropdownButton>
                 </td>
               </tr>
@@ -71,7 +91,9 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  getAllOrders: () => dispatch(getAllOrders())
+  getAllOrders: () => dispatch(getAllOrders()),
+  editOrderStatus: (orderId, status) =>
+    dispatch(editOrderStatus(orderId, status))
 })
 
 export default connect(mapState, mapDispatch)(AllOrders)
