@@ -140,13 +140,13 @@ class AllBooks extends React.Component {
           )}
         </CardDeck>
         <div>
-          {!this.props.filterBooks.length &&
+          {!this.props.filters.length &&
             this.state.page > 1 && (
               <Button name="prev" onClick={this.clickHandler}>
                 Prev
               </Button>
             )}
-          {!this.props.filterBooks.length &&
+          {!this.props.filters.length &&
             this.state.page < Math.ceil(this.props.total / 50) && (
               <Button name="next" onClick={this.clickHandler}>
                 Next
