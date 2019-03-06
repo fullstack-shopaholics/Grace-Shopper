@@ -12,7 +12,6 @@ import {
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {fetchBooks} from '../store/book'
-import PrevNextButton from './PrevNextButton'
 
 import Filters from './Filters'
 
@@ -88,14 +87,6 @@ class AllBooks extends React.Component {
             )}
           </Row>
           <Filters />
-          {!filters.length ? (
-            <PrevNextButton
-              clickHandler={this.clickHandler}
-              page={this.state.page}
-            />
-          ) : (
-            <Row />
-          )}
         </Container>
         <CardDeck style={{justifyContent: 'space-around'}}>
           {books === undefined || books.length === 0 ? (
