@@ -64,7 +64,7 @@ class AllBooks extends React.Component {
     }
     return (
       <div>
-        <Container>
+        <Container fluid>
           <Row>
             <Col>
               <Form.Control
@@ -89,43 +89,43 @@ class AllBooks extends React.Component {
 
           <Filters />
         </Container>
-        <CardDeck>
+        <CardDeck style={{justifyContent: 'space-around'}}>
           {books === undefined || books.length === 0 ? (
-            <li>No Books!</li>
+            <p>loading</p>
           ) : (
             books.map(book => {
               return (
                 <div key={book.id}>
-                  {/* <Link key={book.id} to={`/books/${book.id}`}> */}
                   <Card
                     as={Link}
                     key={book.id}
                     to={`/books/${book.id}`}
                     style={{
-                      width: '200px',
-                      height: '330px',
-                      textDecoration: 'none'
+                      width: '300px',
+                      height: '500px',
+                      textDecoration: 'none',
+                      margin: '15px'
                     }}
                   >
                     <Card.Img
                       variant="top"
                       src={book.photoUrl}
-                      style={{height: '240px'}}
+                      style={{height: '400px'}}
                     />
-                    <Card.Title style={{fontSize: '0.75rem'}}>
+                    <Card.Title style={{fontSize: '1em'}}>
                       {titleTrimmer(book.title)}
                     </Card.Title>
                     {book.author && (
                       <Card.Subtitle
                         className="mb-2 text-muted"
-                        style={{fontSize: '0.75rem'}}
+                        style={{fontSize: '1em'}}
                       >
                         By{' ' + book.author}
                       </Card.Subtitle>
                     )}
                     <Card.Subtitle
                       className="mb-2 text-muted"
-                      style={{fontSize: '0.75rem'}}
+                      style={{fontSize: '1em'}}
                     >
                       ${book.price}
                     </Card.Subtitle>
