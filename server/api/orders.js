@@ -5,9 +5,19 @@ const {Order, OrderItem, Book} = require('../db/models')
 
 router.get('/', adminOnly, async (req, res, next) => {
   try {
-    const orders = await Order.findAll({
-      include: [{model: OrderItem, include: [{model: Book}]}]
-    })
+    const {filter} = req.query
+    let orders
+    if (filter === 'all') {
+      orders = await Order.findAll({
+        include: [{model: OrderItem, include: [{model: Book}]}]
+      })
+    } else {
+      orders = await Order.findAll({
+        where: {status: filter},
+        include: [{model: OrderItem, include: [{model: Book}]}]
+      })
+    }
+
     res.json(orders)
   } catch (err) {
     next(err)

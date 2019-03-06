@@ -18,7 +18,8 @@ import {
   SingleOrder,
   DisplayPastOrders,
   AllOrdersView,
-  OrderRedirect
+  OrderRedirect,
+  AddCategory
 } from './components'
 import {me} from './store'
 import {fetchBooks} from './store/book'
@@ -50,6 +51,9 @@ class Routes extends Component {
         <Route path="/user/:userId/cart" component={Cart} />
         {isAdmin && <Route path="/users" component={AllUsers} />}
         {isAdmin && <Route exact path="/books/add" component={AddBook} />}
+        {isAdmin && (
+          <Route exact path="/categories/add" component={AddCategory} />
+        )}
         {isAdmin && (
           <Route exact path="/books/:id/update" component={UpdateBook} />
         )}

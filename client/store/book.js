@@ -21,9 +21,11 @@ export const updateBook = book => ({
   book
 })
 
-export const fetchBooks = () => async dispatch => {
+export const fetchBooks = page => async dispatch => {
   try {
-    const res = await axios.get('/api/books')
+    if (!page) page = 1
+    console.log('THUNK PAGE === ', page)
+    const res = await axios.get('/api/books', {params: {page}})
     const data = res.data
     dispatch(setBooks(data))
   } catch (err) {
