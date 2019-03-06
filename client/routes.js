@@ -24,6 +24,7 @@ import {
 import {me} from './store'
 import {fetchBooks} from './store/book'
 import UpdateSelf from './components/UpdateSelf'
+import {getTotal} from './store/total'
 
 /**
  * COMPONENT
@@ -32,6 +33,7 @@ class Routes extends Component {
   componentDidMount() {
     this.props.loadInitialData()
     this.props.loadBooks()
+    this.props.getTotal()
   }
 
   render() {
@@ -99,6 +101,9 @@ const mapDispatch = dispatch => {
     },
     loadBooks() {
       dispatch(fetchBooks())
+    },
+    getTotal() {
+      dispatch(getTotal())
     }
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -10,6 +11,7 @@ import {
   Button
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+import {fetchBooks} from '../store/book'
 
 import Filters from './Filters'
 
@@ -23,15 +25,28 @@ class AllBooks extends React.Component {
   constructor() {
     super()
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      page: 1
     }
     this.changeHandler = this.changeHandler.bind(this)
+    this.clickHandler = this.clickHandler.bind(this)
   }
 
   changeHandler(event) {
     this.setState({
       searchTerm: event.target.value
     })
+  }
+
+  clickHandler(event) {
+    let curpage = this.state.page
+    if (event.target.name === 'next') {
+      this.setState({page: curpage + 1})
+      this.props.nextPage(this.state.page + 1)
+    } else {
+      this.setState({page: curpage - 1})
+      this.props.nextPage(this.state.page - 1)
+    }
   }
 
   render() {
@@ -75,7 +90,11 @@ class AllBooks extends React.Component {
         </Container>
         <CardDeck style={{justifyContent: 'space-around'}}>
           {books === undefined || books.length === 0 ? (
-            <p>loading</p>
+            !filters.length ? (
+              <p>loading</p>
+            ) : (
+              <p>No Books</p>
+            )
           ) : (
             books.map(book => {
               return (
@@ -120,6 +139,20 @@ class AllBooks extends React.Component {
             })
           )}
         </CardDeck>
+        <div>
+          {!this.props.filterBooks.length &&
+            this.state.page > 1 && (
+              <Button name="prev" onClick={this.clickHandler}>
+                Prev
+              </Button>
+            )}
+          {!this.props.filterBooks.length &&
+            this.state.page < Math.ceil(this.props.total / 50) && (
+              <Button name="next" onClick={this.clickHandler}>
+                Next
+              </Button>
+            )}
+        </div>
       </div>
     )
   }
@@ -129,8 +162,15 @@ const mapState = state => {
     books: state.books,
     isAdmin: state.user.isAdmin,
     filterBooks: state.filterCategories.filteredBooks,
-    filters: state.filterCategories.categories
+    filters: state.filterCategories.categories,
+    total: state.total
   }
 }
 
-export default connect(mapState)(AllBooks)
+const mapDispatch = dispatch => {
+  return {
+    nextPage: page => dispatch(fetchBooks(page))
+  }
+}
+
+export default connect(mapState, mapDispatch)(AllBooks)

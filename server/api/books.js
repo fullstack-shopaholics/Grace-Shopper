@@ -10,10 +10,20 @@ const Op = Sequelize.Op
 module.exports = router
 
 router.get('/', async (req, res, next) => {
+  const page = req.query.page
+  const bookLimit = 50
+  let offsetLimit = bookLimit * (page - 1)
   try {
-    const books = await Book.findAll({
-      include: [{model: Category}]
-    })
+    let books
+    if (page) {
+      books = await Book.findAll({
+        limit: bookLimit,
+        offset: offsetLimit,
+        include: [{model: Category}]
+      })
+    } else {
+      books = await Book.count()
+    }
     res.json(books)
   } catch (err) {
     next(err)
