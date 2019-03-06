@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import {fetchBooks} from '../store/book'
+import PrevNextButton from './PrevNextButton'
 
 import Filters from './Filters'
 
@@ -85,12 +86,23 @@ class AllBooks extends React.Component {
               </Col>
             )}
           </Row>
-
           <Filters />
+          {!filters.length ? (
+            <PrevNextButton
+              clickHandler={this.clickHandler}
+              page={this.state.page}
+            />
+          ) : (
+            <Row />
+          )}
         </Container>
         <CardDeck style={{justifyContent: 'space-around'}}>
           {books === undefined || books.length === 0 ? (
-            <p>loading</p>
+            !filters.length ? (
+              <p>loading</p>
+            ) : (
+              <p>No Books</p>
+            )
           ) : (
             books.map(book => {
               return (
@@ -135,20 +147,6 @@ class AllBooks extends React.Component {
             })
           )}
         </CardDeck>
-        {this.state.page > 1 ? (
-          <div>
-            <Button name="prev" onClick={this.clickHandler}>
-              Prev
-            </Button>
-            <Button name="next" onClick={this.clickHandler}>
-              Next
-            </Button>
-          </div>
-        ) : (
-          <Button name="next" onClick={this.clickHandler}>
-            Next
-          </Button>
-        )}
       </div>
     )
   }
