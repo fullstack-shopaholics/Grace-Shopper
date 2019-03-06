@@ -14,11 +14,16 @@ router.get('/', async (req, res, next) => {
   const bookLimit = 100
   let offsetLimit = bookLimit * (page - 1)
   try {
-    const books = await Book.findAll({
-      limit: bookLimit,
-      offset: offsetLimit,
-      include: [{model: Category}]
-    })
+    let books
+    if (page) {
+      books = await Book.findAll({
+        limit: bookLimit,
+        offset: offsetLimit,
+        include: [{model: Category}]
+      })
+    } else {
+      books = await Book.count()
+    }
     res.json(books)
   } catch (err) {
     next(err)

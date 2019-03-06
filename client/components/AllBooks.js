@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -130,26 +131,23 @@ class AllBooks extends React.Component {
                     </Card.Subtitle>
                   </Card>
                   <br />
-                  {/* </Link> */}
                 </div>
               )
             })
           )}
         </CardDeck>
-        {this.state.page > 1 ? (
-          <div>
+        {!this.props.filterBooks.length &&
+          this.state.page > 1 && (
             <Button name="prev" onClick={this.clickHandler}>
               Prev
             </Button>
+          )}
+        {!this.props.filterBooks.length &&
+          this.state.page < Math.ceil(this.props.total / 100) && (
             <Button name="next" onClick={this.clickHandler}>
               Next
             </Button>
-          </div>
-        ) : (
-          <Button name="next" onClick={this.clickHandler}>
-            Next
-          </Button>
-        )}
+          )}
       </div>
     )
   }
@@ -159,7 +157,8 @@ const mapState = state => {
     books: state.books,
     isAdmin: state.user.isAdmin,
     filterBooks: state.filterCategories.filteredBooks,
-    filters: state.filterCategories.categories
+    filters: state.filterCategories.categories,
+    total: state.total
   }
 }
 
