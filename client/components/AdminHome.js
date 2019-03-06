@@ -7,32 +7,23 @@ export const AdminHome = () => {
     <div>
       <h5>Admin Dashboard</h5>
       <ButtonToolbar>
-        <Button
-          as={Link}
-          to="/users"
-          variant="secondary"
-          className="home-page-btn"
-        >
-          Manage Users
-        </Button>
+        <Link to="/users">
+          <Button variant="secondary" className="home-page-btn">
+            Manage Users
+          </Button>
+        </Link>
 
-        <Button
-          as={Link}
-          to="/orders"
-          variant="secondary"
-          className="home-page-btn"
-        >
-          Manage Orders
-        </Button>
+        <Link to="/orders">
+          <Button variant="secondary" className="home-page-btn">
+            Manage Orders
+          </Button>
+        </Link>
 
-        <Button
-          as={Link}
-          to="/books/add"
-          variant="secondary"
-          className="home-page-btn"
-        >
-          Add a Book
-        </Button>
+        <Link to="/books/add">
+          <Button variant="secondary" className="home-page-btn">
+            Add a Book
+          </Button>
+        </Link>
       </ButtonToolbar>
     </div>
   )

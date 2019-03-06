@@ -18,32 +18,23 @@ export const UserHome = props => {
       <br />
       <h4>Welcome, {displayName}</h4>
       <ButtonToolbar>
-        <Button
-          as={Link}
-          variant="secondary"
-          to="/profile/orders"
-          className="home-page-btn"
-        >
-          View Your Orders
-        </Button>
+        <Link to="/profile/orders">
+          <Button variant="secondary" className="home-page-btn">
+            View Your Orders
+          </Button>
+        </Link>
 
-        <Button
-          as={Link}
-          to="profile/update"
-          variant="secondary"
-          className="home-page-btn"
-        >
-          Update Your Profile Information
-        </Button>
+        <Link to="profile/update">
+          <Button variant="secondary" className="home-page-btn">
+            Update Your Profile Information
+          </Button>
+        </Link>
 
-        <Button
-          as={Link}
-          to="profile/resetPassword"
-          variant="secondary"
-          className="home-page-btn"
-        >
-          Reset Your Password
-        </Button>
+        <Link to="profile/resetPassword">
+          <Button variant="secondary" className="home-page-btn">
+            Reset Your Password
+          </Button>
+        </Link>
       </ButtonToolbar>
       <br />
       {user.isAdmin && (
