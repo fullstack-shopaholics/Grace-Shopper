@@ -18,7 +18,7 @@ describe('Book routes', () => {
   describe('GET `/api/books`', () => {
     const book1 = {
       title: 'Issa Book',
-      description: 'READ MORE BOOKS, IDIOT.',
+      description: 'READ MORE BOOKS',
       price: 1.99,
       inventoryQuantity: 5
     }
@@ -32,9 +32,8 @@ describe('Book routes', () => {
         .get('/api/books')
         .expect(200)
 
-      expect(res.body).to.be.an('array')
-      expect(res.body).to.have.length(1)
-      expect(res.body[0].title).to.equal(book1.title)
+      expect(res.body).to.be.a('number')
+      expect(res.body).to.equal(1)
     })
   })
 })
